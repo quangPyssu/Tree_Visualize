@@ -140,12 +140,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="BST_Tree.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Tools\Button.cpp" />
+    <ClCompile Include="Tools\Core\Asset.cpp" />
+    <ClCompile Include="Tools\Core\Global.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="Tools\Button.h" />
+    <ClInclude Include="Tools\Core\Asset.h" />
+    <ClInclude Include="Tools\Core\Global.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

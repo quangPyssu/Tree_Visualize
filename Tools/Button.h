@@ -3,9 +3,14 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <windows.h>
+#include <iostream>
+#include "Core/Global.h"
+#include "Core/Asset.h"
 
 using namespace sf;
 using namespace std;
+using namespace Colors;
+using namespace Size;
 
 enum button_states { BTN_IDLE = 0, BTN_HOVER = 1, BTN_PRESSED = 2 };
 
@@ -22,7 +27,7 @@ private:
     Color activeColor;
     Color textColor;
     Color borderColor;
-    Texture texture;
+    AssetManager Manager;
     RenderTarget* target;
     RectangleShape shape;
 
@@ -31,14 +36,13 @@ private:
 
 public:
 
-
     // Button text
 
     Text text;
 
     //constructor
 
-    Button(Vector2f pos, Vector2f size, string text, Color idleColor, Color hoverColor, Color activeColor,Color borderColor);
+    Button(Vector2f pos, Vector2f size, string text, Color idleColor, Color hoverColor, Color activeColor,Color borderColor,AssetManager& manager);
 
     //Accessors
     const bool isPressed() const;

@@ -2,8 +2,12 @@
 
 #include "SFML/Graphics.hpp"
 #include "Tools/Button.h"
+#include "Tools/Core/Global.h"
+#include "BST_Tree.cpp"
 
 using namespace sf;
+using namespace Constants;
+using namespace Colors;
 
 class App
 {
@@ -25,6 +29,13 @@ public:
 
 	Vector2f MousePos;
 
+	// stuff
 	Button* butt1;
+	AssetManager* Manager;
+
+	// 
+
+	BST_Tree T;
+
 };
 

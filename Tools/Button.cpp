@@ -1,7 +1,6 @@
 #include "Button.h"
-#include <iostream>
 
-Button::Button(Vector2f pos, Vector2f size, string text, Color idleColor, Color hoverColor, Color activeColor,Color borderColor)
+Button::Button(Vector2f pos, Vector2f size, string text, Color idleColor, Color hoverColor, Color activeColor,Color borderColor,AssetManager& Manager)
 {
 	this->height = size.x ? height : size.x;
 	this->width = size.y ? width : size.y;
@@ -12,11 +11,11 @@ Button::Button(Vector2f pos, Vector2f size, string text, Color idleColor, Color 
 	this->size = size;
 	this->pos = pos;
 
-	font.loadFromFile("asset/fonts/ArialTh.ttf");
-	this->text.setFont(font);
+	this->Manager = Manager;
+	this->text.setFont(Manager.getFont("Arial"));
 	this->text.setString(text);
 	this->text.setCharacterSize((int) this->height/2);
-	this->text.setFillColor(activeColor);
+	this->text.setFillColor(white);
 	this->text.setPosition(this->shape.getPosition().x + this->shape.getSize().x / 2.f - this->text.getGlobalBounds().width/2.f,
 		this->shape.getPosition().y + this->shape.getSize().y / 2.f - this->text.getGlobalBounds().height/2.f);
 
@@ -29,7 +28,7 @@ Button::Button(Vector2f pos, Vector2f size, string text, Color idleColor, Color 
 
 	shape.setFillColor(idleColor);
 	shape.setOutlineColor(borderColor);
-	shape.setOutlineThickness(2);
+	shape.setOutlineThickness(OUTLINE_THICKNESS);
 
 	target = NULL;
 	this->event = event;
