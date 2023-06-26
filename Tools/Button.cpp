@@ -1,6 +1,6 @@
 #include "Button.h"
 
-Button::Button(Vector2f pos, Vector2f size, string text, Color idleColor, Color hoverColor, Color activeColor,Color borderColor,AssetManager& Manager)
+Button::Button(Vector2f pos, Vector2f size, string text, Color idleColor, Color hoverColor, Color activeColor,Color borderColor)
 {
 	this->height = size.x ? height : size.x;
 	this->width = size.y ? width : size.y;
@@ -8,18 +8,19 @@ Button::Button(Vector2f pos, Vector2f size, string text, Color idleColor, Color 
 	shape.setSize(Vector2f(this->width, this->height));
 	shape.setPosition(pos);
 
+	setPosition(pos);
+
 	this->size = size;
 	this->pos = pos;
 
-	this->Manager = Manager;
-	this->text.setFont(Manager.getFont("Arial"));
+	this->text.setFont(ResourceManager::getFont(ResourceManager::Arial,"asset/fonts/ArialTh.ttf"));
 	this->text.setString(text);
 	this->text.setCharacterSize((int) this->height/2);
 	this->text.setFillColor(white);
 	this->text.setPosition(this->shape.getPosition().x + this->shape.getSize().x / 2.f - this->text.getGlobalBounds().width/2.f,
 		this->shape.getPosition().y + this->shape.getSize().y / 2.f - this->text.getGlobalBounds().height/2.f);
 
-	buttonState = BTN_IDLE;
+	buttonState = IDLE;
 
 	this->idleColor = idleColor;
 	this->hoverColor = hoverColor;
@@ -36,7 +37,7 @@ Button::Button(Vector2f pos, Vector2f size, string text, Color idleColor, Color 
 
 const bool Button::isPressed() const
 {
-	if (this->buttonState == BTN_PRESSED)
+	if (this->buttonState == PRESSED)
 	{
 		//Sleep(5);
 		return 1;
@@ -44,40 +45,41 @@ const bool Button::isPressed() const
 	return 0;
 }
 
-void Button::update(const Vector2f mousePos, Event* event)
+void Button::updateCurrent(Event& event, Vector2f& MousePos) 
 {
 	// update BTN_STATEs
 
-	this->buttonState = BTN_IDLE;
-	if (this->shape.getGlobalBounds().contains(mousePos))
+	buttonState = IDLE;
+
+	if (this->shape.getGlobalBounds().contains(MousePos))
 	{
-		if (event->type == Event::MouseButtonPressed && event->mouseButton.button == Mouse::Left) this->buttonState = BTN_PRESSED;
-		else if (this->buttonState != BTN_PRESSED || event->mouseButton.button == Event::MouseButtonReleased) this->buttonState = BTN_HOVER;
+		if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) this->buttonState = PRESSED;
+		else if (this->buttonState != PRESSED || event.mouseButton.button == Event::MouseButtonReleased) this->buttonState = HOVER;
 	} else 
-		if (this->buttonState != BTN_PRESSED || event->mouseButton.button == Event::MouseButtonReleased) this->buttonState = BTN_IDLE;
+		if (this->buttonState != PRESSED || event.mouseButton.button == Event::MouseButtonReleased) this->buttonState = IDLE;
 
 	switch (buttonState)
 	{
-	case BTN_IDLE:
+	case IDLE:
 		shape.setFillColor(idleColor);
 		text.setFillColor(activeColor);
 		break;
 
-	case BTN_HOVER:
+	case HOVER:
 		shape.setFillColor(hoverColor);
 		text.setFillColor(idleColor);
 		break;
 
-	case BTN_PRESSED:
+	case PRESSED:
 		shape.setFillColor(activeColor);
 		text.setFillColor(hoverColor);
 		break;
 	}
 }
 
-void Button::render(RenderTarget* target)
+
+void Button::drawCurrent(RenderTarget& target, RenderStates states) const
 {
-	//draw shape
-	target->draw(this->shape);
-	target->draw(this->text);
+	target.draw(this->shape);
+	target.draw(this->text);
 }

@@ -11,9 +11,13 @@ App::App()
 
 	window->setFramerateLimit(60);
 
-	Manager = new AssetManager;
+	MasterDisplay = new SceneNode();
 
-	butt1 = new Button(Vector2f(50,50),Vector2f(50,100),"test",cyan,yellow,red,black,*Manager);
+	mBST = new BST_Tree;
+
+	shared_ptr <BST_Tree> DmBST(mBST);
+
+	MasterDisplay->attachChild(DmBST);
 
 	srand(time(NULL));
 }
@@ -21,55 +25,62 @@ App::App()
 App::~App()
 {
 	delete window;
+
+	delete MasterDisplay;
 }
 
 void App::pollEvents()
 {
+	timeSinceLastUpdate = Time::Zero;
 
 	while (window->isOpen()) {
+		
+		ProcessInput();
+		
+		if (!isPaused)
+		{
+			timeSinceLastUpdate += clock.restart();
 
-		while (window->pollEvent(event)) {
-
-			update();
-			
-			Render();
-
-			if (event.type == Event::Closed) {
-				window->close();
+			while (timeSinceLastUpdate > TIME_PER_FRAME)
+			{
+				timeSinceLastUpdate -= TIME_PER_FRAME;
+					//update with frame
 			}
+		}
+		
+		Render();
+	}
+}
 
+void App::ProcessInput()
+{
+	MousePos = this->window->mapPixelToCoords(Mouse::getPosition(*this->window));
+
+	while (window->pollEvent(event)) 
+	{
+		update();		
+
+		if (event.type == Event::Closed) {
+			window->close();
 		}
 
-		window->display();
+		if (event.type == sf::Event::GainedFocus)
+			isPaused = false; else 
+		if (event.type == sf::Event::LostFocus)
+			isPaused = true;
 	}
 }
 
 void App::update()
 {
-	MousePos = this->window->mapPixelToCoords(Mouse::getPosition(*this->window));
-
-	butt1->update(MousePos, &event);
-
-	if (butt1->isPressed())
-	{
-		cout << "roger that" << endl;
-
-		T.DelAll(T.root);
-
-		for (int i = 0; i < 10; i++)
-		{
-			T.insertT(T.root, rand()%50+10);
-		}
-
-		cout << "reoger that" << endl;
-
-		T.print_console();
-	}
+	MasterDisplay->update(event, MousePos);
 }
 
 void App::Render()
 {
 	window->clear(white);
 
-	butt1->render(window);
+	MasterDisplay->draw(*window, a);
+
+	window->display();
 }

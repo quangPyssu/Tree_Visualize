@@ -3,9 +3,13 @@
 #include "SFML/Graphics.hpp"
 #include "Tools/Button.h"
 #include "Tools/Core/Global.h"
-#include "BST_Tree.cpp"
+#include "Tools/SceneNode.h"
+#include "Tools/TreeNode.h"
+#include "Tools/Edge.h"
+#include "BST_Tree.h"
 
 using namespace sf;
+using namespace std;
 using namespace Constants;
 using namespace Colors;
 
@@ -20,22 +24,36 @@ public:
 
 	RenderWindow* window;
 	VideoMode videoMode;
-	Event event;
+	Event event{};
+
+	RenderStates a;
 
 	void pollEvents();
 
 	void update();
 	void Render();
+	void ProcessInput();
 
 	Vector2f MousePos;
 
+	//var
+
+	enum ScreenState { BST_Menu,AVL_Menu };
+
+	bool isPaused = false;
+
 	// stuff
-	Button* butt1;
-	AssetManager* Manager;
+	
+	SceneNode* MasterDisplay;
+	BST_Tree* mBST;
+	//Edge* s;
 
-	// 
+	// Timer
+	
+	Clock clock;
+	Time timeSinceLastUpdate = Time::Zero;
 
-	BST_Tree T;
+	//
 
 };
 

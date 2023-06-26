@@ -1,0 +1,81 @@
+#pragma once
+
+#include <SFML/Graphics.hpp>
+#include <string>
+#include <iostream>
+#include "Button.h"
+#include "SceneNode.h"
+
+using namespace std;
+using namespace sf;
+
+class TextBox : public SceneNode
+{    
+       public:
+
+        string input_text;
+        string default_S,current_S;
+        Text text;
+        int data=nothing;
+        
+        states box_Stat;
+        short unsigned isHover = 0;
+
+        //constructor
+
+        TextBox(Vector2f pos, Vector2f size, string text, Color idleColor, Color hoverColor, Color activeColor,Color borderColor, Color textColor, Vector2f btnDiff,int textLim);
+
+        //destructor
+        virtual~TextBox();
+
+        //Function
+
+public:
+    // Override the drawCurrent function from SceneNode
+        virtual void drawCurrent(RenderTarget& target, RenderStates states) const override;
+        virtual void updateCurrent(Event& event, Vector2f& MousePos) override;
+
+        void outputRecal();
+
+        void confirm(const string& s);
+
+        // position &size
+        Vector2f pos;
+        Vector2f size;
+
+        //accessor
+        
+        //Button* btn_cofirm;
+        bool isToggle = 0;
+
+   private:
+        
+
+        //attribute
+
+        Font font;
+        Color idleColor;
+        Color hoverColor;
+        Color activeColor;
+        Color borderColor;
+        Color textColor;
+        float height = TEXTBOX_SIZE.x;
+        float width = TEXTBOX_SIZE.y;
+
+        int textLim=0;
+
+        //event & clock
+        RenderTarget* target;
+        RectangleShape shape;
+
+        Event* event;
+
+        Clock clock;
+
+        // input accept?
+
+        bool is_number(const string& s);
+
+        string output_text;
+};
+

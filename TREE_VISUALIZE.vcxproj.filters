@@ -36,22 +36,43 @@
     <ClCompile Include="Tools\Core\Global.cpp">
       <Filter>const</Filter>
     </ClCompile>
-    <ClCompile Include="Tools\Core\Asset.cpp">
-      <Filter>const</Filter>
+    <ClCompile Include="Tools\Edge.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\SceneNode.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\TreeNode.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\TextBox.cpp">
+      <Filter>Tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tools\Button.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
     <ClInclude Include="Tools\Core\Global.h">
       <Filter>const</Filter>
     </ClInclude>
-    <ClInclude Include="Tools\Core\Asset.h">
-      <Filter>const</Filter>
+    <ClInclude Include="Tools\SceneNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\TreeNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BST_Tree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\Edge.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\Button.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\TextBox.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

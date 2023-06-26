@@ -5,34 +5,37 @@
 #include <windows.h>
 #include <iostream>
 #include "Core/Global.h"
-#include "Core/Asset.h"
+#include "SceneNode.h"
 
 using namespace sf;
 using namespace std;
 using namespace Colors;
-using namespace Size;
+using namespace ResourceManager;
 
-enum button_states { BTN_IDLE = 0, BTN_HOVER = 1, BTN_PRESSED = 2 };
-
-class Button
+class Button : public SceneNode
 {
 private:
-    short unsigned buttonState;
+    
 
     //attribute
 
-    Font font;
     Color idleColor;
     Color hoverColor;
     Color activeColor;
     Color textColor;
     Color borderColor;
-    AssetManager Manager;
     RenderTarget* target;
     RectangleShape shape;
+    
+    states buttonState;
 
-    float height=50;
-    float width=120;
+    float height = BUTTON_SIZE.x;
+    float width = BUTTON_SIZE.y;
+
+public:
+    // Override the drawCurrent function from SceneNode
+    virtual void drawCurrent(RenderTarget& target, RenderStates states) const override;
+    virtual void updateCurrent(Event& event, Vector2f& MousePos) override;
 
 public:
 
@@ -42,7 +45,7 @@ public:
 
     //constructor
 
-    Button(Vector2f pos, Vector2f size, string text, Color idleColor, Color hoverColor, Color activeColor,Color borderColor,AssetManager& manager);
+    Button(Vector2f pos, Vector2f size, string text, Color idleColor, Color hoverColor, Color activeColor,Color borderColor);
 
     //Accessors
     const bool isPressed() const;
@@ -50,9 +53,10 @@ public:
 
     //Function
 
-    void update(const Vector2f mousePos, Event* event);
+    //void update(const Vector2f mousePos, Event* event);
 
-    void render(RenderTarget* target);
+    //void render(RenderTarget* target);
+
 
     // position &size
     Vector2f pos;
