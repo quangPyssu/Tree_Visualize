@@ -20,7 +20,11 @@ App::App()
 	MasterDisplay->attachChild(DmBST);
 
 	BG1.setSize((Vector2f) window->getSize()-Vector2f(40,60));
-	BG1.setPosition({ 20,20 });	BG1.setOutlineColor(black);	BG1.setOutlineThickness(40);
+	BG1.setPosition({ 20,20 });	
+	BG1.setOutlineThickness(40);
+
+	BG1.setOutlineColor(black);	
+	BG1.setFillColor(Back_Ground_Color);
 
 	srand(time(NULL));
 }

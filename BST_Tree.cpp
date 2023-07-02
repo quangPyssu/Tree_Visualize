@@ -13,6 +13,14 @@ BST_Tree::BST_Tree() : Tree()
 	anime = new BST_Anime();
 
 	PushAnime(anime);
+
+	btnBack = new Button(Vector2f(WINDOW_WIDTH / 2 - 70, WINDOW_HEIGHT - 40),{30,30},"<",black,black+Color(50,50,50),black,Color::Transparent,Middle);
+	btnForw = new Button(Vector2f(WINDOW_WIDTH / 2 + 10, WINDOW_HEIGHT - 40),{30,30},">",black,black+Color(50,50,50),black,Color::Transparent,Middle);
+	btnPlay = new Button(Vector2f(WINDOW_WIDTH / 2 - 30, WINDOW_HEIGHT - 40),{30,30},"=", black, black + Color(50, 50, 50), black, Color::Transparent, Middle);
+
+	PushToObject(ButtonTranslate(btnBack), Buttones);
+	PushToObject(ButtonTranslate(btnForw), Buttones);
+	PushToObject(ButtonTranslate(btnPlay), Buttones);
 }
 
 BST_Tree::~BST_Tree()
@@ -182,18 +190,22 @@ void BST_Tree::updateCurrent(Event& event, Vector2f& MousePos)
 					}
 		}
 
-	if (btnTest->isOn)
+	if (btnBack->isPressed()) anime->ChooseFrame(-1); else if (btnForw->isPressed()) anime->ChooseFrame(1);
+	if (btnPlay->isPressed()) anime->isPlaying = anime->isPlaying ? 0:1;
+
+	anime->isHavingAnime = (anime->curFrame < (int)anime->AnimeFrameNode.size()) ? 1 : 0;
+
+	if (anime->isHavingAnime)
 	{
 		Nodes->Disable();
 		Linkes->Disable();
 		Animes->Able();
-		anime->isHavingAnime = 1; 
-	} else
+	}
+	else
 	{
 		Nodes->Able();
 		Linkes->Able();
 		Animes->Disable();
-		anime->isHavingAnime = 0;
 	}
 }
 

@@ -41,6 +41,7 @@ public:
 
 	int n=0;
 	int curFrame = 0;
+	bool isPlaying = 0;
 	bool isHavingAnime = 0;
 
 	Time timeCnt = sf::seconds(0.f);
@@ -65,7 +66,9 @@ public:
 	void CloneLastFrame();
 
 	void makeLinkLevel(BST_node* &Cur);
-	Edge* makeLink(BST_node* &node1, BST_node*& node2);
+	void makeLink(BST_node* &node1, BST_node*& node2,Color color);
+
+	void ChooseFrame(int i);
 
 	// Anime maker
 

@@ -52,6 +52,7 @@ namespace Constants
 
 namespace Colors
 {
+    extern sf::Color trans;
     extern sf::Color white;
     extern sf::Color black;
     extern sf::Color red;
@@ -60,6 +61,10 @@ namespace Colors
     extern sf::Color light_yellow;
     extern sf::Color grey;
     extern sf::Color pink;
+    extern sf::Color Back_Ground_Color;
+    extern sf::Color Chosen_Color;
+    extern sf::Color Delete_Color;
+    extern sf::Color Insert_Color;
 };
 
 namespace ResourceManager

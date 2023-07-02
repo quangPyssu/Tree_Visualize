@@ -9,6 +9,16 @@ BST_Anime::~BST_Anime()
 	cleanUp();
 }
 
+void BST_Anime::ChooseFrame(int i)
+{
+	curFrame += i;
+	curFrame = min((int) AnimeFrameNode.size(), max(0, curFrame));
+	isPlaying = 0;
+	cout << "cur " << curFrame << endl;
+	cout << "play " << isPlaying << endl;
+	cout << "anime " << isHavingAnime << endl;
+}
+
 void BST_Anime::drawFrame(RenderTarget& target,int id) const
 {
 	if (id>-1 && AnimeFrameNode.size()>id)
@@ -28,6 +38,8 @@ void BST_Anime::MakeNewFrame()
 	
 	vector<Edge*> pmt{};
 	AnimeFrameLink.push_back(pmt);
+
+	
 }
 
 //make a vector copy of the tree before the change
@@ -111,15 +123,11 @@ void BST_Anime::CloneFromTree(SceneNode* &Nodes)
 		tmp->text = treeNode->text;
 
 		AnimeFrameNode.back().push_back(tmp); 
-
-		//string s = tmp->text.getString(); 
-
 	}
 }
 
 void BST_Anime::drawCurrent(RenderTarget& target, RenderStates states) const 
 {
-	cout << "Sf " << curFrame << endl;
 	if (curFrame >= AnimeFrameNode.size()) return;
 
 	drawFrame(target,curFrame);
@@ -127,14 +135,18 @@ void BST_Anime::drawCurrent(RenderTarget& target, RenderStates states) const
 
 void BST_Anime::updateCurrent(Event& event, Vector2f& MousePos)
 {
-	
 }
 
 void BST_Anime::takeTimeCurrent(Time& dt)
 {
+	
+	if (!isHavingAnime) isPlaying = 0;
+
+	if (!isPlaying) return;	
+
 	timeCnt += dt;
 
-	if (timeCnt >= TIME_PER_ANIME_FRAME) curFrame=min(n-1, curFrame+1);
+	if (timeCnt >= TIME_PER_ANIME_FRAME) curFrame = min((int) AnimeFrameNode.size(), curFrame + 1), timeCnt -= TIME_PER_ANIME_FRAME;
 }
 
 // make Link between node for the last frame
@@ -144,23 +156,27 @@ void BST_Anime::makeLinkLevel(BST_node*& Cur)
 
 	if (Cur->left)
 	{
-		AnimeFrameLink.back().push_back(makeLink(Cur,Cur->left));
+		makeLink(Cur, Cur->left, black);
 		makeLinkLevel(Cur->left);
 	}
 
 	if (Cur->right)
 	{
-		AnimeFrameLink.back().push_back(makeLink(Cur, Cur->right));
+		makeLink(Cur, Cur->right, black);
 		makeLinkLevel(Cur->right);
 	}
 }
 
-Edge* BST_Anime::makeLink(BST_node*& node1, BST_node*& node2)
+void BST_Anime::makeLink(BST_node*& node1, BST_node*& node2,Color color)
 {
+	if (!node1 || !node2) return;
+
+	if (node1 == node2) return;
 	Edge* tmp = new Edge(noType, "", nothing);
 	tmp->setPositionByNode(AnimeFrameNode.back()[node1->vectorPos]->getPosition(), AnimeFrameNode.back()[node2->vectorPos]->getPosition());
+	tmp->line.setFillColor(color);
 
-	return tmp;
+	AnimeFrameLink.back().push_back(tmp);
 }
 
 // Anime Making 
@@ -172,6 +188,11 @@ void BST_Anime::MakeInsertAnime(int data)
 
 void BST_Anime::MakeDeleteAnime(int data, SceneNode*& Nodes, vector <BST_node*>& org, int pos)
 {
+	isPlaying = 1;
+	isHavingAnime = 1;
+
+	cout << "anime delete " << endl;
+
 	CloneFromTree(Nodes); 
 	copyFirstTree(org, pos); 
 
@@ -180,16 +201,18 @@ void BST_Anime::MakeDeleteAnime(int data, SceneNode*& Nodes, vector <BST_node*>&
 
 	curFrame = 0;
 
-	while (1)
+	while (1) // find node
 	{
-		if (!cur || cur->data == data) return;
+		if (!cur || cur->data == data) break;
+
+		if (par != cur)
+		{
+			CloneLastFrame();
+			makeLink(par, cur,Chosen_Color);
+		}
 
 		CloneLastFrame();
-		AnimeFrameNode.back()[cur->vectorPos]->Cir.setOutlineColor(cyan);
-
-		CloneLastFrame();
-		if (par!=cur) AnimeFrameLink.back().push_back(makeLink(par, cur));
-		AnimeFrameLink.back().back()->line.setFillColor(cyan);
+		AnimeFrameNode.back()[cur->vectorPos]->Cir.setOutlineColor(Chosen_Color);		
 
 		par = cur;
 		 
@@ -197,7 +220,143 @@ void BST_Anime::MakeDeleteAnime(int data, SceneNode*& Nodes, vector <BST_node*>&
 			if (cur->data < data) cur = cur->right; 			
 	}
 
+	if (!cur) // no node matches data
+	{
+		cout << " dit me m xoa cc" << endl;
+	}
+	else  // choose and delete
+	{
+		if (par != cur)
+		{
+			CloneLastFrame();
+			makeLink(par, cur, Chosen_Color);
+		}
 
+		CloneLastFrame();
+		AnimeFrameNode.back()[cur->vectorPos]->Cir.setOutlineColor(Chosen_Color);
+
+		CloneLastFrame();
+		AnimeFrameNode.back()[cur->vectorPos]->Cir.setOutlineColor(Delete_Color);
+
+		
+
+		if (!cur->left && !cur->right) // delete leave node
+		{
+			CloneLastFrame();
+			AnimeFrameNode.back()[cur->vectorPos]->Disable();
+			makeLink(par, cur, Back_Ground_Color);
+		} else
+
+		if (cur->left && cur->right) // delete node that have 2 children
+		{
+			BST_node* parTmp = cur;
+			BST_node* tmp = cur->left;
+
+			CloneLastFrame();
+			makeLink(parTmp, tmp,Chosen_Color);
+
+			CloneLastFrame();
+			AnimeFrameNode.back()[tmp->vectorPos]->Cir.setOutlineColor(Chosen_Color);
+
+			while (tmp->right)// go down
+			{
+				parTmp = tmp;
+				tmp = tmp->right;
+
+				CloneLastFrame();
+				makeLink(parTmp, tmp,Chosen_Color);
+				
+				CloneLastFrame();
+				AnimeFrameNode.back()[tmp->vectorPos]->Cir.setOutlineColor(Chosen_Color);
+			}
+
+			CloneLastFrame(); // link to the rightest left
+			
+			if (parTmp == cur) // thang the cur la con trai (cur->left==tmp)
+			{
+				makeLink(par, cur, Back_Ground_Color);
+				makeLink(cur, cur->right, Back_Ground_Color);
+				makeLink(cur, cur->left, Back_Ground_Color);
+
+				makeLink(par, tmp, Chosen_Color);
+				makeLink(tmp, cur->right,Chosen_Color);
+			}
+			else  // binh thuong
+			{
+				makeLink(par, cur, Back_Ground_Color);
+				makeLink(cur, cur->right, Back_Ground_Color);
+				makeLink(cur, cur->left, Back_Ground_Color);
+				makeLink(parTmp, tmp, Back_Ground_Color);
+				makeLink(tmp, tmp->left, Back_Ground_Color);
+
+				makeLink(parTmp, tmp->left, Chosen_Color);
+				makeLink(par, tmp, Chosen_Color);
+				makeLink(cur->right, tmp, Chosen_Color);
+				makeLink(cur->left, tmp, Chosen_Color);
+			}
+
+			CloneLastFrame(); // move it
+
+			if (parTmp == cur)
+			{
+				for (int i = 0; i < 2; i++) AnimeFrameLink.back().pop_back();
+
+				makeLink(tmp, tmp->left, Back_Ground_Color);
+			}
+			else
+			{
+				for (int i = 0; i < 3; i++) AnimeFrameLink.back().pop_back();
+
+			}
+			
+			Vector2f tmpOldPos = AnimeFrameNode.back()[tmp->vectorPos]->getPosition();
+			AnimeFrameNode.back()[cur->vectorPos]->Disable(); // xoa cai node
+			AnimeFrameNode.back()[tmp->vectorPos]->setPosition(AnimeFrameNode.back()[cur->vectorPos]->getPosition()); //flip node duoi len
+
+			makeLink(par, tmp, Chosen_Color);
+			makeLink(tmp, cur->right, Chosen_Color);
+
+			if (parTmp == cur) makeLink(tmp, tmp->left, Chosen_Color);
+			else makeLink(tmp, cur->left, Chosen_Color);
+			
+
+		}
+		else
+			if (cur->left)   // have left child
+			{
+				BST_node* tmp = cur->left;
+
+				CloneLastFrame();
+				makeLink(cur, tmp,Chosen_Color);
+
+				CloneLastFrame();
+				AnimeFrameNode.back()[tmp->vectorPos]->Cir.setOutlineColor(Chosen_Color);
+
+				CloneLastFrame();
+				AnimeFrameNode.back()[cur->vectorPos]->Disable();
+				makeLink(par, cur,Back_Ground_Color);
+				makeLink(cur, tmp,Back_Ground_Color);
+
+				makeLink(par, tmp,Chosen_Color);
+			}
+			else			// have right child
+			{
+				BST_node* tmp = cur->right;
+				
+				CloneLastFrame();
+				makeLink(cur, tmp,Chosen_Color);
+
+				CloneLastFrame();
+				AnimeFrameNode.back()[tmp->vectorPos]->Cir.setOutlineColor(Chosen_Color);
+
+				CloneLastFrame();
+				AnimeFrameNode.back()[cur->vectorPos]->Disable();
+				makeLink(par, cur,Back_Ground_Color);
+				makeLink(cur, tmp,Back_Ground_Color);
+
+				makeLink(par, tmp,Chosen_Color);
+			}
+	}
 }
 
 

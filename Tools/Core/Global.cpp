@@ -32,19 +32,25 @@ namespace Constants {
 
     const int nothing=-999999999;
 
-    const sf::Time TIME_PER_ANIME_FRAME = sf::seconds(3.f);
+    const sf::Time TIME_PER_ANIME_FRAME = sf::seconds(0.5f);
 };
 
 namespace Colors {
+    sf::Color trans = sf::Color::Transparent;
     sf::Color white = sf::Color::White;
     sf::Color black = sf::Color::Black;
     sf::Color red = sf::Color::Red;
     sf::Color cyan = sf::Color::Cyan;
     sf::Color yellow = sf::Color::Yellow;
     sf::Color light_yellow = sf::Color(255,255,153);
+    sf::Color orange = sf::Color(255, 83, 0);
     sf::Color grey = sf::Color(128,128,128);
     sf::Color light_grey = sf::Color(192, 192, 192);
     sf::Color pink = sf::Color(214, 87, 117);
+    sf::Color Back_Ground_Color = white;
+    sf::Color Chosen_Color = cyan;
+    sf::Color Delete_Color = red;
+    sf::Color Insert_Color = orange;
 };
 
 namespace ResourceManager

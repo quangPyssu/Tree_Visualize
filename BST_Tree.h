@@ -17,6 +17,13 @@ struct BST_Tree : public Tree
 
 	float BeginPosX=0;
 
+	bool is;
+
+	// Button
+	Button* btnBack;
+	Button* btnForw;
+	Button* btnPlay;
+
 	// Inheritance
 
 	virtual void updateCurrent(Event& event, Vector2f& MousePos) ;
