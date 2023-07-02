@@ -1,24 +1,33 @@
 #include "Button.h"
 
-Button::Button(Vector2f pos, Vector2f size, string text, Color idleColor, Color hoverColor, Color activeColor,Color borderColor)
+Button::Button(Vector2f pos, Vector2f size, string text, Color idleColor, Color hoverColor, Color activeColor,Color borderColor,TextAlign textAlign)
 {
-	this->height = size.x ? height : size.x;
-	this->width = size.y ? width : size.y;
+	this->height = size.x ? size.x : height;
+	this->width = size.y ? size.y : width;
 
 	shape.setSize(Vector2f(this->width, this->height));
 	shape.setPosition(pos);
 
 	setPosition(pos);
 
-	this->size = size;
+	this->textAlign = textAlign;
+
+	this->size = { height, width};
+
 	this->pos = pos;
+
+	FirstText = text;
 
 	this->text.setFont(ResourceManager::getFont(ResourceManager::Arial,"asset/fonts/ArialTh.ttf"));
 	this->text.setString(text);
-	this->text.setCharacterSize((int) this->height/2);
+	this->text.setCharacterSize(min((int) this->height/2, (int)this->width/ 5*4));
 	this->text.setFillColor(white);
-	this->text.setPosition(this->shape.getPosition().x + this->shape.getSize().x / 2.f - this->text.getGlobalBounds().width/2.f,
-		this->shape.getPosition().y + this->shape.getSize().y / 2.f - this->text.getGlobalBounds().height/2.f);
+
+	if (this->textAlign==TextAlign::Middle)
+	this->text.setPosition(this->shape.getPosition().x + this->shape.getSize().x / 2.f - this->text.getGlobalBounds().width/2.f
+		,this->shape.getPosition().y + this->shape.getSize().y / 2.f - this->text.getGlobalBounds().height/2.f); else
+		if (this->textAlign == TextAlign::Left)
+			this->text.setPosition(this->shape.getPosition().x + this->shape.getSize().x / 10.f , this->shape.getPosition().y + this->shape.getSize().y / 2.f - this->text.getGlobalBounds().height / 2.f); 
 
 	buttonState = IDLE;
 
@@ -29,7 +38,7 @@ Button::Button(Vector2f pos, Vector2f size, string text, Color idleColor, Color 
 
 	shape.setFillColor(idleColor);
 	shape.setOutlineColor(borderColor);
-	shape.setOutlineThickness(OUTLINE_THICKNESS);
+	shape.setOutlineThickness(BUTTON_THICKNESS);
 
 	target = NULL;
 	this->event = event;
@@ -43,6 +52,16 @@ const bool Button::isPressed() const
 		return 1;
 	}
 	return 0;
+}
+
+void Button::ForceOn()
+{
+	isOn = 1;
+}
+
+void Button::ForceOff()
+{
+	isOn = 0;
 }
 
 void Button::updateCurrent(Event& event, Vector2f& MousePos) 
@@ -62,24 +81,51 @@ void Button::updateCurrent(Event& event, Vector2f& MousePos)
 	{
 	case IDLE:
 		shape.setFillColor(idleColor);
-		text.setFillColor(activeColor);
+		//text.setFillColor(activeColor);
 		break;
 
 	case HOVER:
 		shape.setFillColor(hoverColor);
-		text.setFillColor(idleColor);
+		//text.setFillColor(idleColor);
 		break;
 
 	case PRESSED:
 		shape.setFillColor(activeColor);
-		text.setFillColor(hoverColor);
+		isOn=isOn ? 0 : 1;
+		//text.setFillColor(hoverColor);
 		break;
 	}
+
+	reText();
+
+	//string s = text.getString();
+	//cout << s << " isON: " << isOn << endl;
 }
 
+void Button::reText()
+{
+	if (SecondText == "") return;
+	text.setString(isOn ? SecondText : FirstText);
 
-void Button::drawCurrent(RenderTarget& target, RenderStates states) const
+	if (this->textAlign == TextAlign::Middle)
+		this->text.setPosition(this->shape.getPosition().x + this->shape.getSize().x / 2.f - this->text.getGlobalBounds().width / 2.f
+			, this->shape.getPosition().y + this->shape.getSize().y / 2.f - this->text.getGlobalBounds().height / 2.f); else
+		if (this->textAlign == TextAlign::Left)
+			this->text.setPosition(this->shape.getPosition().x + this->shape.getSize().x / 10.f, this->shape.getPosition().y + this->shape.getSize().y / 2.f - this->text.getGlobalBounds().height / 2.f); 
+
+}
+
+void Button::drawCurrent(RenderTarget& target, RenderStates states) const 
 {
 	target.draw(this->shape);
 	target.draw(this->text);
+}
+
+bool Button::isHovered(Event& event, Vector2f& MousePos) 
+{
+	return (this->shape.getGlobalBounds().contains(MousePos));
+}
+
+bool Button::isLeftClicked(Event& event, Vector2f& MousePos) {
+	return (isHovered(event,MousePos) && Mouse::isButtonPressed(Mouse::Left) && event.type == Event::MouseButtonPressed);
 }

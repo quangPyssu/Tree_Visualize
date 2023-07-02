@@ -23,7 +23,7 @@ Edge::Edge(Type type, string text,int data)
 	mType = type;
 }
 
-void Edge::drawCurrent(RenderTarget& target, RenderStates states) const
+void Edge::drawCurrent(RenderTarget& target, RenderStates states) const 
 {
 	target.draw(line);
 	target.draw(text);

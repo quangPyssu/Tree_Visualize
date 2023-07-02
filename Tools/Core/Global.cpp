@@ -14,9 +14,13 @@ namespace Constants {
 
     const sf::Vector2f LowStart = {(float) WINDOW_WIDTH / 6 * 5,(float)WINDOW_HEIGHT/ 6 * 5 };
 
-    extern const float NODE_POS_HEAD=(float) 120;
+
+    const float NODE_POS_HEAD=(float) 80;
+    const sf::Vector2f MENU_POS_BOTTOM_LEFT = {(float) 0,(float) WINDOW_HEIGHT/4*3+18};
 
     const float OUTLINE_THICKNESS = (float)(2.5);
+    const float BUTTON_THICKNESS = (float) 0;
+
     const float NODE_RADIUS = 30.f;
     const float NODE_RADIUS_BIG = 50.f;
     const float EDGE_THICKNESS = 5.f;
@@ -27,6 +31,8 @@ namespace Constants {
     const float NODE_DISTANCE_BIG = NODE_RADIUS_BIG * 3/2;
 
     const int nothing=-999999999;
+
+    const sf::Time TIME_PER_ANIME_FRAME = sf::seconds(3.f);
 };
 
 namespace Colors {
@@ -38,6 +44,7 @@ namespace Colors {
     sf::Color light_yellow = sf::Color(255,255,153);
     sf::Color grey = sf::Color(128,128,128);
     sf::Color light_grey = sf::Color(192, 192, 192);
+    sf::Color pink = sf::Color(214, 87, 117);
 };
 
 namespace ResourceManager

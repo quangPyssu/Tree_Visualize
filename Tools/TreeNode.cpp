@@ -26,7 +26,7 @@ TreeNode::TreeNode(Type type, string text,int data)
 	mType = type;
 }
 
-void TreeNode::drawCurrent(RenderTarget& target, RenderStates states) const
+void TreeNode::drawCurrent(RenderTarget& target, RenderStates states) const 
 {
 	target.draw(Cir);
 	target.draw(text);

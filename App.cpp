@@ -13,11 +13,14 @@ App::App()
 
 	MasterDisplay = new SceneNode();
 
-	mBST = new BST_Tree;
+	mBST = new BST_Tree();
 
 	shared_ptr <BST_Tree> DmBST(mBST);
 
 	MasterDisplay->attachChild(DmBST);
+
+	BG1.setSize((Vector2f) window->getSize()-Vector2f(40,60));
+	BG1.setPosition({ 20,20 });	BG1.setOutlineColor(black);	BG1.setOutlineThickness(40);
 
 	srand(time(NULL));
 }
@@ -26,7 +29,9 @@ App::~App()
 {
 	delete window;
 
-	delete MasterDisplay;
+	//delete MasterDisplay;
+
+	delete mBST;
 }
 
 void App::pollEvents()
@@ -45,6 +50,8 @@ void App::pollEvents()
 			{
 				timeSinceLastUpdate -= TIME_PER_FRAME;
 					//update with frame
+
+				takeTime(TIME_PER_FRAME);
 			}
 		}
 		
@@ -71,15 +78,21 @@ void App::ProcessInput()
 	}
 }
 
+void App::takeTime(Time dt)
+{
+	MasterDisplay->takeTime(dt);
+}
+
 void App::update()
 {
 	MasterDisplay->update(event, MousePos);
 }
 
 void App::Render()
-{
+{	
 	window->clear(white);
 
+	window->draw(BG1);
 	MasterDisplay->draw(*window, a);
 
 	window->display();

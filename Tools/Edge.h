@@ -9,7 +9,7 @@ class Edge : public SceneNode // inherits  SceneNode
 {
 public:
 	explicit Edge(Type type,string text,int data);
-	virtual void drawCurrent(RenderTarget& target, RenderStates states) const;
+	virtual void drawCurrent(RenderTarget& target, RenderStates states) const ;
 	virtual void updateCurrent(Event& event, Vector2f& MousePos);
 
 	Vector2f pos1;
@@ -20,11 +20,13 @@ public:
 	void setPositionByNode(const Vector2f& pos1, const Vector2f& pos2);
 
 	int data = 0;
+
+	RectangleShape line;
+	Text text;
 private:
 	Type mType;
 	Sprite mSprite;
 
-	RectangleShape line;
-	Text text;
+	
 };
 

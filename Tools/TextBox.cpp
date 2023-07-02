@@ -1,9 +1,9 @@
 #include "TextBox.h"
 
-TextBox::TextBox(Vector2f pos, Vector2f size, string text, Color idleColor, Color hoverColor, Color activeColor, Color borderColor, Color textColor, Vector2f btnDiff,int textLim)
+TextBox::TextBox(Vector2f pos, Vector2f size, string text, string btnText, Color idleColor, Color hoverColor, Color activeColor, Color borderColor, Color textColor, Vector2f btnDiff, Vector2f btnSize,int textLim, TextAlign textAlign)
 {
-	this->height = size.x ? height : size.x;
-	this->width = size.y ? width : size.y;
+	this->height = size.x ? size.x : height;
+	this->width = size.y ? size.y : width;
 
 	shape.setSize(Vector2f(this->width, this->height));
 	shape.setPosition(pos);
@@ -13,7 +13,13 @@ TextBox::TextBox(Vector2f pos, Vector2f size, string text, Color idleColor, Colo
 	this->size = size;
 	this->pos = pos;
 
-	//this->btn_cofirm = new Button(x+btn_x, y+btn_y, 0, 0, "CONFIRM", Color::Black, Color::White, Color::Color(90, 90, 90, 155), Color::Color(90, 90, 90, 255), Color::Black);
+	this->textAlign = textAlign;
+
+	default_S = text;
+
+	this->btn_cofirm = new Button(pos+btnDiff,btnSize, btnText, idleColor, hoverColor, activeColor, textColor,TextAlign::Middle);
+	shared_ptr <Button> here(btn_cofirm);
+	attachChild(here);
 
 	box_Stat = IDLE;
 
@@ -21,8 +27,12 @@ TextBox::TextBox(Vector2f pos, Vector2f size, string text, Color idleColor, Colo
 	this->text.setString(text);
 	this->text.setCharacterSize((int)this->height / 2);
 	this->text.setFillColor(textColor);
-	this->text.setPosition(this->shape.getPosition().x + this->shape.getSize().x / 10.f  ,
-		this->shape.getPosition().y + this->shape.getSize().y / 2.f - this->text.getGlobalBounds().height / 2.f);
+
+	if (this->textAlign == TextAlign::Middle)
+		this->text.setPosition(this->shape.getPosition().x + this->shape.getSize().x / 2.f - this->text.getGlobalBounds().width / 2.f,
+			this->shape.getPosition().y + this->shape.getSize().y / 2.f - this->text.getGlobalBounds().height / 2.f); else
+				if (this->textAlign == TextAlign::Left)
+					this->text.setPosition(this->shape.getPosition().x + this->shape.getSize().x / 10.f, this->shape.getPosition().y + this->shape.getSize().y / 2.f - this->text.getGlobalBounds().height / 2.f); 
 
 
 	this->idleColor = idleColor;
@@ -33,13 +43,14 @@ TextBox::TextBox(Vector2f pos, Vector2f size, string text, Color idleColor, Colo
 
 	shape.setFillColor(idleColor);
 	shape.setOutlineColor(borderColor);
-	shape.setOutlineThickness(OUTLINE_THICKNESS);
+	shape.setOutlineThickness(BUTTON_THICKNESS);
 
 	target = NULL;
 	this->event = event;
 
 	data = 0;
 	this->textLim = textLim;
+	data = nothing;
 }
 
 TextBox::~TextBox()
@@ -65,7 +76,7 @@ void TextBox::updateCurrent(Event& event, Vector2f& MousePos)
 	if (box_Stat == ACTIVE || isToggle)
 	{
 		shape.setFillColor(activeColor);
-		text.setFillColor(idleColor);
+		//text.setFillColor(idleColor);
 
 		if (box_Stat == ACTIVE)
 		{
@@ -88,14 +99,18 @@ void TextBox::updateCurrent(Event& event, Vector2f& MousePos)
 	else
 	{
 		shape.setFillColor(idleColor);
-		text.setFillColor(activeColor);
+		//text.setFillColor(activeColor);
 		text.setString(default_S);
 		if (isHover) shape.setFillColor(hoverColor);
 	}
 
-	//if (btn_cofirm->isPressed() || 
-	if (event.type == Event::KeyPressed && event.key.code == Keyboard::Enter) confirm(input_text), cout << "data " << data << endl; else data = nothing;
+	if (btn_cofirm->isPressed() || (event.type == Event::KeyPressed && event.key.code == Keyboard::Enter))
+		confirm(input_text),cout << "data  " << data << endl; else data = nothing;
+
 	outputRecal();
+
+	//
+	//cout << s << " " << isDisable << endl;
 }
 
 void TextBox::outputRecal()
@@ -126,30 +141,51 @@ void TextBox::outputRecal()
 			text.setString(output_text + (show_cursor ? '_' : ' '));
 		}
 		else text.setString(output_text);
+
+		this->text.setPosition(this->shape.getPosition().x + this->shape.getSize().x / 10.f,this->text.getPosition().y);
 	}
-	else text.setString(default_S);
+	else
+	{
+		text.setString(default_S);
+		if (this->textAlign == TextAlign::Middle)
+			this->text.setPosition(this->shape.getPosition().x + this->shape.getSize().x / 2.f - this->text.getGlobalBounds().width / 2.f,
+				this->shape.getPosition().y + this->shape.getSize().y / 2.f - this->text.getGlobalBounds().height / 2.f); else
+			if (this->textAlign == TextAlign::Left)
+				this->text.setPosition(this->shape.getPosition().x + this->shape.getSize().x / 10.f, this->shape.getPosition().y + this->shape.getSize().y / 2.f - this->text.getGlobalBounds().height / 2.f); 
+	}
+
 }
 
-void TextBox::drawCurrent(RenderTarget& target, RenderStates states) const
+void TextBox::drawCurrent(RenderTarget& target, RenderStates states) const 
 {
 	target.draw(shape);
 	target.draw(text);
-	//btn_cofirm->render(target);
 }
 
-bool TextBox::is_number(const string& s)
+int TextBox::getIntdata()
 {
-	return !s.empty() && find_if(s.begin(),	s.end(), [](unsigned char c) { return !isdigit(c); }) == s.end();
+	if (data != nothing)
+	{
+		int tmp = data;
+		data = nothing;
+		return tmp;
+	}
+	else return nothing;
 }
 
-void TextBox::confirm(const string& s)
+bool TextBox::is_number(string& s)
+{
+	isNeg = 0;
+	if (s[0] == '-') { isNeg = 1; s.erase(s.begin(), s.begin()+1); cout << "ad u " << s << endl;	}
+
+	return !s.empty() && s.size()<9 && find_if(s.begin(),	s.end(), [](unsigned char c) { return !isdigit(c); }) == s.end();
+}
+
+void TextBox::confirm(string& s)
 {
 	data = nothing;
-	if (is_number(s))
-	{
-		data = stoi(s);
-		
-		input_text = "";
-	}
+	if (is_number(s)) data = stoi(s) * (isNeg ? -1: 1);
+
+	input_text = "";
 }
 

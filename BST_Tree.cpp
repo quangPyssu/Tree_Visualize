@@ -8,32 +8,25 @@ BST_node* BST_Tree::new_node(int data)
 	return tmp;
 }
 
-BST_Tree::BST_Tree()
+BST_Tree::BST_Tree() : Tree()
 {
-	Buttones = new SceneNode();
-	TextBoxes = new SceneNode();
-	Linkes = new SceneNode();
-	Nodes = new SceneNode();
+	anime = new BST_Anime();
 
-	butt1 = new Button(Vector2f(0, 0), Vector2f(50, 100), "Generate", cyan, yellow, red, black);
-	butt2 = new Button(Vector2f(0, 110), Vector2f(50, 100), "Show", black, yellow, red, white);
+	PushAnime(anime);
+}
 
-	tet1 = new TextBox({ 0,52 }, { 50,100 }, "Text Box", cyan, yellow, red, black,black,{60,0},10);
+BST_Tree::~BST_Tree()
+{
 
-	shared_ptr <SceneNode> FirstLayer(Buttones);
-	shared_ptr <SceneNode> SecondLayer(TextBoxes);
-	shared_ptr <SceneNode> ThirdLayer(Linkes);
-	shared_ptr <SceneNode> FourthLayer(Nodes);
+	DelAll(root);
+	/*delete Buttones;
+	delete TextBoxes;
+	delete Linkes;
+	delete Nodes;
 
-	PushBtn(butt1);
-	PushBtn(butt2);
-
-	PushTxtBox(tet1);
-
-	this->attachChild(FirstLayer);
-	this->attachChild(SecondLayer);
-	this->attachChild(ThirdLayer);
-	this->attachChild(FourthLayer);
+	delete btnCreate;
+	delete butt2;
+	delete txtDelete;*/
 }
 
 void BST_Tree::CreateVisual()
@@ -43,10 +36,12 @@ void BST_Tree::CreateVisual()
 	Nodes->Children.clear();
 	Linkes->Children.clear();
 
+	NodeVector.clear();
+
 	BeginPosX = WINDOW_WIDTH / 2 - (NODE_DISTANCE*count_node(root));
 
 	cnt = 0;
-	Push(root,cnt);
+	Push(root,cnt,root,true);
 }
 
 int BST_Tree::count_node(BST_node* cur)
@@ -58,14 +53,25 @@ int BST_Tree::count_node(BST_node* cur)
 	return res;
 }
 
-void BST_Tree::Push(BST_node* &Cur,int& cnt)
+void BST_Tree::Push(BST_node* &Cur,int& cnt,BST_node* &parent,bool isLeft)
 {
 	if (!Cur) return;
-	
-	if (Cur->left)
+
+	if (parent != Cur)
 	{
-		Push(Cur->left,cnt);
+		Cur->par = parent;
+		Cur->level = parent->level + 1;
 	}
+	else
+	{
+		Cur->par = NULL;
+		Cur->level = 1;
+	}
+
+	Cur->isLeft = isLeft;
+	
+	// go left
+	if (Cur->left) Push(Cur->left,cnt,Cur,true);
 	
 	TreeNode* tmp=new TreeNode(Type::BST,"", Cur->data);
 
@@ -75,14 +81,18 @@ void BST_Tree::Push(BST_node* &Cur,int& cnt)
 
 	shared_ptr <TreeNode> here(tmp);
 	Nodes->attachChild(here);
-	
+
+	// Vector dataing
+
+	NodeVector.push_back(Cur);
+	Cur->vectorPos = NodeVector.size() - 1;
 	Cur->tVisual = here;
 	cnt++;
-	//cout << Cur->data << " " << cnt << endl;
 
+	// go right
 	if (Cur->right)
 	{
-		Push(Cur->right,cnt);
+		Push(Cur->right,cnt,Cur,false);
 
 	}
 
@@ -102,42 +112,88 @@ void BST_Tree::PushLink(BST_node*& node1, BST_node*& node2)
 	Linkes->attachChild(here);
 }
 
-void BST_Tree::PushBtn(Button* &btn)
+void BST_Tree::PushAnime(BST_Anime* &anime1)
 {
-	shared_ptr <Button> here(btn);
-	Buttones->attachChild(here);
-}
-
-void BST_Tree::PushTxtBox(TextBox* &TxtBox)
-{
-	shared_ptr <TextBox> here(TxtBox);
-	TextBoxes->attachChild(here);
-}
-
-void BST_Tree::drawCurrent(RenderTarget& target, RenderStates states) const
-{
+	shared_ptr <SceneNode> here(anime1);
+	Animes->attachChild(here);
 }
 
 void BST_Tree::updateCurrent(Event& event, Vector2f& MousePos)
 {
-	if (butt1->isPressed())
+	if (btnCreateRandom->isPressed())// Generate
 	{
 		cout << "roger that" << endl;
 
 		DelAll(root);
 
 		for (int i = 0; i < 10; i++) insertT(root, rand() % 50 + 10, root, true);
-
-		print_console();
-	}
-
-	if (butt2->isPressed())
-	{
-
 		CreateVisual();
-		cout << " df " << endl;
+		print_console();
+		btnFunctionHub->ForceOff();
+	}
+	else
+		if (root)
+		{
+			if (txtDelete->data != nothing) // delete
+			{
+				cout << "delete " << endl;
 
-		cout << "here :" << Children.size() << endl;
+				int data = txtDelete->getIntdata();
+
+				anime->MakeDeleteAnime(data, Nodes, NodeVector, root->vectorPos);
+
+				root = Del(root, data);
+				CreateVisual();
+				//print_console();
+
+				btnFunctionHub->ForceOff();
+
+				anime->copySecondTree(NodeVector, root->vectorPos);
+
+			}
+			else
+				if (txtInsert->data != nothing) // delete
+				{
+					cout << "Insert " << endl;
+					anime->CloneFromTree(Nodes);
+					anime->copyFirstTree(NodeVector, root->vectorPos);
+
+					insertT(root, txtInsert->getIntdata(), root, false);
+					CreateVisual();
+					//print_console();
+
+					btnFunctionHub->ForceOff();
+
+					anime->copySecondTree(NodeVector, root->vectorPos);
+				}
+				else
+					if (txtSearch->data != nothing) // delete
+					{
+						anime->CloneFromTree(Nodes);
+						anime->copyFirstTree(NodeVector, root->vectorPos);
+
+						Search(root, txtSearch->getIntdata()); cout << endl;
+						CreateVisual();
+						//print_console();
+
+						btnFunctionHub->ForceOff();
+
+						anime->copySecondTree(NodeVector, root->vectorPos);
+					}
+		}
+
+	if (btnTest->isOn)
+	{
+		Nodes->Disable();
+		Linkes->Disable();
+		Animes->Able();
+		anime->isHavingAnime = 1; 
+	} else
+	{
+		Nodes->Able();
+		Linkes->Able();
+		Animes->Disable();
+		anime->isHavingAnime = 0;
 	}
 }
 
@@ -248,6 +304,8 @@ BST_node* BST_Tree::Del(BST_node* &cur,int data)
 BST_node* BST_Tree::Search(BST_node* &cur,int data)
 {
 	if (!cur) return NULL;
+
+	cout << cur->data << "-> ";
 
 	if (cur->data > data) return Search(cur->left, data);
 	if (cur->data < data) return Search(cur->right, data);

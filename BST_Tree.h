@@ -2,55 +2,38 @@
 
 #include <iostream>
 #include <string>
-#include "Tools/TreeNode.h"
-#include "Tools/Edge.h"
-#include "Tools/SceneNode.h"
-#include "Tools/Button.h"
-#include "Tools/TextBox.h"
+#include "Tools/Tree.h"
+#include "Animation/BST_Anime.h"
 
 using namespace std;
 
-struct BST_node
+struct BST_Tree : public Tree
 {
-	int data = nothing;
-	int level = 1;
-
-	BST_node* left = NULL;
-	BST_node* right = NULL;
-	BST_node* par = NULL;
-
-	bool isLeft = true;
-
-	shared_ptr <TreeNode> tVisual;
-};
-
-struct BST_Tree : public SceneNode
-{
+	//using Tree::Tree;
 	BST_Tree();
+	virtual ~BST_Tree();
 
-	SceneNode* Buttones;
-	SceneNode* TextBoxes;
-	SceneNode* Linkes;
-	SceneNode* Nodes;
-
-	Button* butt1;
-	Button* butt2;
-
-	TextBox* tet1;
+	BST_Anime* anime;
 
 	float BeginPosX=0;
 
-	virtual void drawCurrent(RenderTarget& target, RenderStates states) const;
+	// Inheritance
+
 	virtual void updateCurrent(Event& event, Vector2f& MousePos) ;
+
+	//function
 
 	void CreateVisual();
 
-	void Push(BST_node* &Cur,int& cnt);
+	void Push(BST_node* &Cur,int& cnt,BST_node* &,bool isLeft);
 	void PushLink(BST_node*& node1, BST_node*& node2);
-	void PushBtn(Button* &btn);
-	void PushTxtBox(TextBox*& TxtBox);
+	void PushAnime(BST_Anime* &anime1);
+
+	//actual tree
 
 	int cnt=0;
+
+	vector <BST_node*> NodeVector;
 
 	BST_node* root = NULL;
 

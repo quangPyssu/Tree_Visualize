@@ -19,6 +19,9 @@
     <Filter Include="const">
       <UniqueIdentifier>{ad3593f7-01d4-410a-863b-5a1ae2b4e565}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Animation">
+      <UniqueIdentifier>{7fe4f5ba-21b5-45d3-a96b-c5314492665a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -48,6 +51,15 @@
     <ClCompile Include="Tools\TextBox.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
+    <ClCompile Include="Tools\GUIGroup.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\Tree.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation\BST_Anime.cpp">
+      <Filter>Animation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -73,6 +85,15 @@
     </ClInclude>
     <ClInclude Include="Tools\TextBox.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\GUIGroup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\Tree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation\BST_Anime.h">
+      <Filter>Animation</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

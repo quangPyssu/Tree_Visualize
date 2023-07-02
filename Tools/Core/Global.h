@@ -2,6 +2,9 @@
 
 #include <SFML/Graphics.hpp>
 
+#define ff first
+#define ss second
+
 namespace Constants
 {
     extern const double BASE_X;
@@ -16,7 +19,9 @@ namespace Constants
 
     extern const sf::Vector2f LowStart;
 
+    extern const sf::Vector2f MENU_POS_BOTTOM_LEFT;
     extern const float OUTLINE_THICKNESS;
+    extern const float BUTTON_THICKNESS;
     extern const float NODE_POS_HEAD;
     extern const float NODE_RADIUS;
     extern const float NODE_RADIUS_BIG;
@@ -28,9 +33,11 @@ namespace Constants
     extern const float NODE_DISTANCE_BIG;
     extern const int nothing;
 
+    extern const sf::Time TIME_PER_ANIME_FRAME;
+
     enum Type
     {
-        BST, AVL, Graph, Link,
+        BST, AVL, Graph, Link, noType
     };
 
     enum childType
@@ -39,6 +46,8 @@ namespace Constants
     };
 
     enum states { IDLE, HOVER , PRESSED , ACTIVE};
+
+    enum TextAlign {Left,Middle,Right};
 };
 
 namespace Colors
@@ -50,6 +59,7 @@ namespace Colors
     extern sf::Color yellow;
     extern sf::Color light_yellow;
     extern sf::Color grey;
+    extern sf::Color pink;
 };
 
 namespace ResourceManager

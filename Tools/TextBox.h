@@ -16,6 +16,7 @@ class TextBox : public SceneNode
         string input_text;
         string default_S,current_S;
         Text text;
+
         int data=nothing;
         
         states box_Stat;
@@ -23,21 +24,23 @@ class TextBox : public SceneNode
 
         //constructor
 
-        TextBox(Vector2f pos, Vector2f size, string text, Color idleColor, Color hoverColor, Color activeColor,Color borderColor, Color textColor, Vector2f btnDiff,int textLim);
+        TextBox(Vector2f pos, Vector2f size, string text,string btnText, Color idleColor, Color hoverColor, Color activeColor,Color borderColor, Color textColor, Vector2f btnDiff,Vector2f btnSize,int textLim,TextAlign textAlign);
 
         //destructor
         virtual~TextBox();
 
         //Function
 
+        int getIntdata();
+
 public:
     // Override the drawCurrent function from SceneNode
-        virtual void drawCurrent(RenderTarget& target, RenderStates states) const override;
+        virtual void drawCurrent(RenderTarget& target, RenderStates states) const  override;
         virtual void updateCurrent(Event& event, Vector2f& MousePos) override;
 
         void outputRecal();
 
-        void confirm(const string& s);
+        void confirm(string& s);
 
         // position &size
         Vector2f pos;
@@ -45,7 +48,7 @@ public:
 
         //accessor
         
-        //Button* btn_cofirm;
+        Button* btn_cofirm;
         bool isToggle = 0;
 
    private:
@@ -74,7 +77,8 @@ public:
 
         // input accept?
 
-        bool is_number(const string& s);
+        bool isNeg = 0;
+        bool is_number(string& s);
 
         string output_text;
 };

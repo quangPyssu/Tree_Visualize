@@ -33,6 +33,7 @@ public:
 	void update();
 	void Render();
 	void ProcessInput();
+	void takeTime(Time dt);
 
 	Vector2f MousePos;
 
@@ -46,7 +47,8 @@ public:
 	
 	SceneNode* MasterDisplay;
 	BST_Tree* mBST;
-	//Edge* s;
+
+	RectangleShape BG1;
 
 	// Timer
 	
