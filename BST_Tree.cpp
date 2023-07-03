@@ -148,7 +148,7 @@ void BST_Tree::updateCurrent(Event& event, Vector2f& MousePos)
 
 				int data = txtDelete->getIntdata();
 
-				anime->MakeDeleteAnime(data, Nodes, NodeVector, root->vectorPos);
+				anime->MakeDeleteAnime(data, Nodes, NodeVector, root->vectorPos,count_node(root));
 
 				root = Del(root, data);
 				CreateVisual();

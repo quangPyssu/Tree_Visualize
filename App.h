@@ -7,6 +7,7 @@
 #include "Tools/TreeNode.h"
 #include "Tools/Edge.h"
 #include "BST_Tree.h"
+#include "AVL_Tree.h"
 
 using namespace sf;
 using namespace std;
@@ -47,6 +48,7 @@ public:
 	
 	SceneNode* MasterDisplay;
 	BST_Tree* mBST;
+	AVL_Tree* mAVL;
 
 	RectangleShape BG1;
 

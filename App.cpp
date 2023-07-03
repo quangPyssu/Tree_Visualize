@@ -14,6 +14,7 @@ App::App()
 	MasterDisplay = new SceneNode();
 
 	mBST = new BST_Tree();
+	//mAVL = new AVL_Tree();
 
 	shared_ptr <BST_Tree> DmBST(mBST);
 

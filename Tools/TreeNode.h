@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "SceneNode.h";
+#include "Edge.h"
 
 using namespace sf;
 

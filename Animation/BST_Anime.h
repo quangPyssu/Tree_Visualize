@@ -17,7 +17,7 @@ struct BST_node
 
 	int vectorPos = -1;
 
-	shared_ptr <TreeNode> tVisual;
+	shared_ptr <TreeNode> tVisual=NULL;
 };
 
 class BST_Anime : public SceneNode
@@ -30,6 +30,8 @@ public:
 	vector<BST_node*> NodeVectorFirst;
 	vector<BST_node*> NodeVectorSecond;
 
+	
+
 	int FirstPos = 0;
 	int SecondPos = 0;
 
@@ -37,7 +39,9 @@ public:
 	vector <int> AnimeNodePos;
 
 	vector <vector<TreeNode*>> AnimeFrameNode;
-	vector <vector<Edge*>> AnimeFrameLink;
+	vector<vector<vector<Edge*>>> AnimeLinkMatrix;
+
+	//vector <[N][N]>
 
 	int n=0;
 	int curFrame = 0;
@@ -66,14 +70,15 @@ public:
 	void CloneLastFrame();
 
 	void makeLinkLevel(BST_node* &Cur);
-	void makeLink(BST_node* &node1, BST_node*& node2,Color color);
+	Edge* makeLink(BST_node* &node1, BST_node*& node2,Color color);
+	void changeLink(BST_node*& node1, BST_node*& node2, Color color);
 
 	void ChooseFrame(int i);
 
 	// Anime maker
 
 	void MakeInsertAnime(int data);
-	void MakeDeleteAnime(int data, SceneNode*& Nodes, vector <BST_node*>& org, int pos);
+	void MakeDeleteAnime(int data, SceneNode*& Nodes, vector <BST_node*>& org, int pos,int n);
 
 	void print_console(BST_node* cur, string prefix, bool isLeft);
 
