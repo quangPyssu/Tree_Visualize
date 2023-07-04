@@ -30,8 +30,6 @@ public:
 	vector<BST_node*> NodeVectorFirst;
 	vector<BST_node*> NodeVectorSecond;
 
-	
-
 	int FirstPos = 0;
 	int SecondPos = 0;
 
@@ -39,7 +37,9 @@ public:
 	vector <int> AnimeNodePos;
 
 	vector <vector<TreeNode*>> AnimeFrameNode;
-	vector<vector<vector<Edge*>>> AnimeLinkMatrix;
+	vector <vector<vector<Edge*>>> AnimeLinkMatrix;	
+
+	bool isAdditionial = 0;
 
 	//vector <[N][N]>
 
@@ -77,8 +77,9 @@ public:
 
 	// Anime maker
 
-	void MakeInsertAnime(int data);
-	void MakeDeleteAnime(int data, SceneNode*& Nodes, vector <BST_node*>& org, int pos,int n);
+	void MakeInsertAnime(int data, SceneNode*& Nodes, vector <BST_node*>& org, int pos, int n);
+	void MakeDeleteAnime(int data, SceneNode*& Nodes, vector <BST_node*>& org, int pos, int n);
+	void MakeSearchAnime(int data, SceneNode*& Nodes, vector <BST_node*>& org, int pos, int n);
 
 	void print_console(BST_node* cur, string prefix, bool isLeft);
 

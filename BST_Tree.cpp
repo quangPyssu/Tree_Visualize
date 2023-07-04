@@ -14,9 +14,9 @@ BST_Tree::BST_Tree() : Tree()
 
 	PushAnime(anime);
 
-	btnBack = new Button(Vector2f(WINDOW_WIDTH / 2 - 70, WINDOW_HEIGHT - 40),{30,30},"<",black,black+Color(50,50,50),black,Color::Transparent,Middle);
-	btnForw = new Button(Vector2f(WINDOW_WIDTH / 2 + 10, WINDOW_HEIGHT - 40),{30,30},">",black,black+Color(50,50,50),black,Color::Transparent,Middle);
-	btnPlay = new Button(Vector2f(WINDOW_WIDTH / 2 - 30, WINDOW_HEIGHT - 40),{30,30},"=", black, black + Color(50, 50, 50), black, Color::Transparent, Middle);
+	btnBack = new Button(Vector2f(WINDOW_WIDTH / 2 - 70, WINDOW_HEIGHT - 40), { 30,30 }, "<", black, black + Color(50, 50, 50), black, Color::Transparent, Middle);
+	btnForw = new Button(Vector2f(WINDOW_WIDTH / 2 + 10, WINDOW_HEIGHT - 40), { 30,30 }, ">", black, black + Color(50, 50, 50), black, Color::Transparent, Middle);
+	btnPlay = new Button(Vector2f(WINDOW_WIDTH / 2 - 30, WINDOW_HEIGHT - 40), { 30,30 }, "=", black, black + Color(50, 50, 50), black, Color::Transparent, Middle);
 
 	PushToObject(ButtonTranslate(btnBack), Buttones);
 	PushToObject(ButtonTranslate(btnForw), Buttones);
@@ -46,22 +46,22 @@ void BST_Tree::CreateVisual()
 
 	NodeVector.clear();
 
-	BeginPosX = WINDOW_WIDTH / 2 - (NODE_DISTANCE*count_node(root));
+	BeginPosX = WINDOW_WIDTH / 2 - (NODE_DISTANCE * count_node(root));
 
 	cnt = 0;
-	Push(root,cnt,root,true);
+	Push(root, cnt, root, true);
 }
 
 int BST_Tree::count_node(BST_node* cur)
 {
 	if (!cur) return 0;
-		
+
 	int res = (1 + count_node(cur->left) + count_node(cur->right));
 
 	return res;
 }
 
-void BST_Tree::Push(BST_node* &Cur,int& cnt,BST_node* &parent,bool isLeft)
+void BST_Tree::Push(BST_node*& Cur, int& cnt, BST_node*& parent, bool isLeft)
 {
 	if (!Cur) return;
 
@@ -77,15 +77,15 @@ void BST_Tree::Push(BST_node* &Cur,int& cnt,BST_node* &parent,bool isLeft)
 	}
 
 	Cur->isLeft = isLeft;
-	
+
 	// go left
-	if (Cur->left) Push(Cur->left,cnt,Cur,true);
-	
-	TreeNode* tmp=new TreeNode(Type::BST,"", Cur->data);
+	if (Cur->left) Push(Cur->left, cnt, Cur, true);
+
+	TreeNode* tmp = new TreeNode(Type::BST, "", Cur->data);
 
 	//tmp->setPosition({ !Cur->par ? 500 : Cur->par->tVisual->getPosition().x + (NODE_DISTANCE*4 / Cur->level) * (Cur->isLeft ? -1 : 1),NODE_POS_HEAD + ((NODE_DISTANCE) * Cur->level)});
-	
-	tmp->setPosition({ BeginPosX+ NODE_DISTANCE*2 * cnt,NODE_POS_HEAD + ((NODE_DISTANCE)*Cur->level) });
+
+	tmp->setPosition({ BeginPosX + NODE_DISTANCE * 2 * cnt,NODE_POS_HEAD + ((NODE_DISTANCE)*Cur->level) });
 
 	shared_ptr <TreeNode> here(tmp);
 	Nodes->attachChild(here);
@@ -100,27 +100,27 @@ void BST_Tree::Push(BST_node* &Cur,int& cnt,BST_node* &parent,bool isLeft)
 	// go right
 	if (Cur->right)
 	{
-		Push(Cur->right,cnt,Cur,false);
+		Push(Cur->right, cnt, Cur, false);
 
 	}
 
-	if (Cur->left) PushLink(Cur,Cur->left);
-	if (Cur->right) PushLink(Cur,Cur->right);
+	if (Cur->left) PushLink(Cur, Cur->left);
+	if (Cur->right) PushLink(Cur, Cur->right);
 
 	return;
 }
 
 void BST_Tree::PushLink(BST_node*& node1, BST_node*& node2)
 {
-	Edge* tmp = new Edge(Type::Link, "",nothing);
+	Edge* tmp = new Edge(Type::Link, "", nothing);
 
-	tmp->setPositionByNode(node1->tVisual->getPosition() , node2->tVisual->getPosition() );
+	tmp->setPositionByNode(node1->tVisual->getPosition(), node2->tVisual->getPosition());
 
 	shared_ptr <Edge> here(tmp);
 	Linkes->attachChild(here);
 }
 
-void BST_Tree::PushAnime(BST_Anime* &anime1)
+void BST_Tree::PushAnime(BST_Anime*& anime1)
 {
 	shared_ptr <SceneNode> here(anime1);
 	Animes->attachChild(here);
@@ -148,7 +148,7 @@ void BST_Tree::updateCurrent(Event& event, Vector2f& MousePos)
 
 				int data = txtDelete->getIntdata();
 
-				anime->MakeDeleteAnime(data, Nodes, NodeVector, root->vectorPos,count_node(root));
+				anime->MakeDeleteAnime(data, Nodes, NodeVector, root->vectorPos, count_node(root));
 
 				root = Del(root, data);
 				CreateVisual();
@@ -163,10 +163,12 @@ void BST_Tree::updateCurrent(Event& event, Vector2f& MousePos)
 				if (txtInsert->data != nothing) // delete
 				{
 					cout << "Insert " << endl;
-					anime->CloneFromTree(Nodes);
-					anime->copyFirstTree(NodeVector, root->vectorPos);
 
-					insertT(root, txtInsert->getIntdata(), root, false);
+					int data = txtInsert->getIntdata(); 
+
+					anime->MakeInsertAnime(data, Nodes, NodeVector, root->vectorPos, count_node(root));
+
+					insertT(root, data, root, false);
 					CreateVisual();
 					//print_console();
 
@@ -177,10 +179,13 @@ void BST_Tree::updateCurrent(Event& event, Vector2f& MousePos)
 				else
 					if (txtSearch->data != nothing) // delete
 					{
-						anime->CloneFromTree(Nodes);
-						anime->copyFirstTree(NodeVector, root->vectorPos);
+						cout << "Search " << endl;
 
-						Search(root, txtSearch->getIntdata()); cout << endl;
+						int data = txtSearch->getIntdata();
+
+						anime->MakeSearchAnime(data, Nodes, NodeVector, root->vectorPos, count_node(root));
+
+						Search(root, data); cout << endl;
 						CreateVisual();
 						//print_console();
 
@@ -191,10 +196,11 @@ void BST_Tree::updateCurrent(Event& event, Vector2f& MousePos)
 		}
 
 	if (btnBack->isPressed()) anime->ChooseFrame(-1); else if (btnForw->isPressed()) anime->ChooseFrame(1);
-	if (btnPlay->isPressed()) anime->isPlaying = anime->isPlaying ? 0:1;
+	if (btnPlay->isPressed()) anime->isPlaying = anime->isPlaying ? 0 : 1;
+}
 
-	anime->isHavingAnime = (anime->curFrame < (int)anime->AnimeFrameNode.size()) ? 1 : 0;
-
+void BST_Tree::takeTimeCurrent(Time& dt)
+{
 	if (anime->isHavingAnime)
 	{
 		Nodes->Disable();
@@ -209,7 +215,7 @@ void BST_Tree::updateCurrent(Event& event, Vector2f& MousePos)
 	}
 }
 
-BST_node* BST_Tree::insertT(BST_node*& cur, int data, BST_node*& parent,bool isLeft)
+BST_node* BST_Tree::insertT(BST_node*& cur, int data, BST_node*& parent, bool isLeft)
 {
 	if (cur == NULL)
 	{
@@ -224,13 +230,13 @@ BST_node* BST_Tree::insertT(BST_node*& cur, int data, BST_node*& parent,bool isL
 		return cur;
 	}
 
-	if (cur->data > data) return insertT(cur->left, data,cur,true); else
-		if (cur->data < data) return insertT(cur->right, data,cur,false); else
+	if (cur->data > data) return insertT(cur->left, data, cur, true); else
+		if (cur->data < data) return insertT(cur->right, data, cur, false); else
 			return NULL;
-	
+
 }
 
-void BST_Tree::print_console(BST_node* cur, string prefix,bool isLeft)
+void BST_Tree::print_console(BST_node* cur, string prefix, bool isLeft)
 {
 	if (!cur) return;
 
@@ -250,7 +256,7 @@ void BST_Tree::print_console()
 	print_console(root, "", 1);
 }
 
-BST_node* BST_Tree::Del(BST_node* &cur,int data)
+BST_node* BST_Tree::Del(BST_node*& cur, int data)
 {
 	if (!cur) return NULL;
 
@@ -259,19 +265,20 @@ BST_node* BST_Tree::Del(BST_node* &cur,int data)
 		cur->left = Del(cur->left, data);
 
 		return cur;
-	} else
-	if (cur->data < data)
-	{
-		cur->right = Del(cur->right, data);
-
-		return cur;
 	}
+	else
+		if (cur->data < data)
+		{
+			cur->right = Del(cur->right, data);
+
+			return cur;
+		}
 
 	if (!cur->left && !cur->right) // delete leave node
 	{
 		delete cur;
 		return NULL;
-	} 
+	}
 
 	if (cur->left && cur->right) // delete node that have 2 children
 	{
@@ -293,27 +300,28 @@ BST_node* BST_Tree::Del(BST_node* &cur,int data)
 		delete cur;
 
 		return tmp;
-	} else
-	if (cur->left)   // have left child
-	{
-		BST_node* tmp = cur->left;
-		delete cur;
-
-		return tmp;
 	}
-	else			// have right child
-	{
-		BST_node* tmp = cur->right;
-		delete cur;
+	else
+		if (cur->left)   // have left child
+		{
+			BST_node* tmp = cur->left;
+			delete cur;
 
-		return tmp;
-	}
+			return tmp;
+		}
+		else			// have right child
+		{
+			BST_node* tmp = cur->right;
+			delete cur;
+
+			return tmp;
+		}
 
 
 	return cur;
 }
 
-BST_node* BST_Tree::Search(BST_node* &cur,int data)
+BST_node* BST_Tree::Search(BST_node*& cur, int data)
 {
 	if (!cur) return NULL;
 
@@ -321,7 +329,7 @@ BST_node* BST_Tree::Search(BST_node* &cur,int data)
 
 	if (cur->data > data) return Search(cur->left, data);
 	if (cur->data < data) return Search(cur->right, data);
-		
+
 	return cur;
 }
 

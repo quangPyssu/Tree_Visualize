@@ -1,7 +1,7 @@
 #include "BST_Anime.h"
 
 BST_Anime::BST_Anime() {
-	
+
 }
 
 BST_Anime::~BST_Anime()
@@ -12,19 +12,22 @@ BST_Anime::~BST_Anime()
 void BST_Anime::ChooseFrame(int i)
 {
 	curFrame += i;
-	curFrame = min((int) AnimeFrameNode.size(), max(0, curFrame));
+	curFrame = min((int)AnimeFrameNode.size(), max(0, curFrame));
 	isPlaying = 0;
-	cout << "cur " << curFrame << endl;
+	isHavingAnime = (curFrame < (int)AnimeFrameNode.size()) ? 1 : 0;
+
+	/*cout << "cur " << curFrame << endl;
 	cout << "play " << isPlaying << endl;
-	cout << "anime " << isHavingAnime << endl;
+	cout << "anime " << isHavingAnime << endl;*/
 }
 
-void BST_Anime::drawFrame(RenderTarget& target,int id) const
+
+void BST_Anime::drawFrame(RenderTarget& target, int id) const
 {
-	if (id>-1 && AnimeFrameNode.size()>id)
+	if (id > -1 && AnimeFrameNode.size() > id)
 	{
 		for (int i = 0; i < n; i++) for (int j = 0; j < n; j++)
-			if (AnimeLinkMatrix[id][i][j]!=nullptr)
+			if (AnimeLinkMatrix[id][i][j] != nullptr)
 				target.draw(*AnimeLinkMatrix[id][i][j]);
 
 		for (auto a : AnimeFrameNode[id]) target.draw(*a);
@@ -34,10 +37,10 @@ void BST_Anime::drawFrame(RenderTarget& target,int id) const
 void BST_Anime::MakeNewFrame()
 {
 	vector<TreeNode*> tmp{};
-	AnimeFrameNode.push_back(tmp); 
-	
+	AnimeFrameNode.push_back(tmp);
+
 	vector<vector<Edge*>> pmt{};
-	AnimeLinkMatrix.push_back(pmt); 
+	AnimeLinkMatrix.push_back(pmt);
 
 	for (int i = 0; i < n; i++)
 	{
@@ -50,10 +53,10 @@ void BST_Anime::MakeNewFrame()
 }
 
 //make a vector copy of the tree before the change
-void BST_Anime::copyFirstTree(vector <BST_node*> &org,int pos)
+void BST_Anime::copyFirstTree(vector <BST_node*>& org, int pos)
 {
-	FirstPos = pos; 
-	
+	FirstPos = pos;
+
 	for (auto a : org)
 	{
 		BST_node* tmp = new BST_node;
@@ -63,7 +66,7 @@ void BST_Anime::copyFirstTree(vector <BST_node*> &org,int pos)
 		NodeVectorFirst.push_back(tmp);
 	}
 
-	for (int i=0;i<org.size();i++)
+	for (int i = 0; i < org.size(); i++)
 	{
 		//cout << " healp 1 ";
 		//cout << NodeVectorFirst[i]->data << " " << NodeVectorFirst.size() << endl;
@@ -77,7 +80,7 @@ void BST_Anime::copyFirstTree(vector <BST_node*> &org,int pos)
 
 	n = org.size();
 
-	cout << " con 1 " << endl;	
+	cout << " con 1 " << endl;
 	print_console(NodeVectorFirst[pos], "", 1);
 	cout << endl;
 
@@ -85,7 +88,7 @@ void BST_Anime::copyFirstTree(vector <BST_node*> &org,int pos)
 }
 
 //make a vector copy of the tree after the change
-void BST_Anime::copySecondTree(vector <BST_node*>& org,int pos)
+void BST_Anime::copySecondTree(vector <BST_node*>& org, int pos)
 {
 	SecondPos = pos;
 
@@ -109,7 +112,7 @@ void BST_Anime::copySecondTree(vector <BST_node*>& org,int pos)
 		if (org[i]->par) NodeVectorSecond[i]->par = NodeVectorSecond[org[i]->par->vectorPos];// , cout << " p " << NodeVectorSecond[i]->par->vectorPos << "; ";
 
 		//cout << endl;
-	}	
+	}
 
 	cout << " sqw 2  " << endl;
 	print_console(NodeVectorSecond[pos], "", 1);
@@ -117,29 +120,29 @@ void BST_Anime::copySecondTree(vector <BST_node*>& org,int pos)
 }
 
 //create a display_node copy of the tree before change
-void BST_Anime::CloneFromTree(SceneNode* &Nodes)
+void BST_Anime::CloneFromTree(SceneNode*& Nodes)
 {
-	cleanUp(); 
+	cleanUp();
 
-	MakeNewFrame(); 
+	MakeNewFrame();
 
 	for (auto a : Nodes->Children)
 	{
-		shared_ptr<TreeNode> treeNode = dynamic_pointer_cast<TreeNode>(a); 
+		shared_ptr<TreeNode> treeNode = dynamic_pointer_cast<TreeNode>(a);
 
-		TreeNode* tmp = new TreeNode(noType,"",0);
+		TreeNode* tmp = new TreeNode(noType, "", 0);
 		tmp->Cir = treeNode->Cir;
 		tmp->text = treeNode->text;
 
-		AnimeFrameNode.back().push_back(tmp); 
-	}	
+		AnimeFrameNode.back().push_back(tmp);
+	}
 }
 
-void BST_Anime::drawCurrent(RenderTarget& target, RenderStates states) const 
+void BST_Anime::drawCurrent(RenderTarget& target, RenderStates states) const
 {
 	if (curFrame >= AnimeFrameNode.size()) return;
 
-	drawFrame(target,curFrame);
+	drawFrame(target, curFrame);
 }
 
 void BST_Anime::updateCurrent(Event& event, Vector2f& MousePos)
@@ -148,14 +151,15 @@ void BST_Anime::updateCurrent(Event& event, Vector2f& MousePos)
 
 void BST_Anime::takeTimeCurrent(Time& dt)
 {
-	
+	isHavingAnime = (curFrame < (int)AnimeFrameNode.size()) ? 1 : 0;
+
 	if (!isHavingAnime) isPlaying = 0;
 
-	if (!isPlaying) return;	
+	if (!isPlaying) return;
 
 	timeCnt += dt;
 
-	if (timeCnt >= TIME_PER_ANIME_FRAME) curFrame = min((int) AnimeFrameNode.size(), curFrame + 1), timeCnt -= TIME_PER_ANIME_FRAME;
+	if (timeCnt >= TIME_PER_ANIME_FRAME) curFrame = min((int)AnimeFrameNode.size(), curFrame + 1), timeCnt -= TIME_PER_ANIME_FRAME;
 }
 
 // make Link between node for the last frame
@@ -182,7 +186,7 @@ void BST_Anime::makeLinkLevel(BST_node*& Cur)
 	}
 }
 
-Edge* BST_Anime::makeLink(BST_node*& node1, BST_node*& node2,Color color)
+Edge* BST_Anime::makeLink(BST_node*& node1, BST_node*& node2, Color color)
 {
 	if (!node1 || !node2) return NULL;
 
@@ -194,13 +198,14 @@ Edge* BST_Anime::makeLink(BST_node*& node1, BST_node*& node2,Color color)
 	return tmp;
 }
 
-void BST_Anime::changeLink(BST_node*& node1, BST_node*& node2,Color color)
+void BST_Anime::changeLink(BST_node*& node1, BST_node*& node2, Color color)
 {
 	if (!node1 || !node2 || node1 == node2) return;
 
-	Edge* &tmp = AnimeLinkMatrix.back()[node1->vectorPos][node2->vectorPos];
-	
-	if (tmp==NULL)
+	Edge*& tmp = AnimeLinkMatrix.back()[node1->vectorPos][node2->vectorPos];
+	Edge*& pmt = AnimeLinkMatrix.back()[node2->vectorPos][node1->vectorPos];
+
+	if (tmp == NULL)
 	{
 		if (color == trans) return; else
 		{
@@ -214,6 +219,9 @@ void BST_Anime::changeLink(BST_node*& node1, BST_node*& node2,Color color)
 		{
 			AnimeLinkMatrix.back()[node1->vectorPos][node2->vectorPos] = NULL;
 			delete tmp;
+
+			AnimeLinkMatrix.back()[node2->vectorPos][node1->vectorPos] = NULL;
+			delete pmt;
 		}
 		else
 		{
@@ -225,31 +233,39 @@ void BST_Anime::changeLink(BST_node*& node1, BST_node*& node2,Color color)
 
 // Anime Making 
 
-void BST_Anime::MakeInsertAnime(int data)
-{
-
-}
-
-void BST_Anime::MakeDeleteAnime(int data, SceneNode*& Nodes, vector <BST_node*>& org, int pos,int n)
+void BST_Anime::MakeInsertAnime(int data, SceneNode*& Nodes, vector <BST_node*>& org, int pos, int n)
 {
 	isPlaying = 1;
 	isHavingAnime = 1;
+	isAdditionial = 1;
 
-	this->n = n;
+	this->n = n+1;
+	n++;
 
-	cout << "anime delete " << endl;
+	cout << "anime insert " << endl;
 
-	CloneFromTree(Nodes); 
-	copyFirstTree(org, pos); 
+	CloneFromTree(Nodes);
+
+	TreeNode* tmp = new TreeNode(noType, "", data);
+	AnimeFrameNode.back().push_back(tmp);
+
+	copyFirstTree(org, pos);
+	this->n++;
+
+	BST_node* ttt = new BST_node;
+	ttt->vectorPos = this->n - 1;
+	ttt->data = data;
+
+	NodeVectorFirst.push_back(ttt);
 
 	BST_node* cur = NodeVectorFirst[FirstPos];
 	BST_node* par = NodeVectorFirst[FirstPos];
 
-	curFrame = 0; 
+	curFrame = 0;
 
 	while (1) // find node
 	{
-		if (!cur || cur->data == data) break; 
+		if (!cur || cur->data == data) break;
 
 		if (par != cur)
 		{
@@ -258,13 +274,85 @@ void BST_Anime::MakeDeleteAnime(int data, SceneNode*& Nodes, vector <BST_node*>&
 			changeLink(par, cur, Chosen_Color);
 		}
 
-		CloneLastFrame(); 
-		AnimeFrameNode.back()[cur->vectorPos]->Cir.setOutlineColor(Chosen_Color);		
+		CloneLastFrame();
+		AnimeFrameNode.back()[cur->vectorPos]->Cir.setOutlineColor(Chosen_Color);
 
 		par = cur;
-		 
+
 		if (cur->data > data) cur = cur->left; else
-			if (cur->data < data) cur = cur->right; 			
+			if (cur->data < data) cur = cur->right;
+	}
+
+	if (!cur) // find empty slot
+	{
+		CloneLastFrame();
+
+		AnimeFrameNode.back().back()->Cir.setOutlineColor(Insert_Color);
+
+		AnimeFrameNode.back().back()->setPosition(AnimeFrameNode.back()[par->vectorPos]->getPosition()+Vector2f(NODE_DISTANCE*2*((par->data > data) ? -1 : 1), NODE_DISTANCE));
+
+		CloneLastFrame();
+
+		AnimeFrameNode.back().back()->Cir.setOutlineColor(Chosen_Color);
+
+		changeLink(par, NodeVectorFirst[n-1], Chosen_Color);
+	}
+	else  // already have the node
+	{
+		CloneLastFrame();
+
+		if (par != cur)
+		{
+			CloneLastFrame();
+			changeLink(par, cur, Chosen_Color);
+		}
+
+		CloneLastFrame();
+		AnimeFrameNode.back()[cur->vectorPos]->Cir.setOutlineColor(Chosen_Color);
+
+		CloneLastFrame();
+		AnimeFrameNode.back()[cur->vectorPos]->Cir.setOutlineColor(Insert_Color);
+
+		cout << " dit me m them cc" << endl;
+	}
+}
+
+void BST_Anime::MakeDeleteAnime(int data, SceneNode*& Nodes, vector <BST_node*>& org, int pos, int n)
+{
+	isPlaying = 1;
+	isHavingAnime = 1;
+	isAdditionial = 0;
+
+	this->n = n;
+
+	cout << "anime delete " << endl;
+
+	CloneFromTree(Nodes);
+	copyFirstTree(org, pos);
+
+	BST_node* cur = NodeVectorFirst[FirstPos];
+	BST_node* par = NodeVectorFirst[FirstPos];
+
+	curFrame = 0;
+
+	while (1) // find node
+	{
+		if (!cur || cur->data == data) break;
+
+		if (par != cur)
+		{
+			CloneLastFrame();
+
+			changeLink(par, cur, Chosen_Color);
+		}
+
+		CloneLastFrame();
+		AnimeFrameNode.back()[cur->vectorPos]->Cir.setOutlineColor(Chosen_Color);
+
+		par = cur;
+
+		if (cur->data > data) cur = cur->left; else
+			if (cur->data < data) cur = cur->right;
 	}
 
 	if (!cur) // no node matches data
@@ -276,126 +364,178 @@ void BST_Anime::MakeDeleteAnime(int data, SceneNode*& Nodes, vector <BST_node*>&
 		if (par != cur)
 		{
 			CloneLastFrame();
-			changeLink(par, cur, Chosen_Color); 
+			changeLink(par, cur, Chosen_Color);
 		}
 
 		CloneLastFrame();
-		AnimeFrameNode.back()[cur->vectorPos]->Cir.setOutlineColor(Chosen_Color); 
+		AnimeFrameNode.back()[cur->vectorPos]->Cir.setOutlineColor(Chosen_Color);
 
 		CloneLastFrame();
-		AnimeFrameNode.back()[cur->vectorPos]->Cir.setOutlineColor(Delete_Color); 
+		AnimeFrameNode.back()[cur->vectorPos]->Cir.setOutlineColor(Delete_Color);
 
 		if (!cur->left && !cur->right) // delete leave node
 		{
 			CloneLastFrame();
 			AnimeFrameNode.back()[cur->vectorPos]->Disable();
 			changeLink(par, cur, trans);
-		} else
-
-		if (cur->left && cur->right) // delete node that have 2 children
-		{
-			BST_node* parTmp = cur;
-			BST_node* tmp = cur->left;
-
-			CloneLastFrame();
-			changeLink(parTmp, tmp,Chosen_Color); 
-
-			CloneLastFrame();
-			AnimeFrameNode.back()[tmp->vectorPos]->Cir.setOutlineColor(Chosen_Color); 
-
-			while (tmp->right)// go down
-			{
-				parTmp = tmp;
-				tmp = tmp->right;
-
-				CloneLastFrame();
-				changeLink(parTmp, tmp,Chosen_Color);
-				
-				CloneLastFrame();
-				AnimeFrameNode.back()[tmp->vectorPos]->Cir.setOutlineColor(Chosen_Color);
-			}
-
-			CloneLastFrame(); // link to the rightest left
-			
-			if (parTmp == cur) // thang the cur la con trai (cur->left==tmp)
-			{
-				changeLink(par, cur, trans);
-				changeLink(cur, cur->right, trans);
-				changeLink(cur, cur->left, trans);
-
-				changeLink(par, tmp, Chosen_Color);
-				changeLink(tmp, cur->right,Chosen_Color);
-			}
-			else  // binh thuong
-			{
-				changeLink(par, cur, trans);
-				changeLink(cur, cur->right, trans);
-				changeLink(cur, cur->left, trans);
-				changeLink(parTmp, tmp, trans);
-				changeLink(tmp, tmp->left, trans);
-
-				changeLink(parTmp, tmp->left, Chosen_Color);
-				changeLink(par, tmp, Chosen_Color);
-				changeLink(cur->right, tmp, Chosen_Color);
-				changeLink(cur->left, tmp, Chosen_Color);
-			}
-
-			CloneLastFrame(); // move it
-
-			if (parTmp == cur) changeLink(tmp, tmp->left, trans);
-
-			changeLink(cur->right, tmp,  trans);
-			changeLink(cur->left, tmp, trans);
-
-			AnimeFrameNode.back()[cur->vectorPos]->Disable(); // xoa cai node
-			AnimeFrameNode.back()[tmp->vectorPos]->setPosition(AnimeFrameNode.back()[cur->vectorPos]->getPosition()); //flip node duoi len
-
-			changeLink(par, tmp, Chosen_Color);
-			changeLink(tmp, cur->right, Chosen_Color);
-
-			if (parTmp == cur) changeLink(tmp, tmp->left, Chosen_Color);
-			else changeLink(tmp, cur->left, Chosen_Color);
 		}
 		else
-			if (cur->left)   // have left child
+
+			if (cur->left && cur->right) // delete node that have 2 children
 			{
+				BST_node* parTmp = cur;
 				BST_node* tmp = cur->left;
 
 				CloneLastFrame();
-				changeLink(cur, tmp,Chosen_Color);
+				changeLink(parTmp, tmp, Chosen_Color);
 
 				CloneLastFrame();
 				AnimeFrameNode.back()[tmp->vectorPos]->Cir.setOutlineColor(Chosen_Color);
 
-				CloneLastFrame();
-				AnimeFrameNode.back()[cur->vectorPos]->Disable();
-				changeLink(par, cur,trans);
-				changeLink(cur, tmp,trans);
+				while (tmp->right)// go down
+				{
+					parTmp = tmp;
+					tmp = tmp->right;
 
-				changeLink(par, tmp,Chosen_Color);
+					CloneLastFrame();
+					changeLink(parTmp, tmp, Chosen_Color);
+
+					CloneLastFrame();
+					AnimeFrameNode.back()[tmp->vectorPos]->Cir.setOutlineColor(Chosen_Color);
+				}
+
+				CloneLastFrame(); // link to the rightest left
+
+				changeLink(par, cur, trans);
+				changeLink(cur, cur->right, trans);
+				changeLink(cur, cur->left, trans);
+
+				changeLink(par, tmp, Chosen_Color);
+
+				if (parTmp == cur) changeLink(tmp, cur->right, Chosen_Color);// thang the cur la con trai (cur->left==tmp)
+				else  // binh thuong
+				{
+					changeLink(parTmp, tmp, trans);
+					changeLink(tmp, tmp->left, trans);
+
+					changeLink(parTmp, tmp->left, Chosen_Color);
+					changeLink(cur->right, tmp, Chosen_Color);
+					changeLink(cur->left, tmp, Chosen_Color);
+				}
+
+				CloneLastFrame(); // move it
+
+				if (parTmp == cur) changeLink(tmp, tmp->left, trans);
+
+				changeLink(cur->right, tmp, trans);
+				changeLink(cur->left, tmp, trans);
+
+				AnimeFrameNode.back()[cur->vectorPos]->Disable(); // xoa cai node
+				AnimeFrameNode.back()[tmp->vectorPos]->setPosition(AnimeFrameNode.back()[cur->vectorPos]->getPosition()); //flip node duoi len
+
+				changeLink(par, tmp, Chosen_Color);
+				changeLink(tmp, cur->right, Chosen_Color);
+
+				if (parTmp == cur) changeLink(tmp, tmp->left, Chosen_Color);
+				else changeLink(tmp, cur->left, Chosen_Color);
 			}
-			else			// have right child
-			{
-				BST_node* tmp = cur->right;
-				
-				CloneLastFrame();
-				changeLink(cur, tmp,Chosen_Color);
+			else
+				if (cur->left)   // have left child
+				{
+					BST_node* tmp = cur->left;
 
-				CloneLastFrame();
-				AnimeFrameNode.back()[tmp->vectorPos]->Cir.setOutlineColor(Chosen_Color);
+					CloneLastFrame();
+					changeLink(cur, tmp, Chosen_Color);
 
-				CloneLastFrame();
-				AnimeFrameNode.back()[cur->vectorPos]->Disable();
-				changeLink(par, cur,trans);
-				changeLink(cur, tmp,trans);
+					CloneLastFrame();
+					AnimeFrameNode.back()[tmp->vectorPos]->Cir.setOutlineColor(Chosen_Color);
 
-				changeLink(par, tmp,Chosen_Color);
-			}
+					CloneLastFrame();
+					AnimeFrameNode.back()[cur->vectorPos]->Disable();
+					changeLink(par, cur, trans);
+					changeLink(cur, tmp, trans);
+
+					changeLink(par, tmp, Chosen_Color);
+				}
+				else			// have right child
+				{
+					BST_node* tmp = cur->right;
+
+					CloneLastFrame();
+					changeLink(cur, tmp, Chosen_Color);
+
+					CloneLastFrame();
+					AnimeFrameNode.back()[tmp->vectorPos]->Cir.setOutlineColor(Chosen_Color);
+
+					CloneLastFrame();
+					AnimeFrameNode.back()[cur->vectorPos]->Disable();
+					changeLink(par, cur, trans);
+					changeLink(cur, tmp, trans);
+
+					changeLink(par, tmp, Chosen_Color);
+				}
 	}
 }
 
+void BST_Anime::MakeSearchAnime(int data, SceneNode*& Nodes, vector <BST_node*>& org, int pos, int n)
+{
+	isPlaying = 1;
+	isHavingAnime = 1;
+	isAdditionial = 0;
 
-void BST_Anime::RecreateVisual(int id,BST_node*& Cur, int& cnt, BST_node*& parent, bool isLeft,float BeginPosX)
+	this->n = n;
+
+	cout << "anime Search " << endl;
+
+	CloneFromTree(Nodes);
+	copyFirstTree(org, pos);
+
+	BST_node* cur = NodeVectorFirst[FirstPos];
+	BST_node* par = NodeVectorFirst[FirstPos];
+
+	curFrame = 0;
+
+	while (1) // find node
+	{
+		if (!cur || cur->data == data) break;
+
+		if (par != cur)
+		{
+			CloneLastFrame();
+
+			changeLink(par, cur, Chosen_Color);
+		}
+
+		CloneLastFrame();
+		AnimeFrameNode.back()[cur->vectorPos]->Cir.setOutlineColor(Chosen_Color);
+
+		par = cur;
+
+		if (cur->data > data) cur = cur->left; else
+			if (cur->data < data) cur = cur->right;
+	}
+
+	if (!cur) // no node matches data
+	{
+		cout << " dit me m tim cc" << endl;
+	}
+	else  // higlight the data
+	{
+		if (par != cur)
+		{
+			CloneLastFrame();
+			changeLink(par, cur, Chosen_Color);
+		}
+
+		CloneLastFrame();
+		AnimeFrameNode.back()[cur->vectorPos]->Cir.setOutlineColor(Chosen_Color);
+
+		CloneLastFrame();
+		AnimeFrameNode.back()[cur->vectorPos]->Cir.setOutlineColor(Search_Color);
+	}
+}
+
+void BST_Anime::RecreateVisual(int id, BST_node*& Cur, int& cnt, BST_node*& parent, bool isLeft, float BeginPosX)
 {
 	if (!Cur) return;
 
@@ -410,13 +550,13 @@ void BST_Anime::RecreateVisual(int id,BST_node*& Cur, int& cnt, BST_node*& paren
 
 	if (Cur->left)
 	{
-		RecreateVisual(id,Cur->left, cnt, Cur, true, BeginPosX);
+		RecreateVisual(id, Cur->left, cnt, Cur, true, BeginPosX);
 	}
 
 
 	if (Cur->right)
 	{
-		RecreateVisual(id,Cur->right, cnt, Cur, false, BeginPosX);
+		RecreateVisual(id, Cur->right, cnt, Cur, false, BeginPosX);
 
 	}
 
@@ -427,7 +567,7 @@ void BST_Anime::CloneLastFrame()
 {
 	MakeNewFrame();
 
-	for (auto a : AnimeFrameNode[ AnimeFrameNode.size() - 2])
+	for (auto a : AnimeFrameNode[AnimeFrameNode.size() - 2])
 	{
 		TreeNode* tmp = new TreeNode(noType, "", 0);
 		tmp->Cir = a->Cir;

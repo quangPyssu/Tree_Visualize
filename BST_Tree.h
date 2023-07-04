@@ -27,6 +27,7 @@ struct BST_Tree : public Tree
 	// Inheritance
 
 	virtual void updateCurrent(Event& event, Vector2f& MousePos) ;
+	virtual void takeTimeCurrent(Time& dt) ;
 
 	//function
 

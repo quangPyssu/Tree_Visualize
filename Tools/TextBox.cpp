@@ -113,6 +113,21 @@ void TextBox::updateCurrent(Event& event, Vector2f& MousePos)
 	//cout << s << " " << isDisable << endl;
 }
 
+void TextBox::takeTimeCurrent(Time& dt)
+{
+	if (box_Stat == ACTIVE)
+	{
+		text_effect_time += clock.restart();
+
+		if (text_effect_time >= sf::seconds(0.5f))
+		{
+			show_cursor = !show_cursor;
+			text_effect_time = sf::Time::Zero;
+		}
+		text.setString(output_text + (show_cursor ? '_' : ' '));
+	}
+}
+
 void TextBox::outputRecal()
 {
 	if (input_text.size() > 10)
@@ -128,9 +143,6 @@ void TextBox::outputRecal()
 	{
 		if (box_Stat == ACTIVE)
 		{
-			static sf::Time text_effect_time;
-			static bool show_cursor;
-
 			text_effect_time += clock.restart();
 
 			if (text_effect_time >= sf::seconds(0.5f))

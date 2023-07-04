@@ -1,6 +1,7 @@
 #include "Global.h"
 
 namespace Constants {
+    const double pi = 3.14159265;
     const double BASE_X = (double)(sf::VideoMode::getDesktopMode().width) ;
     const double BASE_Y = (double)(sf::VideoMode::getDesktopMode().height) ;
     const sf::Time TIME_PER_FRAME = sf::seconds(1.f / 60.f);
@@ -51,6 +52,8 @@ namespace Colors {
     sf::Color Chosen_Color = cyan;
     sf::Color Delete_Color = red;
     sf::Color Insert_Color = orange;
+    sf::Color Search_Color = pink;
+    sf::Color Default_Color = black;
 };
 
 namespace ResourceManager

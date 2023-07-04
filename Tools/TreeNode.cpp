@@ -5,8 +5,9 @@ TreeNode::TreeNode(Type type, string text,int data)
 	Cir.setFillColor(white);
 	Cir.setRadius(NODE_RADIUS);
 	Cir.setOutlineThickness(OUTLINE_THICKNESS);
-	Cir.setOutlineColor(black);
+	Cir.setOutlineColor(Default_Color);
 	Cir.setOrigin(Vector2f(NODE_RADIUS, NODE_RADIUS));
+	Cir.setPosition(-100, -100);
 
 	this->data = data;
 

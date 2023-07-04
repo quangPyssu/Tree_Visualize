@@ -7,6 +7,7 @@
 
 namespace Constants
 {
+    extern const double pi;
     extern const double BASE_X;
     extern const double BASE_Y;
     extern const sf::Time TIME_PER_FRAME;
@@ -62,9 +63,11 @@ namespace Colors
     extern sf::Color grey;
     extern sf::Color pink;
     extern sf::Color Back_Ground_Color;
+    extern sf::Color Default_Color;
     extern sf::Color Chosen_Color;
     extern sf::Color Delete_Color;
     extern sf::Color Insert_Color;
+    extern sf::Color Search_Color;
 };
 
 namespace ResourceManager

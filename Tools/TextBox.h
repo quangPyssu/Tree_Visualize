@@ -37,6 +37,7 @@ public:
     // Override the drawCurrent function from SceneNode
         virtual void drawCurrent(RenderTarget& target, RenderStates states) const  override;
         virtual void updateCurrent(Event& event, Vector2f& MousePos) override;
+        virtual void takeTimeCurrent(Time& dt) override;
 
         void outputRecal();
 
@@ -74,6 +75,9 @@ public:
         Event* event;
 
         Clock clock;
+
+        sf::Time text_effect_time;
+        bool show_cursor;
 
         // input accept?
 

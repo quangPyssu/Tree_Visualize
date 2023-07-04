@@ -2,9 +2,10 @@
 
 Edge::Edge(Type type, string text,int data)
 {
-	line.setFillColor(Colors::black);
-	line.setSize({ 1,1 });
-	line.setOrigin(Vector2f((float) 0.5, 0));
+	line.setFillColor(Default_Color);
+	line.setSize({ EDGE_THICKNESS,1 });
+	line.setOrigin(Vector2f((float) 2.5, 0));
+	line.setPosition(-100, -100);
 
 	this->data = data;
 
@@ -39,6 +40,7 @@ void Edge::setPositionByNode(const Vector2f& pos1, const Vector2f& pos2)
 	Vector2f size(EDGE_THICKNESS, sqrt(pow(pos2.x - pos1.x, 2) + pow(pos2.y - pos1.y, 2)));
 	Vector2f position = pos1;
 	double angle = atan((pos2.x - pos1.x) / (pos2.y - pos1.y)) * 180 / acos(-1);
+
 	make(position, size, -angle);
 	this->pos1 = pos1;
 	this->pos2 = pos2;
