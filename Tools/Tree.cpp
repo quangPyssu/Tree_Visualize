@@ -19,19 +19,19 @@ Tree::Tree()
 	PushToObject(ButtonTranslate(btnTest),Buttones);
 	// testies
 
-	btnCreate = new Button(MENU_POS_BOTTOM_LEFT + Vector2f(21, 0), Vector2f(30.f, 110), "Generate", pink, black, red, black, TextAlign::Left);
-	btnInsert = new Button(btnCreate->pos + Vector2f(0, btnCreate->size.x + BUTTON_THICKNESS * 2), Vector2f(30, 110), "Insert", pink, black, red, black, TextAlign::Left);
-	btnDelete = new Button(btnInsert->pos + Vector2f(0, btnInsert->size.x + BUTTON_THICKNESS * 2), Vector2f(30, 110), "Delete", pink, black, red, black, TextAlign::Left);
-	btnSearch = new Button(btnDelete->pos + Vector2f(0, btnDelete->size.x + BUTTON_THICKNESS * 2), Vector2f(30, 110), "Search", pink, black, red, black, TextAlign::Left);
-	btnFunctionHub = new Button(MENU_POS_BOTTOM_LEFT, Vector2f(btnCreate->size.x*4, 20), ">", pink, pink, pink+Color(30,0,0), black, TextAlign::Middle);
+	btnCreate = new Button(MENU_POS_BOTTOM_LEFT + Vector2f(31, 0), Vector2f(40.f, 130.f), "Generate", pink, black, red, black, TextAlign::Left);
+	btnInsert = new Button(btnCreate->pos + Vector2f(0, btnCreate->size.x + BUTTON_THICKNESS * 2), btnCreate->size, "Insert", pink, black, red, black, TextAlign::Left);
+	btnDelete = new Button(btnInsert->pos + Vector2f(0, btnInsert->size.x + BUTTON_THICKNESS * 2), btnCreate->size, "Delete", pink, black, red, black, TextAlign::Left);
+	btnSearch = new Button(btnDelete->pos + Vector2f(0, btnDelete->size.x + BUTTON_THICKNESS * 2), btnCreate->size, "Search", pink, black, red, black, TextAlign::Left);
+	btnFunctionHub = new Button(MENU_POS_BOTTOM_LEFT, Vector2f(btnCreate->size.x*4, 30), ">", pink, pink, pink+Color(30,0,0), black, TextAlign::Middle);
 	btnFunctionHub->SecondText = "<";
 
-	btnCreateRandom = new Button(btnCreate->pos + Vector2f(btnInsert->size.y + OUTLINE_THICKNESS * 5, 0), Vector2f(30.f, 60), "Random", pink, black, red, black, TextAlign::Middle);
-	btnCreateLoad= new Button(btnCreate->pos + Vector2f(btnInsert->size.y + btnCreateRandom->size.y +OUTLINE_THICKNESS * 8, 0), Vector2f(30.f, 60), "From File", pink, black, red, black, TextAlign::Middle);
+	btnCreateRandom = new Button(btnCreate->pos + Vector2f(btnInsert->size.y + OUTLINE_THICKNESS * 5, 0), Vector2f(40.f, 70), "Random", pink, black, red, black, TextAlign::Middle);
+	btnCreateLoad= new Button(btnCreate->pos + Vector2f(btnInsert->size.y + btnCreateRandom->size.y +OUTLINE_THICKNESS * 8, 0), Vector2f(40.f, 70), "From File", pink, black, red, black, TextAlign::Middle);
 
-	txtInsert = new TextBox(btnInsert->pos + Vector2f(btnInsert->size.y + OUTLINE_THICKNESS * 5, 0), Vector2f(30, 110), "Input", "Go", pink, black, black, black, white, {120,0 }, { 30,30 }, 10, TextAlign::Middle);
-	txtDelete = new TextBox(btnDelete->pos + Vector2f(btnDelete->size.y + OUTLINE_THICKNESS * 5, 0), Vector2f(30, 110), "Input", "Go", pink, black, black, black, white, {120,0 }, { 30,30 }, 10, TextAlign::Middle);
-	txtSearch = new TextBox(btnSearch->pos + Vector2f(btnSearch->size.y + OUTLINE_THICKNESS * 5, 0), Vector2f(30, 110), "Input", "Go", pink, black, black, black, white, { 120,0 }, { 30,30 }, 10, TextAlign::Middle);
+	txtInsert = new TextBox(btnInsert->pos + Vector2f(btnInsert->size.y + OUTLINE_THICKNESS * 5, 0), btnInsert->size, "Input", "Go", pink, black, black, black, white, {145,0 }, { 40,40 }, 10, TextAlign::Middle);
+	txtDelete = new TextBox(btnDelete->pos + Vector2f(btnDelete->size.y + OUTLINE_THICKNESS * 5, 0), btnDelete->size, "Input", "Go", pink, black, black, black, white, {145,0 }, { 40,40 }, 10, TextAlign::Middle);
+	txtSearch = new TextBox(btnSearch->pos + Vector2f(btnSearch->size.y + OUTLINE_THICKNESS * 5, 0), btnSearch->size, "Input", "Go", pink, black, black, black, white, {145,0 }, { 40,40 }, 10, TextAlign::Middle);
 
 	shared_ptr <SceneNode> FirstLayer(Buttones);
 	shared_ptr <SceneNode> SecondLayer(Linkes);

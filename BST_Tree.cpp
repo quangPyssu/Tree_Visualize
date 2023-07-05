@@ -14,13 +14,17 @@ BST_Tree::BST_Tree() : Tree()
 
 	PushAnime(anime);
 
-	btnBack = new Button(Vector2f(WINDOW_WIDTH / 2 - 70, WINDOW_HEIGHT - 40), { 30,30 }, "<", black, black + Color(50, 50, 50), black, Color::Transparent, Middle);
-	btnForw = new Button(Vector2f(WINDOW_WIDTH / 2 + 10, WINDOW_HEIGHT - 40), { 30,30 }, ">", black, black + Color(50, 50, 50), black, Color::Transparent, Middle);
-	btnPlay = new Button(Vector2f(WINDOW_WIDTH / 2 - 30, WINDOW_HEIGHT - 40), { 30,30 }, "=", black, black + Color(50, 50, 50), black, Color::Transparent, Middle);
+	btnBack = new Button(Vector2f(WINDOW_WIDTH / 2 - 100, WINDOW_HEIGHT - 40), { 40,40 }, "<", black, black + Color(50, 50, 50), black, Color::Transparent, Middle);
+	btnPlay = new Button(btnBack->pos + Vector2f(btnBack->size.x + 10, 0), btnBack->size, "=", black, black + Color(50, 50, 50), black, Color::Transparent, Middle);
+	btnForw = new Button(btnPlay->pos + Vector2f(btnBack->size.x+10,0), btnBack->size, ">", black, black + Color(50, 50, 50), black, Color::Transparent, Middle);
+	btnStart = new Button(btnBack->pos - Vector2f(btnBack->size.x + 10, 0), btnBack->size, "<<", black, black + Color(50, 50, 50), black, Color::Transparent, Middle);
+	btnEnd = new Button(btnForw->pos + Vector2f(btnBack->size.x + 10, 0), btnBack->size, ">>", black, black + Color(50, 50, 50), black, Color::Transparent, Middle);
 
 	PushToObject(ButtonTranslate(btnBack), Buttones);
 	PushToObject(ButtonTranslate(btnForw), Buttones);
 	PushToObject(ButtonTranslate(btnPlay), Buttones);
+	PushToObject(ButtonTranslate(btnStart), Buttones);
+	PushToObject(ButtonTranslate(btnEnd), Buttones);
 }
 
 BST_Tree::~BST_Tree()
@@ -197,6 +201,7 @@ void BST_Tree::updateCurrent(Event& event, Vector2f& MousePos)
 
 	if (btnBack->isPressed()) anime->ChooseFrame(-1); else if (btnForw->isPressed()) anime->ChooseFrame(1);
 	if (btnPlay->isPressed()) anime->isPlaying = anime->isPlaying ? 0 : 1;
+	if (btnStart->isPressed()) anime->ChooseFrame(-100); else if(btnEnd->isPressed()) anime->ChooseFrame(100);
 }
 
 void BST_Tree::takeTimeCurrent(Time& dt)

@@ -35,6 +35,7 @@ namespace Constants
     extern const int nothing;
 
     extern const sf::Time TIME_PER_ANIME_FRAME;
+    extern const float FRAME_PER_FRAME;
 
     enum Type
     {

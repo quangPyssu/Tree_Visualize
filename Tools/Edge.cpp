@@ -44,14 +44,15 @@ void Edge::setPositionByNode(const Vector2f& pos1, const Vector2f& pos2)
 	make(position, size, -angle);
 	this->pos1 = pos1;
 	this->pos2 = pos2;
+	this->angle = angle;
 }
 
 void Edge::make(const Vector2f& pos, const Vector2f& size, const double& angle) 
 {
 	line.setSize(size);
-	//line.setFillColor();
 	line.setPosition(pos);
 	line.setRotation(angle);
+	this->angle = angle;
 
 	text.setPosition((pos1.x+pos2.x)/2 - this->text.getGlobalBounds().width / 2.f, (pos1.y + pos2.y) / 2 - this->text.getGlobalBounds().height * 1.5);
 }

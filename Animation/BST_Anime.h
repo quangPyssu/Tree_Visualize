@@ -39,12 +39,17 @@ public:
 	vector <vector<TreeNode*>> AnimeFrameNode;
 	vector <vector<vector<Edge*>>> AnimeLinkMatrix;	
 
+	vector <TreeNode*> TransitionNode;
+	vector <Edge*> TransitionLink;
+
 	bool isAdditionial = 0;
 
 	//vector <[N][N]>
 
 	int n=0;
 	int curFrame = 0;
+
+	float transProgress = 0;
 	bool isPlaying = 0;
 	bool isHavingAnime = 0;
 
@@ -60,6 +65,7 @@ public:
 	//Functions
 
 	void drawFrame(RenderTarget& target,int id) const;
+	void drawTrans(RenderTarget& target) const;
 
 	void copyFirstTree(vector <BST_node*>& org,int pos);
 	void copySecondTree(vector <BST_node*>& org,int pos);
@@ -80,6 +86,11 @@ public:
 	void MakeInsertAnime(int data, SceneNode*& Nodes, vector <BST_node*>& org, int pos, int n);
 	void MakeDeleteAnime(int data, SceneNode*& Nodes, vector <BST_node*>& org, int pos, int n);
 	void MakeSearchAnime(int data, SceneNode*& Nodes, vector <BST_node*>& org, int pos, int n);
+
+	void makeTransition();
+
+	TreeNode* InterpolateNode(TreeNode* a,TreeNode* b,float t);
+	Edge* InterpolateEdge(Edge* a, Edge* b, float t);
 
 	void print_console(BST_node* cur, string prefix, bool isLeft);
 

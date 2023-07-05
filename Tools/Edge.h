@@ -14,6 +14,7 @@ public:
 
 	Vector2f pos1;
 	Vector2f pos2;
+	float angle = 0;
 
 	void make(const Vector2f& pos,const Vector2f& size,const double& angle);
 

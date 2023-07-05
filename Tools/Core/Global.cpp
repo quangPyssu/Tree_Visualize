@@ -17,7 +17,7 @@ namespace Constants {
 
 
     const float NODE_POS_HEAD=(float) 80;
-    const sf::Vector2f MENU_POS_BOTTOM_LEFT = {(float) 0,(float) WINDOW_HEIGHT/4*3+18};
+    const sf::Vector2f MENU_POS_BOTTOM_LEFT = {(float) 0,(float) WINDOW_HEIGHT/4*3-21};
 
     const float OUTLINE_THICKNESS = (float)(2.5);
     const float BUTTON_THICKNESS = (float) 0;
@@ -33,7 +33,8 @@ namespace Constants {
 
     const int nothing=-999999999;
 
-    const sf::Time TIME_PER_ANIME_FRAME = sf::seconds(0.5f);
+    const sf::Time TIME_PER_ANIME_FRAME = sf::seconds(0.6f);
+    const float FRAME_PER_FRAME=10;
 };
 
 namespace Colors {

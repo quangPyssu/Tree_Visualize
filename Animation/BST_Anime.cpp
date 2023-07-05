@@ -21,7 +21,7 @@ void BST_Anime::ChooseFrame(int i)
 	cout << "anime " << isHavingAnime << endl;*/
 }
 
-
+//drawin'
 void BST_Anime::drawFrame(RenderTarget& target, int id) const
 {
 	if (id > -1 && AnimeFrameNode.size() > id)
@@ -33,6 +33,14 @@ void BST_Anime::drawFrame(RenderTarget& target, int id) const
 		for (auto a : AnimeFrameNode[id]) target.draw(*a);
 	}
 }
+
+void BST_Anime::drawTrans(RenderTarget& target) const
+{
+	for (auto a : TransitionLink) target.draw(*a);
+
+	for (auto a : TransitionNode) target.draw(*a);
+}
+
 //create a an empty frame
 void BST_Anime::MakeNewFrame()
 {
@@ -142,7 +150,8 @@ void BST_Anime::drawCurrent(RenderTarget& target, RenderStates states) const
 {
 	if (curFrame >= AnimeFrameNode.size()) return;
 
-	drawFrame(target, curFrame);
+	if (!isPlaying) drawFrame(target, curFrame);
+	else drawTrans(target);
 }
 
 void BST_Anime::updateCurrent(Event& event, Vector2f& MousePos)
@@ -157,9 +166,13 @@ void BST_Anime::takeTimeCurrent(Time& dt)
 
 	if (!isPlaying) return;
 
+	makeTransition();
+
 	timeCnt += dt;
 
 	if (timeCnt >= TIME_PER_ANIME_FRAME) curFrame = min((int)AnimeFrameNode.size(), curFrame + 1), timeCnt -= TIME_PER_ANIME_FRAME;
+
+	transProgress = timeCnt / TIME_PER_ANIME_FRAME;
 }
 
 // make Link between node for the last frame
@@ -202,8 +215,8 @@ void BST_Anime::changeLink(BST_node*& node1, BST_node*& node2, Color color)
 {
 	if (!node1 || !node2 || node1 == node2) return;
 
-	Edge*& tmp = AnimeLinkMatrix.back()[node1->vectorPos][node2->vectorPos];
-	Edge*& pmt = AnimeLinkMatrix.back()[node2->vectorPos][node1->vectorPos];
+	Edge* tmp = AnimeLinkMatrix.back()[node1->vectorPos][node2->vectorPos];
+	Edge* pmt = AnimeLinkMatrix.back()[node2->vectorPos][node1->vectorPos];
 
 	if (tmp == NULL)
 	{
@@ -211,6 +224,9 @@ void BST_Anime::changeLink(BST_node*& node1, BST_node*& node2, Color color)
 		{
 			tmp = makeLink(node1, node2, color);
 			AnimeLinkMatrix.back()[node1->vectorPos][node2->vectorPos] = tmp;
+			
+			AnimeLinkMatrix.back()[node2->vectorPos][node1->vectorPos] = NULL;
+			delete pmt;
 		}
 	}
 	else
@@ -227,6 +243,8 @@ void BST_Anime::changeLink(BST_node*& node1, BST_node*& node2, Color color)
 		{
 			tmp->setPositionByNode(AnimeFrameNode.back()[node1->vectorPos]->getPosition(), AnimeFrameNode.back()[node2->vectorPos]->getPosition());
 			tmp->line.setFillColor(color);
+
+			AnimeLinkMatrix.back()[node1->vectorPos][node2->vectorPos] = tmp;
 		}
 	}
 }
@@ -247,6 +265,7 @@ void BST_Anime::MakeInsertAnime(int data, SceneNode*& Nodes, vector <BST_node*>&
 	CloneFromTree(Nodes);
 
 	TreeNode* tmp = new TreeNode(noType, "", data);
+	tmp->Disable();
 	AnimeFrameNode.back().push_back(tmp);
 
 	copyFirstTree(org, pos);
@@ -287,6 +306,8 @@ void BST_Anime::MakeInsertAnime(int data, SceneNode*& Nodes, vector <BST_node*>&
 	{
 		CloneLastFrame();
 
+		AnimeFrameNode.back().back()->Able();
+	
 		AnimeFrameNode.back().back()->Cir.setOutlineColor(Insert_Color);
 
 		AnimeFrameNode.back().back()->setPosition(AnimeFrameNode.back()[par->vectorPos]->getPosition()+Vector2f(NODE_DISTANCE*2*((par->data > data) ? -1 : 1), NODE_DISTANCE));
@@ -563,6 +584,135 @@ void BST_Anime::RecreateVisual(int id, BST_node*& Cur, int& cnt, BST_node*& pare
 	return;
 }
 
+// the Transition
+
+void BST_Anime::makeTransition()
+{
+	if (!isPlaying || curFrame > AnimeFrameNode.size()) return;
+
+	for (auto a : TransitionNode) delete a;
+	for (auto a : TransitionLink) delete a;
+
+	TransitionNode.clear();
+	TransitionLink.clear();
+
+	int u = curFrame;
+	int v = min(curFrame+1, (int) AnimeFrameNode.size()-1);
+	
+	for (int i = 0; i < n; i++)	TransitionNode.push_back(InterpolateNode(AnimeFrameNode[u][i], AnimeFrameNode[v][i],transProgress));
+
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < i; j++)
+		{
+			Edge* a = AnimeLinkMatrix[u][i][j] ? AnimeLinkMatrix[u][i][j] : AnimeLinkMatrix[u][j][i];
+			Edge* b = AnimeLinkMatrix[v][i][j] ? AnimeLinkMatrix[v][i][j] : AnimeLinkMatrix[v][j][i];
+
+			TransitionLink.push_back(InterpolateEdge(a,b,transProgress));
+		}
+	}
+}
+
+TreeNode* BST_Anime::InterpolateNode(TreeNode* a, TreeNode* b, float t) 
+{
+	TreeNode* res=new TreeNode(noType,"",0);
+
+	res->Cir = a->Cir;
+	res->text = a->text;
+
+	int r_diff = b->Cir.getOutlineColor().r - a->Cir.getOutlineColor().r;
+	int g_diff = b->Cir.getOutlineColor().g - a->Cir.getOutlineColor().g;
+	int b_diff = b->Cir.getOutlineColor().b - a->Cir.getOutlineColor().b;
+
+	int red = a->Cir.getOutlineColor().r + t * r_diff;
+	int green = a->Cir.getOutlineColor().g + t * g_diff;
+	int blue = a->Cir.getOutlineColor().b + t * b_diff;
+	int alpha = 255;
+
+
+	if (b->isDisable)
+	{
+		if (a->isDisable) res->Disable();
+		else alpha = 255 - (255 * t);
+	}	else if (a->isDisable) alpha = 0 + 255 * t;
+
+	res->Cir.setOutlineColor(Color(red, green, blue,alpha));
+
+	res->Cir.setPosition((1 - t) * a->Cir.getPosition() + t * b->Cir.getPosition());
+	res->text.setPosition(res->Cir.getPosition().x - res->text.getGlobalBounds().width / 2.f, res->Cir.getPosition().y - res->text.getGlobalBounds().height / 2.f);
+	
+	return res;
+}
+
+Edge* BST_Anime::InterpolateEdge(Edge* a, Edge* b, float t)
+{
+	Edge* res = new Edge(noType, "", 0);
+
+	int alpha = 255;
+
+	if (!b)
+	{
+		if (!a) res->Disable();
+		else
+		{
+			res->line = a->line;
+
+			int r_diff = 255 - a->line.getFillColor().r;
+			int g_diff = 255 - a->line.getFillColor().g;
+			int b_diff = 255 - a->line.getFillColor().b;
+
+			int red = a->line.getFillColor().r + t * r_diff;
+			int green = a->line.getFillColor().g + t * g_diff;
+			int blue = a->line.getFillColor().b + t * b_diff;
+
+			alpha = 255 - (255 * t);
+
+			res->line.setFillColor(Color(red, green, blue, alpha));
+			res->setPositionByNode(a->pos1, a->pos2);
+		}
+	}
+	else
+	{
+		if (!a)
+		{
+			int r_diff = b->line.getFillColor().r-255;
+			int g_diff = b->line.getFillColor().g-255;
+			int b_diff = b->line.getFillColor().b-255;
+
+			int red = 255 + t * r_diff;
+			int green = 255 + t * g_diff;
+			int blue = 255 + t * b_diff;
+
+			alpha = 0 + 255 * t;
+
+			res->line.setFillColor(Color(red, green, blue, alpha));
+			res->setPositionByNode(b->pos1, b->pos2);
+		}
+		else
+		{
+			int r_diff = b->line.getFillColor().r - a->line.getFillColor().r;
+			int g_diff = b->line.getFillColor().g - a->line.getFillColor().g;
+			int b_diff = b->line.getFillColor().b - a->line.getFillColor().b;
+
+			int red = a->line.getFillColor().r + t * r_diff;
+			int green = a->line.getFillColor().g + t * g_diff;
+			int blue = a->line.getFillColor().b + t * b_diff;
+			alpha = 255;
+
+			res->line.setFillColor(Color(red, green, blue, alpha));
+
+			Vector2f pos1Diff = b->pos1 - a->pos1;
+			Vector2f pos2Diff = b->pos2 - a->pos2;
+
+			res->setPositionByNode(Vector2f(a->pos1.x + pos1Diff.x * t, a->pos1.y + pos1Diff.y * t),Vector2f(a->pos2.x + pos2Diff.x * t, a->pos2.y + pos2Diff.y * t));
+		}
+	}
+
+	return res;
+}
+
+// misc
+
 void BST_Anime::CloneLastFrame()
 {
 	MakeNewFrame();
@@ -572,6 +722,7 @@ void BST_Anime::CloneLastFrame()
 		TreeNode* tmp = new TreeNode(noType, "", 0);
 		tmp->Cir = a->Cir;
 		tmp->text = a->text;
+		tmp->isDisable = a->isDisable;
 
 		AnimeFrameNode.back().push_back(tmp);
 	}
@@ -588,6 +739,9 @@ void BST_Anime::CloneLastFrame()
 				tmp->line = a->line;
 				tmp->text = a->text;
 				tmp->isDisable = a->isDisable;
+
+				tmp->pos1 = a->pos1;
+				tmp->pos2 = a->pos2;
 			}
 
 			AnimeLinkMatrix.back()[i][j] = tmp;
@@ -623,8 +777,18 @@ void BST_Anime::DelAll(BST_node*& Root)
 
 void BST_Anime::cleanUp()
 {
+	for (auto a : TransitionNode) delete a;
+	for (auto a : TransitionLink) delete a;
+
+	TransitionNode.clear();
+	TransitionLink.clear();
+
 	if (!NodeVectorFirst.empty()) DelAll(NodeVectorFirst[FirstPos]);
 	if (!NodeVectorSecond.empty()) DelAll(NodeVectorSecond[SecondPos]);
+
+	NodeVectorFirst.clear();
+	NodeVectorSecond.clear();
+
 
 	for (auto a : AnimeFrameNode) for (auto b : a)	delete b;
 	for (auto a : AnimeLinkMatrix) for (auto b : a) for (auto c : b) delete c;
@@ -632,10 +796,7 @@ void BST_Anime::cleanUp()
 	AnimeFrameNode.clear();
 	AnimeLinkMatrix.clear();
 	AnimeNodePos.clear();
-
-	NodeVectorFirst.clear();
-	NodeVectorSecond.clear();
-
+	
 	int n = 0;
 	int FirstPos = 0;
 	int SecondPos = 0;

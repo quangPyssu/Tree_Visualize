@@ -23,6 +23,8 @@ struct BST_Tree : public Tree
 	Button* btnBack;
 	Button* btnForw;
 	Button* btnPlay;
+	Button* btnStart;
+	Button* btnEnd;
 
 	// Inheritance
 

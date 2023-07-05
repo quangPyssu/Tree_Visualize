@@ -15,7 +15,7 @@ struct AVL_Tree : public Tree
 
 	AVL_Anime* anime;
 
-	float BeginPosX=0;
+	float BeginPosX = 0;
 
 	bool is;
 
@@ -23,22 +23,25 @@ struct AVL_Tree : public Tree
 	Button* btnBack;
 	Button* btnForw;
 	Button* btnPlay;
+	Button* btnStart;
+	Button* btnEnd;
 
 	// Inheritance
 
-	virtual void updateCurrent(Event& event, Vector2f& MousePos) ;
+	virtual void updateCurrent(Event& event, Vector2f& MousePos);
+	virtual void takeTimeCurrent(Time& dt);
 
 	//function
 
 	void CreateVisual();
 
-	void Push(AVL_node* &Cur,int& cnt,AVL_node* &,bool isLeft);
+	void Push(AVL_node*& Cur, int& cnt, AVL_node*&, bool isLeft);
 	void PushLink(AVL_node*& node1, AVL_node*& node2);
-	void PushAnime(AVL_Anime* &anime1);
+	void PushAnime(AVL_Anime*& anime1);
 
 	//actual tree
 
-	int cnt=0;
+	int cnt = 0;
 
 	vector <AVL_node*> NodeVector;
 
@@ -48,7 +51,7 @@ struct AVL_Tree : public Tree
 
 	int count_node(AVL_node* cur);
 
-	AVL_node* insertT(AVL_node*& cur, int data, AVL_node*& parent,bool Isleft);
+	AVL_node* insertT(AVL_node*& cur, int data, AVL_node*& parent, bool Isleft);
 
 	void print_console(AVL_node* cur, string prefix, bool isLeft);
 
