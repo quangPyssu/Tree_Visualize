@@ -11,6 +11,12 @@ void SceneNode::attachChild(Ptr child)
     Children.emplace_back(std::move(child));
 }
 
+void SceneNode::PushToObject(SceneNode* tmp, SceneNode* Father)
+{
+    shared_ptr <SceneNode> here(tmp);
+    Father->attachChild(here);
+}
+
 SceneNode::Ptr SceneNode::detachChild(const SceneNode& node)
 {
     auto found = find_if(Children.begin(), Children.end(), [&](Ptr& p) -> bool { return p.get() == &node; });

@@ -15,8 +15,8 @@ Tree::Tree()
 	SearchGroup = new GUIGroup();
 
 	// testies
-	btnTest = new Button(Vector2f(21, 10), Vector2f(30.f, 110), "test", pink, black, red, black, TextAlign::Middle);
-	PushToObject(ButtonTranslate(btnTest),Buttones);
+	//btnTest = new Button(Vector2f(21, 10), Vector2f(30.f, 110), "test", pink, black, red, black, TextAlign::Middle);
+	//PushToObject(ButtonTranslate(btnTest),Buttones);
 	// testies
 
 	btnCreate = new Button(MENU_POS_BOTTOM_LEFT + Vector2f(31, 0), Vector2f(40.f, 130.f), "Generate", pink, black, red, black, TextAlign::Left);
@@ -82,17 +82,19 @@ Tree::Tree()
 
 	SearchGroup->FatherBtn(btnSearch);
 	SearchGroup->adopt(txtSearch->btn_cofirm, txtSearch);
+
+	Disable();
 }
 
 Tree::~Tree()
 {
 }
 
-void Tree::PushToObject(SceneNode* tmp, SceneNode* Father)
-{
-	shared_ptr <SceneNode> here(tmp);
-	Father->attachChild(here);
-}
+//void Tree::PushToObject(SceneNode* tmp, SceneNode* Father)
+//{
+//	shared_ptr <SceneNode> here(tmp);
+//	Father->attachChild(here);
+//}
 
 SceneNode* Tree::ButtonTranslate(Button*& btn)
 {

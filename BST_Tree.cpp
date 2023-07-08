@@ -25,6 +25,9 @@ BST_Tree::BST_Tree() : Tree()
 	PushToObject(ButtonTranslate(btnPlay), Buttones);
 	PushToObject(ButtonTranslate(btnStart), Buttones);
 	PushToObject(ButtonTranslate(btnEnd), Buttones);
+	
+	srand(time(NULL));
+	Forge(10);
 }
 
 BST_Tree::~BST_Tree()
@@ -41,19 +44,62 @@ BST_Tree::~BST_Tree()
 	delete txtDelete;*/
 }
 
+void BST_Tree::Disable()
+{
+	if (isDisable) return;
+
+	Obliterate();
+	anime->cleanUp();
+
+	isDisable = true;
+}
+
+void BST_Tree::Able() 
+{
+	if (!isDisable) return;
+
+	Forge(rand() % 5 + 8);
+
+	isDisable = false;
+}
+
+void BST_Tree::Forge(int n)
+{
+	cout << "Randomizing" << endl;
+
+	DelAll(root);
+
+	for (int i = 0; i < n; i++) insertT(root, rand() % 50 + 10, root, true);
+	CreateVisual();
+	print_console();
+
+	btnFunctionHub->ForceOff();
+}
+
+void BST_Tree::Obliterate()
+{
+	DestroyVisual();
+	DelAll(root);
+}
+
 void BST_Tree::CreateVisual()
 {
-	if (!root) return;
-
-	Nodes->Children.clear();
-	Linkes->Children.clear();
+	DestroyVisual();
 
 	NodeVector.clear();
 
 	BeginPosX = WINDOW_WIDTH / 2 - (NODE_DISTANCE * count_node(root));
 
 	cnt = 0;
+
+	if (!root) return;
 	Push(root, cnt, root, true);
+}
+
+void BST_Tree::DestroyVisual()
+{
+	Nodes->Children.clear();
+	Linkes->Children.clear();
 }
 
 int BST_Tree::count_node(BST_node* cur)
@@ -134,16 +180,23 @@ void BST_Tree::updateCurrent(Event& event, Vector2f& MousePos)
 {
 	if (btnCreateRandom->isPressed())// Generate
 	{
-		cout << "roger that" << endl;
+		Forge(rand() % 5 + 10);
+	} 
+	else if (btnCreateLoad->isPressed())
+	{
+		ifstream fin("dataForLoad/BST_Tree.in");
+		int a;
+		cout << "Loading..." << endl;
 
 		DelAll(root);
 
-		for (int i = 0; i < 10; i++) insertT(root, rand() % 50 + 10, root, true);
+		while (fin >> a) insertT(root, a, root, true);
+		
 		CreateVisual();
 		print_console();
+
 		btnFunctionHub->ForceOff();
-	}
-	else
+	} else
 		if (root)
 		{
 			if (txtDelete->data != nothing) // delete
@@ -159,9 +212,6 @@ void BST_Tree::updateCurrent(Event& event, Vector2f& MousePos)
 				//print_console();
 
 				btnFunctionHub->ForceOff();
-
-				anime->copySecondTree(NodeVector, root->vectorPos);
-
 			}
 			else
 				if (txtInsert->data != nothing) // delete
@@ -177,8 +227,6 @@ void BST_Tree::updateCurrent(Event& event, Vector2f& MousePos)
 					//print_console();
 
 					btnFunctionHub->ForceOff();
-
-					anime->copySecondTree(NodeVector, root->vectorPos);
 				}
 				else
 					if (txtSearch->data != nothing) // delete
@@ -194,8 +242,6 @@ void BST_Tree::updateCurrent(Event& event, Vector2f& MousePos)
 						//print_console();
 
 						btnFunctionHub->ForceOff();
-
-						anime->copySecondTree(NodeVector, root->vectorPos);
 					}
 		}
 

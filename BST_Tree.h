@@ -31,13 +31,20 @@ struct BST_Tree : public Tree
 	virtual void updateCurrent(Event& event, Vector2f& MousePos) ;
 	virtual void takeTimeCurrent(Time& dt) ;
 
+	void Disable() override;
+	void Able() override;
+
 	//function
 
 	void CreateVisual();
+	void DestroyVisual();
 
 	void Push(BST_node* &Cur,int& cnt,BST_node* &,bool isLeft);
 	void PushLink(BST_node*& node1, BST_node*& node2);
 	void PushAnime(BST_Anime* &anime1);
+
+	void Obliterate();
+	void Forge(int n);
 
 	//actual tree
 

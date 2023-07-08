@@ -14,6 +14,8 @@ void BST_Anime::ChooseFrame(int i)
 	curFrame += i;
 	curFrame = min((int)AnimeFrameNode.size(), max(0, curFrame));
 	isPlaying = 0;
+	transProgress = 0;
+	timeCnt = sf::seconds(0.f);
 	isHavingAnime = (curFrame < (int)AnimeFrameNode.size()) ? 1 : 0;
 
 	/*cout << "cur " << curFrame << endl;
@@ -93,38 +95,6 @@ void BST_Anime::copyFirstTree(vector <BST_node*>& org, int pos)
 	cout << endl;
 
 	makeLinkLevel(NodeVectorFirst[pos]);
-}
-
-//make a vector copy of the tree after the change
-void BST_Anime::copySecondTree(vector <BST_node*>& org, int pos)
-{
-	SecondPos = pos;
-
-	for (auto a : org)
-	{
-		BST_node* tmp = new BST_node;
-		tmp->data = a->data;
-		tmp->vectorPos = a->vectorPos;
-		tmp->isLeft = a->isLeft;
-		NodeVectorSecond.push_back(tmp);
-	}
-
-	for (int i = 0; i < org.size(); i++)
-	{
-		/*cout << " healp 2 ";
-		cout << NodeVectorSecond[i]->data << " " << NodeVectorSecond.size() << endl;
-		cout << " " << i ;*/
-
-		if (org[i]->left) NodeVectorSecond[i]->left = NodeVectorSecond[org[i]->left->vectorPos];// , cout << " l " << NodeVectorSecond[i]->left->vectorPos << "; ";
-		if (org[i]->right) NodeVectorSecond[i]->right = NodeVectorSecond[org[i]->right->vectorPos];//, cout << " r " << NodeVectorSecond[i]->right->vectorPos << "; ";
-		if (org[i]->par) NodeVectorSecond[i]->par = NodeVectorSecond[org[i]->par->vectorPos];// , cout << " p " << NodeVectorSecond[i]->par->vectorPos << "; ";
-
-		//cout << endl;
-	}
-
-	cout << " sqw 2  " << endl;
-	print_console(NodeVectorSecond[pos], "", 1);
-	cout << endl;
 }
 
 //create a display_node copy of the tree before change
@@ -476,7 +446,7 @@ void BST_Anime::MakeDeleteAnime(int data, SceneNode*& Nodes, vector <BST_node*>&
 					changeLink(par, cur, trans);
 					changeLink(cur, tmp, trans);
 
-					changeLink(par, tmp, Chosen_Color);
+					if (par!=cur) changeLink(par, tmp, Chosen_Color);
 				}
 				else			// have right child
 				{
@@ -493,7 +463,7 @@ void BST_Anime::MakeDeleteAnime(int data, SceneNode*& Nodes, vector <BST_node*>&
 					changeLink(par, cur, trans);
 					changeLink(cur, tmp, trans);
 
-					changeLink(par, tmp, Chosen_Color);
+					if (par != cur) changeLink(par, tmp, Chosen_Color);
 				}
 	}
 }
@@ -784,11 +754,8 @@ void BST_Anime::cleanUp()
 	TransitionLink.clear();
 
 	if (!NodeVectorFirst.empty()) DelAll(NodeVectorFirst[FirstPos]);
-	if (!NodeVectorSecond.empty()) DelAll(NodeVectorSecond[SecondPos]);
 
 	NodeVectorFirst.clear();
-	NodeVectorSecond.clear();
-
 
 	for (auto a : AnimeFrameNode) for (auto b : a)	delete b;
 	for (auto a : AnimeLinkMatrix) for (auto b : a) for (auto c : b) delete c;
@@ -800,4 +767,7 @@ void BST_Anime::cleanUp()
 	int n = 0;
 	int FirstPos = 0;
 	int SecondPos = 0;
+
+	curFrame = 0;
+	transProgress = 0;
 }

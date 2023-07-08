@@ -35,6 +35,8 @@ Button::Button(Vector2f pos, Vector2f size, string text, Color idleColor, Color 
 	this->hoverColor = hoverColor;
 	this->activeColor = activeColor;
 	this->borderColor = borderColor;
+	this->textColor = white;
+	this->textOnColor = white;
 
 	shape.setFillColor(idleColor);
 	shape.setOutlineColor(borderColor);
@@ -106,6 +108,7 @@ void Button::reText()
 {
 	if (SecondText == "") return;
 	text.setString(isOn ? SecondText : FirstText);
+	//text.setFillColor(isOn ? textColor : textOnColor);
 
 	if (this->textAlign == TextAlign::Middle)
 		this->text.setPosition(this->shape.getPosition().x + this->shape.getSize().x / 2.f - this->text.getGlobalBounds().width / 2.f

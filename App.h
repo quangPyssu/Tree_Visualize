@@ -2,6 +2,7 @@
 
 #include "SFML/Graphics.hpp"
 #include "Tools/Button.h"
+#include "Tools/GUIGroup.h"
 #include "Tools/Core/Global.h"
 #include "Tools/SceneNode.h"
 #include "Tools/TreeNode.h"
@@ -46,11 +47,18 @@ public:
 
 	// stuff
 	
-	SceneNode* MasterDisplay;
+	SceneNode MasterDisplay;
 	BST_Tree* mBST;
 	AVL_Tree* mAVL;
 
 	RectangleShape BG1;
+
+	Button* btnBST;
+	Button* btnAVL;
+
+	GUIGroup* MenuGroup;
+
+	vector <SceneNode*> dataStucture;
 
 	// Timer
 	

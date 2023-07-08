@@ -38,6 +38,7 @@ public:
 
     //vector<shared_ptr<SceneNode>>& getChildren();
     TextAlign textAlign = TextAlign::Middle;
+    void PushToObject(SceneNode* tmp, SceneNode* Father);
 
 public:
     vector<Ptr> Children;
@@ -45,8 +46,8 @@ public:
     SceneNode* Parent;
 
     bool isDisable = false;
-    void Disable();
-    void Able();
+    virtual void Disable();
+    virtual void Able();
 
 public:
     virtual void setPosition(const sf::Vector2f& position) {}

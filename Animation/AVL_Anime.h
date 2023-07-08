@@ -9,6 +9,9 @@ struct AVL_node
 	int data = nothing;
 	int level = 1;
 
+	int height = 0;
+	int BalanceFactor = 0;
+
 	AVL_node* left = NULL;
 	AVL_node* right = NULL;
 	AVL_node* par = NULL;
@@ -28,10 +31,8 @@ public:
 	virtual ~AVL_Anime();
 
 	vector<AVL_node*> NodeVectorFirst;
-	vector<AVL_node*> NodeVectorSecond;
 
 	int FirstPos = 0;
-	int SecondPos = 0;
 
 	//vector<vector<int>> AnimeNodePos;
 	vector <int> AnimeNodePos;
@@ -39,12 +40,17 @@ public:
 	vector <vector<TreeNode*>> AnimeFrameNode;
 	vector <vector<vector<Edge*>>> AnimeLinkMatrix;
 
+	vector <TreeNode*> TransitionNode;
+	vector <Edge*> TransitionLink;
+
 	bool isAdditionial = 0;
 
 	//vector <[N][N]>
 
 	int n = 0;
 	int curFrame = 0;
+
+	float transProgress = 0;
 	bool isPlaying = 0;
 	bool isHavingAnime = 0;
 
@@ -60,9 +66,9 @@ public:
 	//Functions
 
 	void drawFrame(RenderTarget& target, int id) const;
+	void drawTrans(RenderTarget& target) const;
 
 	void copyFirstTree(vector <AVL_node*>& org, int pos);
-	void copySecondTree(vector <AVL_node*>& org, int pos);
 
 	void MakeNewFrame();
 
@@ -80,6 +86,11 @@ public:
 	void MakeInsertAnime(int data, SceneNode*& Nodes, vector <AVL_node*>& org, int pos, int n);
 	void MakeDeleteAnime(int data, SceneNode*& Nodes, vector <AVL_node*>& org, int pos, int n);
 	void MakeSearchAnime(int data, SceneNode*& Nodes, vector <AVL_node*>& org, int pos, int n);
+
+	void makeTransition();
+
+	TreeNode* InterpolateNode(TreeNode* a, TreeNode* b, float t);
+	Edge* InterpolateEdge(Edge* a, Edge* b, float t);
 
 	void print_console(AVL_node* cur, string prefix, bool isLeft);
 

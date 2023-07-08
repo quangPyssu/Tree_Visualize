@@ -5,6 +5,7 @@ AVL_node* AVL_Tree::new_node(int data)
 	AVL_node* tmp = new AVL_node;
 
 	tmp->data = data;
+	tmp->height = 1;
 	return tmp;
 }
 
@@ -25,6 +26,9 @@ AVL_Tree::AVL_Tree() : Tree()
 	PushToObject(ButtonTranslate(btnPlay), Buttones);
 	PushToObject(ButtonTranslate(btnStart), Buttones);
 	PushToObject(ButtonTranslate(btnEnd), Buttones);
+
+	srand(time(NULL));
+	Forge(10);
 }
 
 AVL_Tree::~AVL_Tree()
@@ -41,19 +45,66 @@ AVL_Tree::~AVL_Tree()
 	delete txtDelete;*/
 }
 
+void AVL_Tree::Disable()
+{
+	if (isDisable) return;
+
+	Obliterate();
+	anime->cleanUp();
+
+	isDisable = true;
+}
+
+void AVL_Tree::Able()
+{
+	if (!isDisable) return;
+
+	Forge(rand() % 5 + 8);
+
+	isDisable = false;
+}
+
+void AVL_Tree::Forge(int n)
+{
+	cout << "Randomizing" << endl;
+
+	DelAll(root);
+
+	for (int i = 0; i < n; i++)
+	{
+		int a = rand() % 50 + 10;
+		root=insertT(root, a, root, true);
+	}
+	CreateVisual();
+	print_console();
+
+	btnFunctionHub->ForceOff();
+}
+
+void AVL_Tree::Obliterate()
+{
+	DestroyVisual();
+	DelAll(root);
+}
+
 void AVL_Tree::CreateVisual()
 {
-	if (!root) return;
-
-	Nodes->Children.clear();
-	Linkes->Children.clear();
+	DestroyVisual();
 
 	NodeVector.clear();
 
 	BeginPosX = WINDOW_WIDTH / 2 - (NODE_DISTANCE * count_node(root));
 
 	cnt = 0;
+
+	if (!root) return;
 	Push(root, cnt, root, true);
+}
+
+void AVL_Tree::DestroyVisual()
+{
+	Nodes->Children.clear();
+	Linkes->Children.clear();
 }
 
 int AVL_Tree::count_node(AVL_node* cur)
@@ -134,13 +185,21 @@ void AVL_Tree::updateCurrent(Event& event, Vector2f& MousePos)
 {
 	if (btnCreateRandom->isPressed())// Generate
 	{
-		cout << "roger that" << endl;
+		Forge(rand() % 5 + 10);
+	}
+	else if (btnCreateLoad->isPressed())
+	{
+		ifstream fin("dataForLoad/AVL_Tree.in");
+		int a;
+		cout << "Loading..." << endl;
 
 		DelAll(root);
 
-		for (int i = 0; i < 10; i++) insertT(root, rand() % 50 + 10, root, true);
+		while (fin >> a) root=insertT(root, a, root, true);
+
 		CreateVisual();
 		print_console();
+
 		btnFunctionHub->ForceOff();
 	}
 	else
@@ -159,9 +218,6 @@ void AVL_Tree::updateCurrent(Event& event, Vector2f& MousePos)
 				//print_console();
 
 				btnFunctionHub->ForceOff();
-
-				anime->copySecondTree(NodeVector, root->vectorPos);
-
 			}
 			else
 				if (txtInsert->data != nothing) // delete
@@ -172,13 +228,11 @@ void AVL_Tree::updateCurrent(Event& event, Vector2f& MousePos)
 
 					anime->MakeInsertAnime(data, Nodes, NodeVector, root->vectorPos, count_node(root));
 
-					insertT(root, data, root, false);
+					root=insertT(root, data, root, false);
 					CreateVisual();
 					//print_console();
 
 					btnFunctionHub->ForceOff();
-
-					anime->copySecondTree(NodeVector, root->vectorPos);
 				}
 				else
 					if (txtSearch->data != nothing) // delete
@@ -194,8 +248,6 @@ void AVL_Tree::updateCurrent(Event& event, Vector2f& MousePos)
 						//print_console();
 
 						btnFunctionHub->ForceOff();
-
-						anime->copySecondTree(NodeVector, root->vectorPos);
 					}
 		}
 
@@ -220,6 +272,52 @@ void AVL_Tree::takeTimeCurrent(Time& dt)
 	}
 }
 
+int AVL_Tree::height(AVL_node* cur)
+{
+	if (!cur) return 0;
+	return cur->height;
+}
+
+void AVL_Tree::updateHeight(AVL_node* &cur)
+{
+	if (!cur) return;
+	cur->height = max(height(cur->left), height(cur->right)) + 1;
+}
+
+AVL_node* AVL_Tree::rightRotate(AVL_node* cur)
+{
+	AVL_node* x=cur->left;
+	AVL_node* y = x->right;
+	
+	cur->left = y;
+	x->right = cur;
+
+	updateHeight(cur);
+	updateHeight(x);	
+
+	return x;
+}
+
+AVL_node* AVL_Tree::leftRotate(AVL_node* cur)
+{
+	AVL_node* x = cur->right;
+	AVL_node* y = x->left;
+	
+	cur->right = y;
+	x->left = cur;
+
+	updateHeight(cur);
+	updateHeight(x);	
+
+	return x;
+}
+
+int AVL_Tree::GetBalance(AVL_node* cur)
+{
+	if (!cur) return 0;
+	return height(cur->right) - height(cur->left);
+}
+
 AVL_node* AVL_Tree::insertT(AVL_node*& cur, int data, AVL_node*& parent, bool isLeft)
 {
 	if (cur == NULL)
@@ -235,9 +333,36 @@ AVL_node* AVL_Tree::insertT(AVL_node*& cur, int data, AVL_node*& parent, bool is
 		return cur;
 	}
 
-	if (cur->data > data) return insertT(cur->left, data, cur, true); else
-		if (cur->data < data) return insertT(cur->right, data, cur, false); else
-			return NULL;
+	if (cur->data > data) cur->left=insertT(cur->left, data, cur, true); else
+		if (cur->data < data) cur->right=insertT(cur->right, data, cur, false); else
+			return cur;
+
+	updateHeight(cur);
+	int balance = GetBalance(cur);
+
+	if (balance > 1)
+	{
+		if (data > cur->right->data) return leftRotate(cur); // left left
+		else 
+		if (data < cur->right->data) // right left 
+		{
+			cur->right=rightRotate(cur->right);
+			return leftRotate(cur);
+		}
+	} else
+	
+	if (balance < -1)
+	{
+		if (data < cur->left->data) return rightRotate(cur); // right right
+		else
+		if (data > cur->left->data)  // left right
+		{
+			cur->left=leftRotate(cur->left);
+			return rightRotate(cur);
+		}
+	}
+
+	return cur;
 
 }
 
@@ -265,63 +390,58 @@ AVL_node* AVL_Tree::Del(AVL_node*& cur, int data)
 {
 	if (!cur) return NULL;
 
-	if (cur->data > data)
+	if (cur->data > data) cur->left = Del(cur->left, data); else 
+		if (cur->data < data) cur->right = Del(cur->right, data); else
+		{	//delete this node
+
+			if (!cur->left && !cur->right) // delete leave node
+			{
+				delete cur;
+				return NULL;
+			} else
+
+			if (cur->left && cur->right) // delete node that have 2 children
+			{
+				AVL_node* tmp = cur->left;
+
+				while (tmp->right) tmp = tmp->right;
+
+				cur->data = tmp->data;
+				cur->left = Del(cur->left, tmp->data);
+			}
+			else //have one child
+			{
+				AVL_node* tmp = cur->left ? cur->left : cur->right;
+				AVL_node* del = cur;
+				cur = tmp;
+
+				delete del;
+			}
+		}
+
+	updateHeight(cur);
+	int balance = GetBalance(cur);
+
+	if (balance > 1)
 	{
-		cur->left = Del(cur->left, data);
-
-		return cur;
-	}
-	else
-		if (cur->data < data)
+		cout << "ady " << endl;
+		if (GetBalance(cur->right)>=0) return leftRotate(cur);
+		else 
 		{
-			cur->right = Del(cur->right, data);
-
-			return cur;
+			cur->right=rightRotate(cur->right);
+			return leftRotate(cur);
 		}
-
-	if (!cur->left && !cur->right) // delete leave node
-	{
-		delete cur;
-		return NULL;
-	}
-
-	if (cur->left && cur->right) // delete node that have 2 children
-	{
-		AVL_node* par = cur;
-		AVL_node* tmp = cur->left;
-
-		while (tmp->right)
+	} else
+		if (balance < -1)
 		{
-			par = tmp;
-			tmp = tmp->right;
-		}
-
-		if (par == cur) par->left = tmp->left;
-		else par->right = tmp->left;
-
-		tmp->left = cur->left;
-		tmp->right = cur->right;
-
-		delete cur;
-
-		return tmp;
-	}
-	else
-		if (cur->left)   // have left child
-		{
-			AVL_node* tmp = cur->left;
-			delete cur;
-
-			return tmp;
-		}
-		else			// have right child
-		{
-			AVL_node* tmp = cur->right;
-			delete cur;
-
-			return tmp;
-		}
-
+			cout << "ads " << endl;
+			if (GetBalance(cur->right) <= 0) return rightRotate(cur);
+			else
+			{
+				cur->left = leftRotate(cur->left);
+				return leftRotate(cur);
+			}
+		}	
 
 	return cur;
 }

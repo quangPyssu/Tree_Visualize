@@ -28,10 +28,8 @@ public:
 	virtual ~BST_Anime();
 
 	vector<BST_node*> NodeVectorFirst;
-	vector<BST_node*> NodeVectorSecond;
 
 	int FirstPos = 0;
-	int SecondPos = 0;
 
 	//vector<vector<int>> AnimeNodePos;
 	vector <int> AnimeNodePos;
@@ -68,7 +66,6 @@ public:
 	void drawTrans(RenderTarget& target) const;
 
 	void copyFirstTree(vector <BST_node*>& org,int pos);
-	void copySecondTree(vector <BST_node*>& org,int pos);
 
 	void MakeNewFrame();
 	

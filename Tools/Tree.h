@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <fstream>
 #include "TreeNode.h"
 #include "Edge.h"
 #include "SceneNode.h"
@@ -23,7 +24,7 @@ struct Tree : public SceneNode
 
 	//?? testing zone
 	
-	Button* btnTest;
+	//Button* btnTest;
 
 	//??
 	
@@ -57,7 +58,7 @@ struct Tree : public SceneNode
 	//void Push(BST_node* &Cur,int& cnt,BST_node* &,bool isLeft);
 	//void PushLink(BST_node*& node1, BST_node*& node2);
 
-	void PushToObject(SceneNode* tmp, SceneNode* Father);
+	//void PushToObject(SceneNode* tmp, SceneNode* Father);
 
 	SceneNode* ButtonTranslate(Button* &btn);
 	SceneNode* TextBoxTranslate(TextBox* &txt);

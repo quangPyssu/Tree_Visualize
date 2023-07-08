@@ -10,15 +10,34 @@ App::App()
 	window = new RenderWindow(videoMode, "data Visual", Style::Default, settings);
 
 	window->setFramerateLimit(60);
-
-	MasterDisplay = new SceneNode();
-
+	
 	mBST = new BST_Tree();
-	//mAVL = new AVL_Tree();
 
-	shared_ptr <BST_Tree> DmBST(mBST);
+	MasterDisplay.PushToObject(mBST, &MasterDisplay);
 
-	MasterDisplay->attachChild(DmBST);
+
+	mAVL = new AVL_Tree();
+
+	MasterDisplay.PushToObject(mAVL, &MasterDisplay);
+
+	btnBST = new Button(Vector2f(30, 1), Vector2f(38.f, 110), "BST tree", pink, grey, pink, black, TextAlign::Middle);
+	btnBST->SecondText = "[>"+btnBST->FirstText+"<]";
+	btnBST->isOn = true;
+	MasterDisplay.PushToObject(btnBST, &MasterDisplay);
+
+	btnAVL = new Button(btnBST->pos+Vector2f(btnBST->size.y+1,0), btnBST->size, "AVL tree", pink, grey, pink, black, TextAlign::Middle);
+	btnAVL->SecondText = "[>" + btnAVL->FirstText + "<]";
+	MasterDisplay.PushToObject(btnAVL, &MasterDisplay);
+
+	dataStucture.push_back(mBST);
+	dataStucture.push_back(mAVL);
+
+	MenuGroup = new GUIGroup;
+
+	MenuGroup->adopt(btnBST, NULL);
+	MenuGroup->adopt(btnAVL, NULL);
+
+	MasterDisplay.PushToObject(MenuGroup, &MasterDisplay);
 
 	BG1.setSize((Vector2f) window->getSize()-Vector2f(60,80));
 	BG1.setPosition({ 30,40 });	
@@ -36,7 +55,7 @@ App::~App()
 
 	//delete MasterDisplay;
 
-	delete mBST;
+	//delete mBST;
 }
 
 void App::pollEvents()
@@ -68,29 +87,42 @@ void App::ProcessInput()
 {
 	MousePos = this->window->mapPixelToCoords(Mouse::getPosition(*this->window));
 
-	while (window->pollEvent(event)) 
+	while (window->pollEvent(event))
 	{
-		update();		
+		update();
 
 		if (event.type == Event::Closed) {
 			window->close();
 		}
 
 		if (event.type == sf::Event::GainedFocus)
-			isPaused = false; else 
-		if (event.type == sf::Event::LostFocus)
-			isPaused = true;
+			isPaused = false; else
+			if (event.type == sf::Event::LostFocus)
+				isPaused = true;
 	}
 }
 
 void App::takeTime(Time dt)
 {
-	MasterDisplay->takeTime(dt);
+	MasterDisplay.takeTime(dt);
 }
 
 void App::update()
 {
-	MasterDisplay->update(event, MousePos);
+	MasterDisplay.update(event, MousePos);
+
+	if (btnBST->isOn)
+	{
+		for (int i = 0; i < dataStucture.size();i++) if (i!=0) dataStucture[i]->Disable();
+
+		mBST->Able();
+	}
+	else
+	{
+		for (int i = 0; i < dataStucture.size(); i++) if (i != 1) dataStucture[i]->Disable();
+
+		mAVL->Able();
+	}
 }
 
 void App::Render()
@@ -98,7 +130,7 @@ void App::Render()
 	window->clear(white);
 
 	window->draw(BG1);
-	MasterDisplay->draw(*window, a);
+	MasterDisplay.draw(*window, a);
 
 	window->display();
 }

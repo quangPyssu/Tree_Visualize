@@ -45,6 +45,9 @@ public:
     string FirstText = "";
     string SecondText = "";
 
+    Color textOnColor;
+    Color OnColor;
+
     //constructor
 
     Button(Vector2f pos, Vector2f size, string text, Color idleColor, Color hoverColor, Color activeColor,Color borderColor,TextAlign textAlign);
