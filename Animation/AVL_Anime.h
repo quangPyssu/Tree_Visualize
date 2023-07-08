@@ -54,6 +54,8 @@ public:
 	bool isPlaying = 0;
 	bool isHavingAnime = 0;
 
+	float BeginPosX = 0;
+
 	Time timeCnt = sf::seconds(0.f);
 
 	//inheritance
@@ -76,6 +78,7 @@ public:
 	void CloneLastFrame();
 
 	void makeLinkLevel(AVL_node*& Cur);
+	void breakLinkLevel();
 	Edge* makeLink(AVL_node*& node1, AVL_node*& node2, Color color);
 	void changeLink(AVL_node*& node1, AVL_node*& node2, Color color);
 
@@ -87,6 +90,8 @@ public:
 	void MakeDeleteAnime(int data, SceneNode*& Nodes, vector <AVL_node*>& org, int pos, int n);
 	void MakeSearchAnime(int data, SceneNode*& Nodes, vector <AVL_node*>& org, int pos, int n);
 
+	void makeRotation(AVL_node* cur, AVL_node* par, int data, Type type);
+
 	void makeTransition();
 
 	TreeNode* InterpolateNode(TreeNode* a, TreeNode* b, float t);
@@ -94,9 +99,7 @@ public:
 
 	void print_console(AVL_node* cur, string prefix, bool isLeft);
 
-	void RecreateVisual(int id, AVL_node*& Cur, int& cnt, AVL_node*& parent, bool isLeft, float BeginPosX);
-
-	void DelAll(AVL_node*& Root);
+	void ReposAfter(AVL_node* cur,int& cnt,int level,bool isLeft);
 
 	void cleanUp();
 };

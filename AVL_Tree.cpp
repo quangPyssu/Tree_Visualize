@@ -340,24 +340,36 @@ AVL_node* AVL_Tree::insertT(AVL_node*& cur, int data, AVL_node*& parent, bool is
 	updateHeight(cur);
 	int balance = GetBalance(cur);
 
-	if (balance > 1)
+	if (balance > 1) //cur->data
 	{
-		if (data > cur->right->data) return leftRotate(cur); // left left
+		if (data > cur->right->data)
+		{
+			if (anime->isHavingAnime) anime->makeRotation(anime->NodeVectorFirst[anime->FirstPos], anime->NodeVectorFirst[anime->FirstPos], cur->data, Left_Left);
+			return leftRotate(cur); // left left
+		}
 		else 
 		if (data < cur->right->data) // right left 
 		{
+			if (anime->isHavingAnime) anime->makeRotation(anime->NodeVectorFirst[anime->FirstPos], anime->NodeVectorFirst[anime->FirstPos], cur->right->data, Right_Right);
 			cur->right=rightRotate(cur->right);
+			if (anime->isHavingAnime) anime->makeRotation(anime->NodeVectorFirst[anime->FirstPos], anime->NodeVectorFirst[anime->FirstPos], cur->data, Left_Left);
 			return leftRotate(cur);
 		}
 	} else
 	
 	if (balance < -1)
 	{
-		if (data < cur->left->data) return rightRotate(cur); // right right
+		if (data < cur->left->data)
+		{
+			if (anime->isHavingAnime) anime->makeRotation(anime->NodeVectorFirst[anime->FirstPos], anime->NodeVectorFirst[anime->FirstPos], cur->data, Right_Right);
+			return rightRotate(cur); // right right
+		}
 		else
 		if (data > cur->left->data)  // left right
 		{
+			if (anime->isHavingAnime) anime->makeRotation(anime->NodeVectorFirst[anime->FirstPos], anime->NodeVectorFirst[anime->FirstPos], cur->left->data, Left_Left);
 			cur->left=leftRotate(cur->left);
+			if (anime->isHavingAnime) anime->makeRotation(anime->NodeVectorFirst[anime->FirstPos], anime->NodeVectorFirst[anime->FirstPos], cur->data, Right_Right);
 			return rightRotate(cur);
 		}
 	}
@@ -424,22 +436,32 @@ AVL_node* AVL_Tree::Del(AVL_node*& cur, int data)
 
 	if (balance > 1)
 	{
-		cout << "ady " << endl;
-		if (GetBalance(cur->right)>=0) return leftRotate(cur);
+		if (GetBalance(cur->right) >= 0)
+		{
+			if (anime->isHavingAnime) anime->makeRotation(anime->NodeVectorFirst[anime->FirstPos], anime->NodeVectorFirst[anime->FirstPos], cur->data, Left_Left);
+			return leftRotate(cur);
+		}
 		else 
 		{
+			if (anime->isHavingAnime) anime->makeRotation(anime->NodeVectorFirst[anime->FirstPos], anime->NodeVectorFirst[anime->FirstPos], cur->right->data, Right_Right);
 			cur->right=rightRotate(cur->right);
+			if (anime->isHavingAnime) anime->makeRotation(anime->NodeVectorFirst[anime->FirstPos], anime->NodeVectorFirst[anime->FirstPos], cur->data, Left_Left);
 			return leftRotate(cur);
 		}
 	} else
 		if (balance < -1)
 		{
-			cout << "ads " << endl;
-			if (GetBalance(cur->right) <= 0) return rightRotate(cur);
+			if (GetBalance(cur->right) <= 0)
+			{
+				if (anime->isHavingAnime) anime->makeRotation(anime->NodeVectorFirst[anime->FirstPos], anime->NodeVectorFirst[anime->FirstPos], cur->data, Right_Right);
+				return rightRotate(cur);
+			}
 			else
 			{
+				if (anime->isHavingAnime) anime->makeRotation(anime->NodeVectorFirst[anime->FirstPos], anime->NodeVectorFirst[anime->FirstPos], cur->left->data, Left_Left);
 				cur->left = leftRotate(cur->left);
-				return leftRotate(cur);
+				if (anime->isHavingAnime) anime->makeRotation(anime->NodeVectorFirst[anime->FirstPos], anime->NodeVectorFirst[anime->FirstPos], cur->data, Right_Right);
+				return rightRotate(cur);
 			}
 		}	
 

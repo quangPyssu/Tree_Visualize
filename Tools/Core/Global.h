@@ -40,7 +40,7 @@ namespace Constants
 
     enum Type
     {
-        BST, AVL, Graph, Link, noType
+        BST, AVL, Graph, Link, noType , Left_Left, Right_Left, Right_Right, Left_Right
     };
 
     enum childType
