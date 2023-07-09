@@ -1,6 +1,7 @@
 #include "AVL_Anime.h"
 
-AVL_Anime::AVL_Anime() {
+AVL_Anime::AVL_Anime() : AnimeBase()
+{
 	
 }
 
@@ -21,26 +22,6 @@ void AVL_Anime::ChooseFrame(int i)
 	/*cout << "cur " << curFrame << endl;
 	cout << "play " << isPlaying << endl;
 	cout << "anime " << isHavingAnime << endl;*/
-}
-
-//drawin'
-void AVL_Anime::drawFrame(RenderTarget& target, int id) const
-{
-	if (id > -1 && AnimeFrameNode.size() > id)
-	{
-		for (int i = 0; i < n; i++) for (int j = 0; j < n; j++)
-			if (AnimeLinkMatrix[id][i][j] != nullptr)
-				target.draw(*AnimeLinkMatrix[id][i][j]);
-
-		for (auto a : AnimeFrameNode[id]) target.draw(*a);
-	}
-}
-
-void AVL_Anime::drawTrans(RenderTarget& target) const
-{
-	for (auto a : TransitionLink) target.draw(*a);
-
-	for (auto a : TransitionNode) target.draw(*a);
 }
 
 //create a an empty frame
@@ -117,35 +98,6 @@ void AVL_Anime::CloneFromTree(SceneNode*& Nodes)
 	}
 }
 
-void AVL_Anime::drawCurrent(RenderTarget& target, RenderStates states) const
-{
-	if (curFrame >= AnimeFrameNode.size()) return;
-
-	if (!isPlaying) drawFrame(target, curFrame);
-	else drawTrans(target);
-}
-
-void AVL_Anime::updateCurrent(Event& event, Vector2f& MousePos)
-{
-}
-
-void AVL_Anime::takeTimeCurrent(Time& dt)
-{
-	isHavingAnime = (curFrame < (int)AnimeFrameNode.size()) ? 1 : 0;
-
-	if (!isHavingAnime) isPlaying = 0;
-
-	if (!isPlaying) return;
-
-	makeTransition();
-
-	timeCnt += dt;
-
-	if (timeCnt >= TIME_PER_ANIME_FRAME) curFrame = min((int)AnimeFrameNode.size(), curFrame + 1), timeCnt -= TIME_PER_ANIME_FRAME;
-
-	transProgress = timeCnt / TIME_PER_ANIME_FRAME;
-}
-
 // make Link between node for the last frame
 void AVL_Anime::makeLinkLevel(AVL_node*& Cur)
 {
@@ -153,13 +105,13 @@ void AVL_Anime::makeLinkLevel(AVL_node*& Cur)
 
 	if (Cur->left)
 	{
-		changeLink(Cur, Cur->left, black);
+		changeLink(Cur, Cur->left, Default_Color);
 		makeLinkLevel(Cur->left);
 	}
 
 	if (Cur->right)
 	{
-		changeLink(Cur, Cur->right, black);
+		changeLink(Cur, Cur->right, Default_Color);
 		makeLinkLevel(Cur->right);
 	}
 }
@@ -234,7 +186,6 @@ void AVL_Anime::MakeInsertAnime(int data, SceneNode*& Nodes, vector <AVL_node*>&
 {
 	isPlaying = 1;
 	isHavingAnime = 1;
-	isAdditionial = 1;
 
 	this->n = n + 1;
 	n++;
@@ -330,7 +281,6 @@ void AVL_Anime::MakeDeleteAnime(int data, SceneNode*& Nodes, vector <AVL_node*>&
 {
 	isPlaying = 1;
 	isHavingAnime = 1;
-	isAdditionial = 0;
 
 	this->n = n;
 
@@ -386,7 +336,11 @@ void AVL_Anime::MakeDeleteAnime(int data, SceneNode*& Nodes, vector <AVL_node*>&
 		{
 			CloneLastFrame();
 			AnimeFrameNode.back()[cur->vectorPos]->Disable();
-			if (par != cur) if (par->data > cur->data) par->left = NULL; else par->right = NULL;
+			if (par != cur)
+			{
+				changeLink(par, cur, trans);
+				if (par->data > cur->data) par->left = NULL; else par->right = NULL;
+			}
 		}
 		else
 
@@ -494,11 +448,270 @@ void AVL_Anime::MakeDeleteAnime(int data, SceneNode*& Nodes, vector <AVL_node*>&
 	}
 }
 
+void AVL_Anime::MakeUpdateAnime(int dataDel,int dataAdd,SceneNode*& Nodes, vector <AVL_node*>& org, int pos, int n)
+{
+	isPlaying = 1;
+	isHavingAnime = 1;
+
+	this->n = n + 1;
+	n++;
+
+	cout << "anime Update " << endl;
+
+	CloneFromTree(Nodes);
+
+	TreeNode* tmp = new TreeNode(noType, "", dataAdd);
+	tmp->Disable();
+	AnimeFrameNode.back().push_back(tmp);
+
+	copyFirstTree(org, pos);
+	this->n++;
+
+	AVL_node* ttt = new AVL_node;
+	ttt->vectorPos = this->n - 1;
+	ttt->data = dataAdd;
+
+	NodeVectorFirst.push_back(ttt);
+
+	AVL_node* cur = NodeVectorFirst[FirstPos];
+	AVL_node* par = NodeVectorFirst[FirstPos];
+
+	curFrame = 0;
+	{   //Delete part
+		while (1) // find node
+		{
+			if (!cur || cur->data == dataDel) break;
+
+			if (par != cur)
+			{
+				CloneLastFrame();
+
+				changeLink(par, cur, Chosen_Color);
+			}
+
+			CloneLastFrame();
+			AnimeFrameNode.back()[cur->vectorPos]->Cir.setOutlineColor(Chosen_Color);
+
+			par = cur;
+
+			if (cur->data > dataDel) cur = cur->left; else
+				if (cur->data < dataDel) cur = cur->right;
+		}
+
+		if (!cur) // no node matches data
+		{
+			cout << " dit me m xoa cc" << endl;
+			return;
+		}
+		else  // choose and delete
+		{
+			if (par != cur)
+			{
+				CloneLastFrame();
+				changeLink(par, cur, Chosen_Color);
+			}
+
+			CloneLastFrame();
+			AnimeFrameNode.back()[cur->vectorPos]->Cir.setOutlineColor(Chosen_Color);
+
+			CloneLastFrame();
+			AnimeFrameNode.back()[cur->vectorPos]->Cir.setOutlineColor(Delete_Color);
+
+			if (!cur->left && !cur->right) // delete leave node
+			{
+				CloneLastFrame();
+				AnimeFrameNode.back()[cur->vectorPos]->Disable();
+				if (par != cur)
+				{
+					changeLink(par, cur, trans);
+					if (par->data > cur->data) par->left = NULL; else par->right = NULL;
+				}
+			}
+			else
+
+				if (cur->left && cur->right) // delete node that have 2 children
+				{
+					AVL_node* parTmp = cur;
+					AVL_node* tmp = cur->left;
+
+					CloneLastFrame();
+					changeLink(parTmp, tmp, Chosen_Color);
+
+					CloneLastFrame();
+					AnimeFrameNode.back()[tmp->vectorPos]->Cir.setOutlineColor(Chosen_Color);
+
+					while (tmp->right)// go down
+					{
+						parTmp = tmp;
+						tmp = tmp->right;
+
+						CloneLastFrame();
+						changeLink(parTmp, tmp, Chosen_Color);
+
+						CloneLastFrame();
+						AnimeFrameNode.back()[tmp->vectorPos]->Cir.setOutlineColor(Chosen_Color);
+					}
+
+					CloneLastFrame(); // link to the rightest left
+					//swap(AnimeFrameNode.back()[cur->vectorPos]->data, AnimeFrameNode.back()[tmp->vectorPos]->data);
+
+					changeLink(par, cur, trans);
+					changeLink(cur, cur->right, trans);
+					changeLink(cur, cur->left, trans);
+
+					changeLink(par, tmp, Chosen_Color);
+
+					if (parTmp == cur) changeLink(tmp, cur->right, Chosen_Color);// thang the cur la con trai (cur->left==tmp)
+					else  // binh thuong
+					{
+						changeLink(parTmp, tmp, trans);
+						changeLink(tmp, tmp->left, trans);
+
+						changeLink(parTmp, tmp->left, Chosen_Color);
+						changeLink(cur->right, tmp, Chosen_Color);
+						changeLink(cur->left, tmp, Chosen_Color);
+					}
+
+					CloneLastFrame(); // move it
+
+					if (parTmp == cur) changeLink(tmp, tmp->left, trans);
+
+					changeLink(cur->right, tmp, trans);
+					changeLink(cur->left, tmp, trans);
+
+					AnimeFrameNode.back()[cur->vectorPos]->Disable(); // xoa cai node
+					AnimeFrameNode.back()[tmp->vectorPos]->setPosition(AnimeFrameNode.back()[cur->vectorPos]->getPosition()); //flip node duoi len
+
+					changeLink(par, tmp, Chosen_Color);
+					changeLink(tmp, cur->right, Chosen_Color);
+
+					if (parTmp == cur) changeLink(tmp, tmp->left, Chosen_Color);
+					else changeLink(tmp, cur->left, Chosen_Color);
+
+					CloneLastFrame(); //repos all
+					if (par != cur)
+					{
+						if (par->data > tmp->data) par->left = tmp;
+						else par->right = tmp;
+					}
+					else FirstPos = tmp->vectorPos;
+
+					if (parTmp != cur)
+					{
+						parTmp->right = tmp->left;
+						tmp->left = cur->left;
+					}
+
+					tmp->right = cur->right;
+				}
+				else              // have one child
+				{
+					AVL_node* tmp = cur->right ? cur->right : cur->left;
+
+					CloneLastFrame();
+					changeLink(cur, tmp, Chosen_Color);
+
+					CloneLastFrame();
+					AnimeFrameNode.back()[tmp->vectorPos]->Cir.setOutlineColor(Chosen_Color);
+
+					CloneLastFrame();
+					AnimeFrameNode.back()[cur->vectorPos]->Disable();
+					changeLink(par, cur, trans);
+					changeLink(cur, tmp, trans);
+
+					if (par != cur)  //re linking real node
+					{
+						changeLink(par, tmp, Chosen_Color);
+						if (par->data > tmp->data) par->left = tmp;
+						else par->right = tmp;
+					}
+					else FirstPos = tmp->vectorPos;
+				}
+			BeginPosX = WINDOW_WIDTH / 2 - (NODE_DISTANCE * (n - 2)); //give new pos
+			int cnt = 0;
+			ReposAfter(NodeVectorFirst[FirstPos], cnt, 1, false);
+			makeLinkLevel(NodeVectorFirst[FirstPos]);
+		}
+	}
+}
+
+void AVL_Anime::MakeUpdateAddin(int dataAdd)
+{
+	AVL_node* cur = NodeVectorFirst[FirstPos];
+	AVL_node* par = NodeVectorFirst[FirstPos];
+
+	{	// insert part
+
+		while (1) // find node
+		{
+			if (!cur || cur->data == dataAdd) break;
+
+			if (par != cur)
+			{
+				CloneLastFrame();
+
+				changeLink(par, cur, Chosen_Color);
+			}
+
+			CloneLastFrame();
+			AnimeFrameNode.back()[cur->vectorPos]->Cir.setOutlineColor(Chosen_Color);
+
+			par = cur;
+
+			if (cur->data > dataAdd) cur = cur->left; else
+				if (cur->data < dataAdd) cur = cur->right;
+		}
+
+		if (!cur) // find empty slot
+		{
+			AnimeFrameNode.back().back()->setPosition(AnimeFrameNode.back()[par->vectorPos]->getPosition() + Vector2f(NODE_DISTANCE * 2 * ((par->data > dataAdd) ? -1 : 1), NODE_DISTANCE));
+
+			CloneLastFrame();
+
+			AnimeFrameNode.back().back()->Able();
+
+			AnimeFrameNode.back().back()->Cir.setOutlineColor(Insert_Color);
+
+			CloneLastFrame();
+
+			if (par->data > dataAdd) par->left = NodeVectorFirst.back();
+			else par->right = NodeVectorFirst.back();
+
+			AnimeFrameNode.back().back()->Cir.setOutlineColor(Chosen_Color);
+
+			changeLink(par, NodeVectorFirst[n - 1], Chosen_Color);
+
+			BeginPosX = WINDOW_WIDTH / 2 - (NODE_DISTANCE * (n - 1));//give new pos
+
+			int cnt = 0;
+			ReposAfter(NodeVectorFirst[FirstPos], cnt, 1, false);
+			makeLinkLevel(NodeVectorFirst[FirstPos]);
+		}
+		else  // already have the node
+		{
+			CloneLastFrame();
+
+			if (par != cur)
+			{
+				CloneLastFrame();
+				changeLink(par, cur, Chosen_Color);
+			}
+
+			CloneLastFrame();
+			AnimeFrameNode.back()[cur->vectorPos]->Cir.setOutlineColor(Chosen_Color);
+
+			CloneLastFrame();
+			AnimeFrameNode.back()[cur->vectorPos]->Cir.setOutlineColor(Insert_Color);
+
+			cout << " dit me m them cc" << endl;
+		}
+	}
+}
+
 void AVL_Anime::MakeSearchAnime(int data, SceneNode*& Nodes, vector <AVL_node*>& org, int pos, int n)
 {
 	isPlaying = 1;
 	isHavingAnime = 1;
-	isAdditionial = 0;
 
 	this->n = n;
 
@@ -754,42 +967,6 @@ Edge* AVL_Anime::InterpolateEdge(Edge* a, Edge* b, float t)
 }
 
 // misc
-
-void AVL_Anime::CloneLastFrame()
-{
-	MakeNewFrame();
-
-	for (auto a : AnimeFrameNode[AnimeFrameNode.size() - 2])
-	{
-		TreeNode* tmp = new TreeNode(noType, "", 0);
-		tmp->Cir = a->Cir;
-		tmp->text = a->text;
-		tmp->isDisable = a->isDisable;
-		tmp->data = a->data;
-
-		AnimeFrameNode.back().push_back(tmp);
-	}
-
-	for (int i = 0; i < n; i++)
-		for (int j = 0; j < n; j++)
-		{
-			Edge* tmp = nullptr;
-			if (AnimeLinkMatrix[AnimeLinkMatrix.size() - 2][i][j] != nullptr)
-			{
-				auto a = AnimeLinkMatrix[AnimeLinkMatrix.size() - 2][i][j];
-				tmp = new Edge(noType, "", 0);
-
-				tmp->line = a->line;
-				tmp->text = a->text;
-				tmp->isDisable = a->isDisable;
-
-				tmp->pos1 = a->pos1;
-				tmp->pos2 = a->pos2;
-			}
-
-			AnimeLinkMatrix.back()[i][j] = tmp;
-		}
-}
 
 void AVL_Anime::print_console(AVL_node* cur, string prefix, bool isLeft)
 {

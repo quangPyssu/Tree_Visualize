@@ -15,17 +15,7 @@ using namespace ResourceManager;
 class Button : public SceneNode
 {
 private:
-    
-    //attribute
-
-    Color idleColor;
-    Color hoverColor;
-    Color activeColor;
-    Color textColor;
-    Color borderColor;
-    RenderTarget* target;
-    RectangleShape shape;
-    
+        
     states buttonState;
 
     float height = BUTTON_SIZE.x;
@@ -37,6 +27,15 @@ public:
     virtual void updateCurrent(Event& event, Vector2f& MousePos) override;
 
 public:
+    //attribute
+
+    Color idleColor;
+    Color hoverColor;
+    Color activeColor;
+    Color textColor;
+    Color borderColor;
+
+    RectangleShape shape;
 
     // Button text
 

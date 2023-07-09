@@ -1,3 +1,4 @@
+#include "AnimeBase.h"
 #include "../Tools/SceneNode.h"
 #include "../Tools/TreeNode.h"
 #include "../Tools/Edge.h"
@@ -23,7 +24,7 @@ struct AVL_node
 	shared_ptr <TreeNode> tVisual = NULL;
 };
 
-class AVL_Anime : public SceneNode
+class AVL_Anime : public AnimeBase
 {
 public:
 
@@ -34,48 +35,14 @@ public:
 
 	int FirstPos = 0;
 
-	//vector<vector<int>> AnimeNodePos;
-	vector <int> AnimeNodePos;
-
-	vector <vector<TreeNode*>> AnimeFrameNode;
-	vector <vector<vector<Edge*>>> AnimeLinkMatrix;
-
-	vector <TreeNode*> TransitionNode;
-	vector <Edge*> TransitionLink;
-
-	bool isAdditionial = 0;
-
 	//vector <[N][N]>
-
-	int n = 0;
-	int curFrame = 0;
-
-	float transProgress = 0;
-	bool isPlaying = 0;
-	bool isHavingAnime = 0;
-
-	float BeginPosX = 0;
-
-	Time timeCnt = sf::seconds(0.f);
-
-	//inheritance
-	virtual void drawCurrent(RenderTarget& target, RenderStates states) const;
-
-	virtual void updateCurrent(Event& event, Vector2f& MousePos);
-
-	virtual void takeTimeCurrent(Time& dt);
 
 	//Functions
 
-	void drawFrame(RenderTarget& target, int id) const;
-	void drawTrans(RenderTarget& target) const;
-
 	void copyFirstTree(vector <AVL_node*>& org, int pos);
-
 	void MakeNewFrame();
 
 	void CloneFromTree(SceneNode*& Nodes);
-	void CloneLastFrame();
 
 	void makeLinkLevel(AVL_node*& Cur);
 	void breakLinkLevel();
@@ -88,6 +55,8 @@ public:
 
 	void MakeInsertAnime(int data, SceneNode*& Nodes, vector <AVL_node*>& org, int pos, int n);
 	void MakeDeleteAnime(int data, SceneNode*& Nodes, vector <AVL_node*>& org, int pos, int n);
+	void MakeUpdateAnime(int dataDel,int dataAdd, SceneNode*& Nodes, vector <AVL_node*>& org, int pos, int n);
+	void MakeUpdateAddin(int data);
 	void MakeSearchAnime(int data, SceneNode*& Nodes, vector <AVL_node*>& org, int pos, int n);
 
 	void makeRotation(AVL_node* cur, AVL_node* par, int data, Type type);

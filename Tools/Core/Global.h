@@ -59,8 +59,11 @@ namespace Colors
     extern sf::Color white;
     extern sf::Color black;
     extern sf::Color red;
+    extern sf::Color blue;
+    extern sf::Color green;
     extern sf::Color cyan;
     extern sf::Color yellow;
+    extern sf::Color orange;
     extern sf::Color light_yellow;
     extern sf::Color grey;
     extern sf::Color pink;

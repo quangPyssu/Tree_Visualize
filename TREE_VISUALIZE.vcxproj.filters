@@ -33,9 +33,6 @@
     <ClCompile Include="Tools\Button.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="BST_Tree.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Tools\Core\Global.cpp">
       <Filter>const</Filter>
     </ClCompile>
@@ -57,14 +54,17 @@
     <ClCompile Include="Tools\Tree.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="Animation\BST_Anime.cpp">
-      <Filter>Animation</Filter>
-    </ClCompile>
     <ClCompile Include="AVL_Tree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Animation\AVL_Anime.cpp">
       <Filter>Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation\AnimeBase.cpp">
+      <Filter>Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\StyleEditor.cpp">
+      <Filter>Tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -78,9 +78,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Tools\TreeNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BST_Tree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Tools\Edge.h">
@@ -98,14 +95,17 @@
     <ClInclude Include="Tools\Tree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Animation\BST_Anime.h">
-      <Filter>Animation</Filter>
-    </ClInclude>
     <ClInclude Include="AVL_Tree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Animation\AVL_Anime.h">
       <Filter>Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation\AnimeBase.h">
+      <Filter>Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\StyleEditor.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -10,11 +10,6 @@ App::App()
 	window = new RenderWindow(videoMode, "data Visual", Style::Default, settings);
 
 	window->setFramerateLimit(60);
-	
-	mBST = new BST_Tree();
-
-	MasterDisplay.PushToObject(mBST, &MasterDisplay);
-
 
 	mAVL = new AVL_Tree();
 
@@ -29,7 +24,6 @@ App::App()
 	btnAVL->SecondText = "[>" + btnAVL->FirstText + "<]";
 	MasterDisplay.PushToObject(btnAVL, &MasterDisplay);
 
-	dataStucture.push_back(mBST);
 	dataStucture.push_back(mAVL);
 
 	MenuGroup = new GUIGroup;
@@ -38,6 +32,9 @@ App::App()
 	MenuGroup->adopt(btnAVL, NULL);
 
 	MasterDisplay.PushToObject(MenuGroup, &MasterDisplay);
+
+	ChinhMau = new StyleEditor();
+	MasterDisplay.PushToObject(ChinhMau, &MasterDisplay);
 
 	BG1.setSize((Vector2f) window->getSize()-Vector2f(60,80));
 	BG1.setPosition({ 30,40 });	
@@ -113,13 +110,11 @@ void App::update()
 
 	if (btnBST->isOn)
 	{
-		for (int i = 0; i < dataStucture.size();i++) if (i!=0) dataStucture[i]->Disable();
-
-		mBST->Able();
+		for (int i = 0; i < dataStucture.size();i++) dataStucture[i]->Disable();
 	}
 	else
 	{
-		for (int i = 0; i < dataStucture.size(); i++) if (i != 1) dataStucture[i]->Disable();
+		for (int i = 0; i < dataStucture.size(); i++) if (i != 0) dataStucture[i]->Disable();
 
 		mAVL->Able();
 	}

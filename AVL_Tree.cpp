@@ -11,21 +11,14 @@ AVL_node* AVL_Tree::new_node(int data)
 
 AVL_Tree::AVL_Tree() : Tree()
 {
+	txtUpdate = new TextBox(txtDelete->pos + Vector2f(txtDelete->size.y + txtDelete->btn_cofirm->size.y + OUTLINE_THICKNESS * 10, 0), btnDelete->size, "Replace with", "Go", pink, black, black, black, white, { -50,0 }, { 40,40 }, 10, TextAlign::Middle);
+	PushToObject(txtUpdate, btnDelete);
+
+	DeleteGroup->adopt( txtUpdate->btn_cofirm,txtUpdate);
+
 	anime = new AVL_Anime();
 
 	PushAnime(anime);
-
-	btnBack = new Button(Vector2f(WINDOW_WIDTH / 2 - 100, WINDOW_HEIGHT - 40), { 40,40 }, "<", black, black + Color(50, 50, 50), black, Color::Transparent, Middle);
-	btnPlay = new Button(btnBack->pos + Vector2f(btnBack->size.x + 10, 0), btnBack->size, "=", black, black + Color(50, 50, 50), black, Color::Transparent, Middle);
-	btnForw = new Button(btnPlay->pos + Vector2f(btnBack->size.x + 10, 0), btnBack->size, ">", black, black + Color(50, 50, 50), black, Color::Transparent, Middle);
-	btnStart = new Button(btnBack->pos - Vector2f(btnBack->size.x + 10, 0), btnBack->size, "<<", black, black + Color(50, 50, 50), black, Color::Transparent, Middle);
-	btnEnd = new Button(btnForw->pos + Vector2f(btnBack->size.x + 10, 0), btnBack->size, ">>", black, black + Color(50, 50, 50), black, Color::Transparent, Middle);
-
-	PushToObject(ButtonTranslate(btnBack), Buttones);
-	PushToObject(ButtonTranslate(btnForw), Buttones);
-	PushToObject(ButtonTranslate(btnPlay), Buttones);
-	PushToObject(ButtonTranslate(btnStart), Buttones);
-	PushToObject(ButtonTranslate(btnEnd), Buttones);
 
 	srand(time(NULL));
 	Forge(10);
@@ -207,13 +200,34 @@ void AVL_Tree::updateCurrent(Event& event, Vector2f& MousePos)
 		{
 			if (txtDelete->data != nothing) // delete
 			{
-				cout << "delete " << endl;
+				if (txtUpdate->data != nothing)
+				{
+					cout << "update " << endl;
 
-				int data = txtDelete->getIntdata();
+					int dataDel = txtDelete->getIntdata();
+					int dataAdd = txtUpdate->getIntdata();
 
-				anime->MakeDeleteAnime(data, Nodes, NodeVector, root->vectorPos, count_node(root));
+					anime->MakeUpdateAnime(dataDel,dataAdd, Nodes, NodeVector, root->vectorPos, count_node(root));
 
-				root = Del(root, data);
+					int cnt = count_node(root);
+					root = Del(root, dataDel);
+
+					if (cnt != count_node(root))
+					{
+						anime->MakeUpdateAddin(dataAdd);
+						root = insertT(root, dataAdd, root, false);
+					}
+				}
+				else
+				{
+					cout << "delete " << endl;
+
+					int data = txtDelete->getIntdata();
+
+					anime->MakeDeleteAnime(data, Nodes, NodeVector, root->vectorPos, count_node(root));
+
+					root = Del(root, data);
+				}
 				CreateVisual();
 				//print_console();
 
@@ -250,10 +264,6 @@ void AVL_Tree::updateCurrent(Event& event, Vector2f& MousePos)
 						btnFunctionHub->ForceOff();
 					}
 		}
-
-	if (btnBack->isPressed()) anime->ChooseFrame(-1); else if (btnForw->isPressed()) anime->ChooseFrame(1);
-	if (btnPlay->isPressed()) anime->isPlaying = anime->isPlaying ? 0 : 1;
-	if (btnStart->isPressed()) anime->ChooseFrame(-100); else if (btnEnd->isPressed()) anime->ChooseFrame(100);
 }
 
 void AVL_Tree::takeTimeCurrent(Time& dt)
@@ -262,13 +272,11 @@ void AVL_Tree::takeTimeCurrent(Time& dt)
 	{
 		Nodes->Disable();
 		Linkes->Disable();
-		Animes->Able();
 	}
 	else
 	{
 		Nodes->Able();
 		Linkes->Able();
-		Animes->Disable();
 	}
 }
 

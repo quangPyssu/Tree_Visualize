@@ -19,12 +19,8 @@ struct AVL_Tree : public Tree
 
 	bool is;
 
-	// Button
-	Button* btnBack;
-	Button* btnForw;
-	Button* btnPlay;
-	Button* btnStart;
-	Button* btnEnd;
+	// update btn cmmmdume
+	TextBox* txtUpdate;
 
 	// Inheritance
 

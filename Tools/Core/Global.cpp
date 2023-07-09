@@ -44,6 +44,8 @@ namespace Colors {
     sf::Color red = sf::Color::Red;
     sf::Color cyan = sf::Color::Cyan;
     sf::Color yellow = sf::Color::Yellow;
+    sf::Color blue = sf::Color::Blue;
+    sf::Color green = sf::Color::Green;
     sf::Color light_yellow = sf::Color(255,255,153);
     sf::Color orange = sf::Color(255, 83, 0);
     sf::Color grey = sf::Color(128,128,128);

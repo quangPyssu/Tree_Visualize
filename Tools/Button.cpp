@@ -42,7 +42,6 @@ Button::Button(Vector2f pos, Vector2f size, string text, Color idleColor, Color 
 	shape.setOutlineColor(borderColor);
 	shape.setOutlineThickness(BUTTON_THICKNESS);
 
-	target = NULL;
 	this->event = event;
 }
 

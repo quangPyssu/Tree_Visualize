@@ -7,7 +7,7 @@
 #include "Tools/SceneNode.h"
 #include "Tools/TreeNode.h"
 #include "Tools/Edge.h"
-#include "BST_Tree.h"
+#include "Tools/StyleEditor.h"
 #include "AVL_Tree.h"
 
 using namespace sf;
@@ -48,7 +48,6 @@ public:
 	// stuff
 	
 	SceneNode MasterDisplay;
-	BST_Tree* mBST;
 	AVL_Tree* mAVL;
 
 	RectangleShape BG1;
@@ -57,6 +56,8 @@ public:
 	Button* btnAVL;
 
 	GUIGroup* MenuGroup;
+
+	StyleEditor* ChinhMau;
 
 	vector <SceneNode*> dataStucture;
 
