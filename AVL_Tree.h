@@ -42,6 +42,8 @@ struct AVL_Tree : public Tree
 	void Obliterate();
 	void Forge(int n);
 
+	void ReVisual();
+
 	//actual tree
 
 	int cnt = 0;

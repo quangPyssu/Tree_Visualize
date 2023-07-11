@@ -26,7 +26,7 @@ public:
 
     Button* Father=NULL;
 
-    vector <pair<Button*, TextBox*>> House;
+    vector <pair<Button*, SceneNode*>> House;
 
     //constructor
 
@@ -35,6 +35,6 @@ public:
     //Function
 
     void FatherBtn(Button* &Father);
-    void adopt(Button* Btn, TextBox* Txt) ;
+    void adopt(Button* Btn, SceneNode* Txt) ;
 };
 

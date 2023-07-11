@@ -27,6 +27,7 @@ App::App()
 	dataStucture.push_back(mAVL);
 
 	MenuGroup = new GUIGroup;
+	StyleGroup = new GUIGroup;
 
 	MenuGroup->adopt(btnBST, NULL);
 	MenuGroup->adopt(btnAVL, NULL);
@@ -35,6 +36,14 @@ App::App()
 
 	ChinhMau = new StyleEditor();
 	MasterDisplay.PushToObject(ChinhMau, &MasterDisplay);
+
+	btnColorHub = new Button(MENU_POS_BOTTOM_LEFT-Vector2f(0, ChinhMau->ColorBox.getSize().y+OUTLINE_THICKNESS*3+2), Vector2f(ChinhMau->ColorBox.getSize().y + OUTLINE_THICKNESS * 2+3, 30), ">", pink, pink, pink + Color(30, 0, 0), black, TextAlign::Middle);
+	btnColorHub->SecondText="<";
+	MasterDisplay.PushToObject(btnColorHub, &MasterDisplay);
+
+	StyleGroup->FatherBtn(btnColorHub);
+	StyleGroup->adopt(ChinhMau->btnCurrent, ChinhMau);
+	MasterDisplay.PushToObject(StyleGroup, &MasterDisplay);
 
 	BG1.setSize((Vector2f) window->getSize()-Vector2f(60,80));
 	BG1.setPosition({ 30,40 });	

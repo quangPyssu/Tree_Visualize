@@ -15,6 +15,7 @@ namespace Constants
     extern const int WINDOW_WIDTH;
     extern const int WINDOW_HEIGHT;
 
+    extern int font_size;
     extern const int font_size_small;
     extern const int font_size_medium;
     extern const int font_size_large;
@@ -25,14 +26,18 @@ namespace Constants
     extern const float OUTLINE_THICKNESS;
     extern const float BUTTON_THICKNESS;
     extern const float NODE_POS_HEAD;
-    extern const float NODE_RADIUS;
+
+    extern float NODE_LAST;
+    extern float NODE_RADIUS;
+    extern const float NODE_RADIUS_SMALL;
     extern const float NODE_RADIUS_BIG;
     extern const float EDGE_THICKNESS;
     extern const sf::Vector2f BUTTON_SIZE;
     extern const sf::Vector2f TEXTBOX_SIZE;
 
-    extern const float NODE_DISTANCE;
+    extern float NODE_DISTANCE;
     extern const float NODE_DISTANCE_BIG;
+    extern const float NODE_DISTANCE_SMALL;
     extern const int nothing;
 
     extern const sf::Time TIME_PER_ANIME_FRAME;

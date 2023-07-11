@@ -117,6 +117,15 @@ void Button::reText()
 
 }
 
+void Button::reColorAll(Color color)
+{
+	this->idleColor = color;
+	this->hoverColor = color;
+	this->activeColor = color;
+
+	shape.setFillColor(idleColor);
+}
+
 void Button::drawCurrent(RenderTarget& target, RenderStates states) const 
 {
 	target.draw(this->shape);

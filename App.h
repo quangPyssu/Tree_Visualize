@@ -55,7 +55,10 @@ public:
 	Button* btnBST;
 	Button* btnAVL;
 
+	Button* btnColorHub;
+
 	GUIGroup* MenuGroup;
+	GUIGroup* StyleGroup;
 
 	StyleEditor* ChinhMau;
 

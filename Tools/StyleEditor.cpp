@@ -93,24 +93,56 @@ StyleEditor::StyleEditor()
 
 	btnBig = new Button(SizeBox.getPosition() + Vector2f(5, 30), { 38,50 }, "Big", pink, pink + Color(60, 50, 50), pink, yellow, Middle);
 	btnBig->SecondText = ">Big<";
+	btnBig->ForceOn();
 	PushToObject(btnBig, this);
 
 	btnSmall = new Button(SizeBox.getPosition() + Vector2f(5, 69), { 30,50 }, "Small", pink, pink + Color(60, 50, 50), pink, yellow, Middle);
 	btnSmall->SecondText = ">Small<";
-	btnSmall->ForceOn();
 	PushToObject(btnSmall, this);
 
 	SizeGroup = new GUIGroup;
 	SizeGroup->adopt(btnBig,NULL);
 	SizeGroup->adopt(btnSmall, NULL);
 	PushToObject(SizeGroup, this);
+
+	ColBtn.push_back(btnRed);
+	ColBtn.push_back(btnYellow);
+	ColBtn.push_back(btnCyan);
+	ColBtn.push_back(btnOrange);
+	ColBtn.push_back(btnPink);
+	ColBtn.push_back(btnGrey);
+	ColBtn.push_back(btnBlue);
+	ColBtn.push_back(btnGreen);
 }
 
 void StyleEditor::updateCurrent(Event& event, Vector2f& MousePos) 
 {
 	// update BTN_STATEs
 
+	if (btnSmall->isPressed())
+	{
+		NODE_LAST = NODE_RADIUS;
+		NODE_RADIUS = NODE_RADIUS_SMALL;
+		NODE_DISTANCE = NODE_DISTANCE_SMALL;
+		font_size = font_size_small;
+	}
 	
+	if (btnBig->isPressed())
+	{
+		NODE_LAST = NODE_RADIUS;
+		NODE_RADIUS = NODE_RADIUS_BIG;
+		NODE_DISTANCE = NODE_DISTANCE_BIG;
+		font_size = font_size_medium;
+	}
+
+	if (btnChosenNode->isOn) btnCurrent->reColorAll(Chosen_Color), CurColor = &Chosen_Color; else
+		if (btnInsertNode->isOn) btnCurrent->reColorAll(Insert_Color), CurColor = &Insert_Color; else
+			if (btnDeleteNode->isOn) btnCurrent->reColorAll(Delete_Color), CurColor = &Delete_Color; else
+				if (btnSearchNode->isOn) btnCurrent->reColorAll(Search_Color), CurColor = &Search_Color;
+
+	for (auto a : ColBtn)
+		if (a->isPressed())
+			*CurColor = a->activeColor;
 
 	//string s = text.getString();
 	//cout << s << " isON: " << isOn << endl;

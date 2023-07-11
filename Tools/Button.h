@@ -72,6 +72,7 @@ public:
     Vector2f size;
 
     void reText();
+    void reColorAll(Color color);
 
     virtual bool isLeftClicked(Event& event, Vector2f& MousePos) override;
     virtual bool isHovered(Event& event, Vector2f& MousePos) override;

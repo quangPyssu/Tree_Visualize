@@ -18,7 +18,7 @@ TreeNode::TreeNode(Type type, string text,int data)
 	}
 
 	this->text.setFont(ResourceManager::getFont(ResourceManager::Arial, "asset/fonts/ArialTh.ttf"));
-	this->text.setCharacterSize(font_size_medium);
+	this->text.setCharacterSize(font_size);
 	this->text.setFillColor(black);
 	this->text.setString(text);
 	this->text.setPosition(Cir.getPosition().x  - this->text.getGlobalBounds().width / 2.f,

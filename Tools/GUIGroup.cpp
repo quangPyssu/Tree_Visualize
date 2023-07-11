@@ -5,7 +5,7 @@ void GUIGroup::FatherBtn(Button* &Father)
 	this->Father = Father;
 }
 
-void GUIGroup::adopt(Button* Btn, TextBox* Txt)
+void GUIGroup::adopt(Button* Btn, SceneNode* Txt)
 {
 	House.push_back(make_pair( Btn, Txt ));
 }

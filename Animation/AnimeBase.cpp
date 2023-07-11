@@ -1,11 +1,12 @@
 #include "AnimeBase.h"
 
 AnimeBase::AnimeBase() {
-	btnBack = new Button(Vector2f(WINDOW_WIDTH / 2 - 100, WINDOW_HEIGHT - 40), { 40,40 }, "<", black, black + Color(50, 50, 50), black, Color::Transparent, Middle);
+	btnBack = new Button(Vector2f(WINDOW_WIDTH / 2 - 100, WINDOW_HEIGHT - 40), { 40,40 }, "<<", black, black + Color(50, 50, 50), black, Color::Transparent, Middle);
 	btnPlay = new Button(btnBack->pos + Vector2f(btnBack->size.x + 10, 0), btnBack->size, "=", black, black + Color(50, 50, 50), black, Color::Transparent, Middle);
-	btnForw = new Button(btnPlay->pos + Vector2f(btnBack->size.x + 10, 0), btnBack->size, ">", black, black + Color(50, 50, 50), black, Color::Transparent, Middle);
-	btnStart = new Button(btnBack->pos - Vector2f(btnBack->size.x + 10, 0), btnBack->size, "<<", black, black + Color(50, 50, 50), black, Color::Transparent, Middle);
-	btnEnd = new Button(btnForw->pos + Vector2f(btnBack->size.x + 10, 0), btnBack->size, ">>", black, black + Color(50, 50, 50), black, Color::Transparent, Middle);
+	btnPlay->SecondText = ">";
+	btnForw = new Button(btnPlay->pos + Vector2f(btnBack->size.x + 10, 0), btnBack->size, ">>", black, black + Color(50, 50, 50), black, Color::Transparent, Middle);
+	btnStart = new Button(btnBack->pos - Vector2f(btnBack->size.x + 10, 0), btnBack->size, "[<<", black, black + Color(50, 50, 50), black, Color::Transparent, Middle);
+	btnEnd = new Button(btnForw->pos + Vector2f(btnBack->size.x + 10, 0), btnBack->size, ">>]", black, black + Color(50, 50, 50), black, Color::Transparent, Middle);
 
 	PushToObject(btnBack, this);
 	PushToObject(btnForw, this);
@@ -84,6 +85,7 @@ void AnimeBase::updateCurrent(Event& event, Vector2f& MousePos)
 	if (btnBack->isPressed()) ChooseFrame(-1); else if (btnForw->isPressed()) ChooseFrame(1);
 	if (btnPlay->isPressed()) isPlaying = isPlaying ? 0 : 1;
 	if (btnStart->isPressed()) ChooseFrame(-100); else if (btnEnd->isPressed()) ChooseFrame(100);
+	if (isPlaying) btnPlay->ForceOn(); else btnPlay->ForceOff();
 }
 
 void AnimeBase::takeTimeCurrent(Time& dt)

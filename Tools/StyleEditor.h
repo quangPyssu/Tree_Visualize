@@ -52,6 +52,8 @@ public:
     Button* btnBlue;
     Button* btnGreen;
 
+    vector <Button*> ColBtn;
+
     Button* btnCurrent;
 
     Button* btnChosenNode;
@@ -64,5 +66,7 @@ public:
 
     GUIGroup* ColorGroup;
     GUIGroup* SizeGroup;
+
+    Color* CurColor=&Chosen_Color;
 };
 

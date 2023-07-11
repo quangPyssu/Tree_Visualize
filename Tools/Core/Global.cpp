@@ -12,6 +12,7 @@ namespace Constants {
     const int font_size_small = BASE_X/85;
     const int font_size_medium = BASE_X/75 ;
     const int font_size_large = BASE_X/60 ;
+    int font_size = font_size_medium;
 
     const sf::Vector2f LowStart = {(float) WINDOW_WIDTH / 6 * 5,(float)WINDOW_HEIGHT/ 6 * 5 };
 
@@ -22,14 +23,18 @@ namespace Constants {
     const float OUTLINE_THICKNESS = (float)(2.5);
     const float BUTTON_THICKNESS = (float) 0;
 
-    const float NODE_RADIUS = 30.f;
-    const float NODE_RADIUS_BIG = 50.f;
+    float NODE_LAST = 30.f;
+    float NODE_RADIUS = 30.f;
+    const float NODE_RADIUS_BIG = 30.f;
+    const float NODE_RADIUS_SMALL = 20.f;
     const float EDGE_THICKNESS = 5.f;
     const sf::Vector2f BUTTON_SIZE = sf::Vector2f(50, 120);
     const sf::Vector2f TEXTBOX_SIZE = sf::Vector2f(50, 150);
 
-    const float NODE_DISTANCE = NODE_RADIUS * 3/2;
+    float NODE_DISTANCE = NODE_RADIUS * 3/2;
     const float NODE_DISTANCE_BIG = NODE_RADIUS_BIG * 3/2;
+    const float NODE_DISTANCE_SMALL = NODE_RADIUS_SMALL* 3 / 2;
+
 
     const int nothing=-999999999;
 

@@ -44,7 +44,6 @@ struct Tree : public SceneNode
 	Button* btnCreateRandom;
 	Button* btnCreateLoad;
 
-
 	Button* btnInsert;
 	Button* btnDelete;
 	Button* btnSearch;
