@@ -21,7 +21,6 @@ AVL_Tree::AVL_Tree() : Tree()
 	PushAnime(anime);
 
 	srand(time(NULL));
-	Forge(10);
 }
 
 AVL_Tree::~AVL_Tree()
@@ -65,10 +64,10 @@ void AVL_Tree::Forge(int n)
 
 	for (int i = 0; i < n; i++)
 	{
-		int a = rand() % 50 + 10;
+		int a = rand() % 70 + 10;
 		root=insertT(root, a, root, true);
 	}
-	CreateVisual();
+	CreateVisual(0);
 	print_console();
 
 	btnFunctionHub->ForceOff();
@@ -80,26 +79,30 @@ void AVL_Tree::Obliterate()
 	DelAll(root);
 }
 
-void AVL_Tree::CreateVisual()
+void AVL_Tree::CreateVisual(int Forced)
 {
 	DestroyVisual();
 
 	NodeVector.clear();
 
-	BeginPosX = WINDOW_WIDTH / 2 - (NODE_DISTANCE * count_node(root));
+	int n = count_node(root);
+	cout << "size " << n << endl;
+
+	if (Forced > 0)
+	{
+		redoSize(Forced);
+		if (checkSizeDiff(n,Forced)) BeginPosX = WINDOW_WIDTH / 2 - (NODE_DISTANCE * Forced);
+	}
+	else
+	{
+		redoSize(n);
+		BeginPosX = WINDOW_WIDTH / 2 - (NODE_DISTANCE * n);
+	}
 
 	cnt = 0;
 
 	if (!root) return;
 	Push(root, cnt, root, true);
-}
-
-void AVL_Tree::ReVisual()
-{
-	if (Nodes->Children.empty() || NODE_LAST == NODE_RADIUS) return;
-	cout << "reVisual " << endl;
-
-	CreateVisual();
 }
 
 void AVL_Tree::DestroyVisual()
@@ -184,11 +187,14 @@ void AVL_Tree::PushAnime(AVL_Anime*& anime1)
 
 void AVL_Tree::updateCurrent(Event& event, Vector2f& MousePos)
 {
-	if (btnCreateRandom->isPressed())// Generate
+	if (txtCreateSize->data != nothing)
 	{
-		Forge(rand() % 5 + 10);
-	}
-	else if (btnCreateLoad->isPressed())
+		int data = txtCreateSize->getIntdata();
+		if (!data || data > 50) return;
+		Forge(data);
+	}else
+		if (btnCreateRandom->isPressed()) Forge(rand() % 5 + 10); else 
+			if (btnCreateLoad->isPressed())
 	{
 		ifstream fin("dataForLoad/AVL_Tree.in");
 		int a;
@@ -198,13 +204,12 @@ void AVL_Tree::updateCurrent(Event& event, Vector2f& MousePos)
 
 		while (fin >> a) root=insertT(root, a, root, true);
 
-		CreateVisual();
+		CreateVisual(0);
 		print_console();
 
 		btnFunctionHub->ForceOff();
-	}
-	else
-		if (root)
+	} else
+				if (root)
 		{
 			if (txtDelete->data != nothing) // delete
 			{
@@ -215,7 +220,6 @@ void AVL_Tree::updateCurrent(Event& event, Vector2f& MousePos)
 					int dataDel = txtDelete->getIntdata();
 					int dataAdd = txtUpdate->getIntdata();
 
-					ReVisual();
 					anime->MakeUpdateAnime(dataDel,dataAdd, Nodes, NodeVector, root->vectorPos, count_node(root));
 
 					int cnt = count_node(root);
@@ -233,12 +237,13 @@ void AVL_Tree::updateCurrent(Event& event, Vector2f& MousePos)
 
 					int data = txtDelete->getIntdata();
 
-					ReVisual();
+					//if (Search(root, data)) CreateVisual(NodeVector.size()-1);
+
 					anime->MakeDeleteAnime(data, Nodes, NodeVector, root->vectorPos, count_node(root));
 
 					root = Del(root, data);
 				}
-				CreateVisual();
+				CreateVisual(0);
 				//print_console();
 
 				btnFunctionHub->ForceOff();
@@ -250,11 +255,12 @@ void AVL_Tree::updateCurrent(Event& event, Vector2f& MousePos)
 
 					int data = txtInsert->getIntdata();
 
-					ReVisual();
+					//if (!Search(root, data)) CreateVisual(NodeVector.size() + 1);
+
 					anime->MakeInsertAnime(data, Nodes, NodeVector, root->vectorPos, count_node(root));
 
 					root=insertT(root, data, root, false);
-					CreateVisual();
+					CreateVisual(0);
 					//print_console();
 
 					btnFunctionHub->ForceOff();
@@ -266,11 +272,10 @@ void AVL_Tree::updateCurrent(Event& event, Vector2f& MousePos)
 
 						int data = txtSearch->getIntdata();
 
-						ReVisual();
 						anime->MakeSearchAnime(data, Nodes, NodeVector, root->vectorPos, count_node(root));
 
 						Search(root, data); cout << endl;
-						CreateVisual();
+						CreateVisual(0);
 						//print_console();
 
 						btnFunctionHub->ForceOff();
@@ -492,7 +497,7 @@ AVL_node* AVL_Tree::Search(AVL_node*& cur, int data)
 {
 	if (!cur) return NULL;
 
-	cout << cur->data << "-> ";
+	//cout << cur->data << "-> ";
 
 	if (cur->data > data) return Search(cur->left, data);
 	if (cur->data < data) return Search(cur->right, data);

@@ -9,6 +9,7 @@
 #include "Tools/Edge.h"
 #include "Tools/StyleEditor.h"
 #include "AVL_Tree.h"
+#include "Hash_Table.h"
 
 using namespace sf;
 using namespace std;
@@ -49,11 +50,13 @@ public:
 	
 	SceneNode MasterDisplay;
 	AVL_Tree* mAVL;
+	Hash_Table* mHash;
 
 	RectangleShape BG1;
 
 	Button* btnBST;
 	Button* btnAVL;
+	Button* btnHash;
 
 	Button* btnColorHub;
 

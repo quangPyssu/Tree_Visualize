@@ -29,12 +29,12 @@ public:
     //attribute
 
     RectangleShape ColorBox;
-    RectangleShape SizeBox;
+    /*RectangleShape SizeBox;*/
 
     // StyleEditor text
 
     Text ColorText;
-    Text SizeText;
+    //Text SizeText;
 
     //constructor
 
@@ -51,6 +51,8 @@ public:
     Button* btnGrey;
     Button* btnBlue;
     Button* btnGreen;
+    Button* btnBlack;
+    Button* btnPurple;
 
     vector <Button*> ColBtn;
 
@@ -60,12 +62,13 @@ public:
     Button* btnInsertNode;
     Button* btnDeleteNode;
     Button* btnSearchNode;
+    Button* btnDefaultNode;
 
-    Button* btnBig;
-    Button* btnSmall;
+    /*Button* btnBig;
+    Button* btnSmall;*/
 
     GUIGroup* ColorGroup;
-    GUIGroup* SizeGroup;
+    /*GUIGroup* SizeGroup;*/
 
     Color* CurColor=&Chosen_Color;
 };

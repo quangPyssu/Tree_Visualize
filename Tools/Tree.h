@@ -41,6 +41,7 @@ struct Tree : public SceneNode
 
 	Button* btnCreate;
 
+	TextBox* txtCreateSize;
 	Button* btnCreateRandom;
 	Button* btnCreateLoad;
 

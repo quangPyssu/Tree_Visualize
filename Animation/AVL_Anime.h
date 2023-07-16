@@ -49,8 +49,6 @@ public:
 	Edge* makeLink(AVL_node*& node1, AVL_node*& node2, Color color);
 	void changeLink(AVL_node*& node1, AVL_node*& node2, Color color);
 
-	void ChooseFrame(int i);
-
 	// Anime maker
 
 	void MakeInsertAnime(int data, SceneNode*& Nodes, vector <AVL_node*>& org, int pos, int n);
@@ -60,11 +58,6 @@ public:
 	void MakeSearchAnime(int data, SceneNode*& Nodes, vector <AVL_node*>& org, int pos, int n);
 
 	void makeRotation(AVL_node* cur, AVL_node* par, int data, Type type);
-
-	void makeTransition();
-
-	TreeNode* InterpolateNode(TreeNode* a, TreeNode* b, float t);
-	Edge* InterpolateEdge(Edge* a, Edge* b, float t);
 
 	void print_console(AVL_node* cur, string prefix, bool isLeft);
 

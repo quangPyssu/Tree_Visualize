@@ -17,6 +17,7 @@ public:
 	virtual Vector2f getPosition();
 
 	void make(const Vector2f& pos, const string& s);
+	void setSize();
 
 	int data = nothing;
 	

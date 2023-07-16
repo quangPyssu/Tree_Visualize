@@ -15,9 +15,8 @@ struct AVL_Tree : public Tree
 
 	AVL_Anime* anime;
 
-	float BeginPosX = 0;
-
 	bool is;
+	float BeginPosX = 0;
 
 	// update btn cmmmdume
 	TextBox* txtUpdate;
@@ -32,7 +31,7 @@ struct AVL_Tree : public Tree
 
 	//function
 
-	void CreateVisual();
+	void CreateVisual(int Forced);
 	void DestroyVisual();
 
 	void Push(AVL_node*& Cur, int& cnt, AVL_node*&, bool isLeft);
@@ -41,8 +40,6 @@ struct AVL_Tree : public Tree
 
 	void Obliterate();
 	void Forge(int n);
-
-	void ReVisual();
 
 	//actual tree
 

@@ -39,6 +39,14 @@ void TreeNode::setPosition(const Vector2f& position)
 	text.setPosition(position.x  - this->text.getGlobalBounds().width / 2.f,position.y  - this->text.getGlobalBounds().height / 2.f);
 }
 
+void TreeNode::setSize()
+{
+	Cir.setRadius(NODE_RADIUS);
+	Cir.setOrigin(Vector2f(NODE_RADIUS, NODE_RADIUS));
+
+	text.setCharacterSize(font_size);
+}
+
 Vector2f TreeNode::getPosition()
 {
 	return Cir.getPosition();

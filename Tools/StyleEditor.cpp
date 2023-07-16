@@ -2,17 +2,13 @@
 
 StyleEditor::StyleEditor()
 {
-	ColorBox.setSize({ 360,100 });
-	SizeBox.setSize({ 60,100 });
+	ColorBox.setSize({ 430,100 });
 
 	ColorBox.setOutlineColor(black);
-	SizeBox.setOutlineColor(black);
 
 	ColorBox.setOutlineThickness(OUTLINE_THICKNESS*2);
-	SizeBox.setOutlineThickness(OUTLINE_THICKNESS*2);
 
 	ColorBox.setPosition(Constants::MENU_POS_BOTTOM_LEFT+Vector2f(31 + OUTLINE_THICKNESS*2,-ColorBox.getSize().y- OUTLINE_THICKNESS*2-1));
-	SizeBox.setPosition(ColorBox.getPosition() + Vector2f(ColorBox.getSize().x+ OUTLINE_THICKNESS*2,0 ));
 
 	ColorText.setFont(ResourceManager::getFont(ResourceManager::Arial, "asset/fonts/ArialTh.ttf"));
 	ColorText.setString("Color");
@@ -20,11 +16,7 @@ StyleEditor::StyleEditor()
 	ColorText.setFillColor(black);
 	ColorText.setPosition(ColorBox.getPosition().x + ColorBox.getSize().x / 2.f - ColorText.getGlobalBounds().width / 2.f, ColorBox.getPosition().y );
 
-	SizeText.setFont(ResourceManager::getFont(ResourceManager::Arial, "asset/fonts/ArialTh.ttf"));
-	SizeText.setString("Size");
-	SizeText.setCharacterSize(22);
-	SizeText.setFillColor(black);
-	SizeText.setPosition(SizeBox.getPosition().x + SizeBox.getSize().x / 2.f - SizeText.getGlobalBounds().width / 2.f, SizeBox.getPosition().y);
+
 
 	btnRed = new Button(ColorBox.getPosition() + Vector2f(15, 29), { 30,30 }, "", red, red + Color(50, 50, 50), red, red, Middle);
 	btnRed->shape.setOutlineThickness(1); btnRed->shape.setOutlineColor(black);
@@ -58,7 +50,15 @@ StyleEditor::StyleEditor()
 	btnGreen->shape.setOutlineThickness(1); btnGreen->shape.setOutlineColor(black);
 	PushToObject(btnGreen, this);
 
-	btnCurrent = new Button(btnGreen->shape.getPosition() + Vector2f(btnRed->shape.getSize().x + 5, 0), {50,50}, "", Default_Color, Default_Color, Default_Color, Default_Color, Middle);
+	btnPurple = new Button(btnGreen->shape.getPosition() + Vector2f(btnRed->shape.getSize().x + 5, 0), btnRed->shape.getSize(), "", purple, purple + Color(50, 50, 50), purple, purple, Middle);
+	btnPurple->shape.setOutlineThickness(1); btnPurple->shape.setOutlineColor(black);
+	PushToObject(btnPurple, this);
+
+	btnBlack = new Button(btnPurple->shape.getPosition() + Vector2f(btnRed->shape.getSize().x + 5, 0), btnRed->shape.getSize(), "", black, black + Color(50, 50, 50), black, black, Middle);
+	btnBlack->shape.setOutlineThickness(1); btnBlack->shape.setOutlineColor(black);
+	PushToObject(btnBlack, this);
+
+	btnCurrent = new Button(btnBlack->shape.getPosition() + Vector2f(btnRed->shape.getSize().x + 5, 0), {50,50}, "", Default_Color, Default_Color, Default_Color, Default_Color, Middle);
 	btnCurrent->shape.setOutlineThickness(1); btnCurrent->shape.setOutlineColor(black);
 	PushToObject(btnCurrent, this);
 
@@ -83,27 +83,19 @@ StyleEditor::StyleEditor()
 	btnSearchNode->SecondText = ">Search<";
 	PushToObject(btnSearchNode, this);
 
+	btnDefaultNode = new Button(btnSearchNode->shape.getPosition() + Vector2f(btnChosenNode->shape.getSize().x + 5, 0), { 32,65 }, "Default", pink, pink + Color(60, 50, 50), pink, yellow, Middle);
+	btnDefaultNode->shape.setOutlineThickness(1); btnDefaultNode->shape.setOutlineColor(black);
+	btnDefaultNode->SecondText = ">Default<";
+	PushToObject(btnDefaultNode, this);
+
 	ColorGroup = new GUIGroup;
 	ColorGroup->adopt(btnChosenNode, NULL);
 	ColorGroup->adopt(btnInsertNode, NULL);
 	ColorGroup->adopt(btnDeleteNode, NULL);
 	ColorGroup->adopt(btnSearchNode, NULL);
+	ColorGroup->adopt(btnDefaultNode, NULL);
 
 	PushToObject(ColorGroup, this);
-
-	btnBig = new Button(SizeBox.getPosition() + Vector2f(5, 30), { 38,50 }, "Big", pink, pink + Color(60, 50, 50), pink, yellow, Middle);
-	btnBig->SecondText = ">Big<";
-	btnBig->ForceOn();
-	PushToObject(btnBig, this);
-
-	btnSmall = new Button(SizeBox.getPosition() + Vector2f(5, 69), { 30,50 }, "Small", pink, pink + Color(60, 50, 50), pink, yellow, Middle);
-	btnSmall->SecondText = ">Small<";
-	PushToObject(btnSmall, this);
-
-	SizeGroup = new GUIGroup;
-	SizeGroup->adopt(btnBig,NULL);
-	SizeGroup->adopt(btnSmall, NULL);
-	PushToObject(SizeGroup, this);
 
 	ColBtn.push_back(btnRed);
 	ColBtn.push_back(btnYellow);
@@ -113,45 +105,26 @@ StyleEditor::StyleEditor()
 	ColBtn.push_back(btnGrey);
 	ColBtn.push_back(btnBlue);
 	ColBtn.push_back(btnGreen);
+	ColBtn.push_back(btnPurple);
+	ColBtn.push_back(btnBlack);
 }
 
 void StyleEditor::updateCurrent(Event& event, Vector2f& MousePos) 
 {
 	// update BTN_STATEs
 
-	if (btnSmall->isPressed())
-	{
-		NODE_LAST = NODE_RADIUS;
-		NODE_RADIUS = NODE_RADIUS_SMALL;
-		NODE_DISTANCE = NODE_DISTANCE_SMALL;
-		font_size = font_size_small;
-	}
-	
-	if (btnBig->isPressed())
-	{
-		NODE_LAST = NODE_RADIUS;
-		NODE_RADIUS = NODE_RADIUS_BIG;
-		NODE_DISTANCE = NODE_DISTANCE_BIG;
-		font_size = font_size_medium;
-	}
-
 	if (btnChosenNode->isOn) btnCurrent->reColorAll(Chosen_Color), CurColor = &Chosen_Color; else
 		if (btnInsertNode->isOn) btnCurrent->reColorAll(Insert_Color), CurColor = &Insert_Color; else
 			if (btnDeleteNode->isOn) btnCurrent->reColorAll(Delete_Color), CurColor = &Delete_Color; else
-				if (btnSearchNode->isOn) btnCurrent->reColorAll(Search_Color), CurColor = &Search_Color;
+				if (btnSearchNode->isOn) btnCurrent->reColorAll(Search_Color), CurColor = &Search_Color; else
+					if (btnDefaultNode->isOn) btnCurrent->reColorAll(Default_Color), CurColor = &Default_Color;
 
-	for (auto a : ColBtn)
-		if (a->isPressed())
-			*CurColor = a->activeColor;
+	for (auto a : ColBtn) if (a->isPressed()) *CurColor = a->activeColor;
 
-	//string s = text.getString();
-	//cout << s << " isON: " << isOn << endl;
 }
 
 void StyleEditor::drawCurrent(RenderTarget& target, RenderStates states) const 
 {
 	target.draw(this->ColorBox);
-	target.draw(this->SizeBox);
 	target.draw(this->ColorText);
-	target.draw(this->SizeText);
 }

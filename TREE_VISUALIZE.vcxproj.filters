@@ -66,6 +66,12 @@
     <ClCompile Include="Tools\StyleEditor.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
+    <ClCompile Include="Hash_Table.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation\Hash_Anime.cpp">
+      <Filter>Animation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -106,6 +112,12 @@
     </ClInclude>
     <ClInclude Include="Tools\StyleEditor.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash_Table.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation\Hash_Anime.h">
+      <Filter>Animation</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

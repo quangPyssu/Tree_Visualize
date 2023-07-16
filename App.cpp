@@ -12,25 +12,34 @@ App::App()
 	window->setFramerateLimit(60);
 
 	mAVL = new AVL_Tree();
+	mHash = new Hash_Table();
 
 	MasterDisplay.PushToObject(mAVL, &MasterDisplay);
+	MasterDisplay.PushToObject(mHash, &MasterDisplay);
+
 
 	btnBST = new Button(Vector2f(30, 1), Vector2f(38.f, 110), "BST tree", pink, grey, pink, black, TextAlign::Middle);
 	btnBST->SecondText = "[>"+btnBST->FirstText+"<]";
 	btnBST->isOn = true;
 	MasterDisplay.PushToObject(btnBST, &MasterDisplay);
 
-	btnAVL = new Button(btnBST->pos+Vector2f(btnBST->size.y+1,0), btnBST->size, "AVL tree", pink, grey, pink, black, TextAlign::Middle);
+	btnAVL = new Button(btnBST->pos + Vector2f(btnBST->size.y + 1, 0), btnBST->size, "AVL tree", pink, grey, pink, black, TextAlign::Middle);
 	btnAVL->SecondText = "[>" + btnAVL->FirstText + "<]";
 	MasterDisplay.PushToObject(btnAVL, &MasterDisplay);
 
+	btnHash = new Button(btnAVL->pos + Vector2f(btnAVL->size.y + 1, 0), btnAVL->size, "Hash Table", pink, grey, pink, black, TextAlign::Middle);
+	btnHash->SecondText = "[>" + btnHash->FirstText + "<]";
+	MasterDisplay.PushToObject(btnHash, &MasterDisplay);
+
 	dataStucture.push_back(mAVL);
+	dataStucture.push_back(mHash);
 
 	MenuGroup = new GUIGroup;
 	StyleGroup = new GUIGroup;
 
 	MenuGroup->adopt(btnBST, NULL);
 	MenuGroup->adopt(btnAVL, NULL);
+	MenuGroup->adopt(btnHash, NULL);
 
 	MasterDisplay.PushToObject(MenuGroup, &MasterDisplay);
 
@@ -121,11 +130,17 @@ void App::update()
 	{
 		for (int i = 0; i < dataStucture.size();i++) dataStucture[i]->Disable();
 	}
-	else
+	else if (btnAVL->isOn)
 	{
 		for (int i = 0; i < dataStucture.size(); i++) if (i != 0) dataStucture[i]->Disable();
 
 		mAVL->Able();
+	} 
+	else if (btnHash->isOn)
+	{
+		for (int i = 0; i < dataStucture.size(); i++) if (i != 1) dataStucture[i]->Disable();
+
+		mHash->Able();
 	}
 }
 

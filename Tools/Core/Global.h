@@ -8,6 +8,8 @@
 
 namespace Constants
 {
+    extern int modulo;
+
     extern const double pi;
     extern const double BASE_X;
     extern const double BASE_Y;
@@ -20,6 +22,13 @@ namespace Constants
     extern const int font_size_medium;
     extern const int font_size_large;
 
+    extern void loadSmallSize();
+    extern void loadMediumSize();
+    extern void loadBigSize();
+    
+    extern void redoSize(int n);
+    extern bool checkSizeDiff(int a,int b);
+
     extern const sf::Vector2f LowStart;
 
     extern const sf::Vector2f MENU_POS_BOTTOM_LEFT;
@@ -27,9 +36,9 @@ namespace Constants
     extern const float BUTTON_THICKNESS;
     extern const float NODE_POS_HEAD;
 
-    extern float NODE_LAST;
     extern float NODE_RADIUS;
     extern const float NODE_RADIUS_SMALL;
+    extern const float NODE_RADIUS_MEDIUM;
     extern const float NODE_RADIUS_BIG;
     extern const float EDGE_THICKNESS;
     extern const sf::Vector2f BUTTON_SIZE;
@@ -37,6 +46,7 @@ namespace Constants
 
     extern float NODE_DISTANCE;
     extern const float NODE_DISTANCE_BIG;
+    extern const float NODE_DISTANCE_MEDIUM;
     extern const float NODE_DISTANCE_SMALL;
     extern const int nothing;
 
@@ -50,7 +60,7 @@ namespace Constants
 
     enum childType
     {
-        cFirst,cSecond,cThird,cFour,cNone
+        cFirst,cSecond,cThird,cFour,cNone,sSmall,sMedium,sBig
     };
 
     enum states { IDLE, HOVER , PRESSED , ACTIVE};
@@ -72,6 +82,7 @@ namespace Colors
     extern sf::Color light_yellow;
     extern sf::Color grey;
     extern sf::Color pink;
+    extern sf::Color purple;
     extern sf::Color Back_Ground_Color;
     extern sf::Color Default_Color;
     extern sf::Color Chosen_Color;

@@ -26,8 +26,9 @@ Tree::Tree()
 	btnFunctionHub = new Button(MENU_POS_BOTTOM_LEFT, Vector2f(btnCreate->size.x*4, 30), ">", pink, pink, pink+Color(30,0,0), black, TextAlign::Middle);
 	btnFunctionHub->SecondText = "<";
 
-	btnCreateRandom = new Button(btnCreate->pos + Vector2f(btnInsert->size.y + OUTLINE_THICKNESS * 5, 0), Vector2f(40.f, 70), "Random", pink, black, red, black, TextAlign::Middle);
-	btnCreateLoad= new Button(btnCreate->pos + Vector2f(btnInsert->size.y + btnCreateRandom->size.y +OUTLINE_THICKNESS * 8, 0), Vector2f(40.f, 70), "From File", pink, black, red, black, TextAlign::Middle);
+	txtCreateSize = new TextBox(btnCreate->pos + Vector2f(btnInsert->size.y + OUTLINE_THICKNESS * 5, 0), {40.f,70.f}, "Size", "Go", pink, black, black, black, white, {75,0}, {40,40}, 10, TextAlign::Middle);
+	btnCreateRandom = new Button(btnCreate->pos + Vector2f(btnInsert->size.y + txtCreateSize->size.y + OUTLINE_THICKNESS * 8+45, 0), Vector2f(40.f, 70), "Random", pink, black, red, black, TextAlign::Middle);
+	btnCreateLoad = new Button(btnCreate->pos + Vector2f(btnInsert->size.y + btnCreateRandom->size.y * 2 + OUTLINE_THICKNESS * 10 + 47, 0), Vector2f(40.f, 70), "From File", pink, black, red, black, TextAlign::Middle);
 
 	txtInsert = new TextBox(btnInsert->pos + Vector2f(btnInsert->size.y + OUTLINE_THICKNESS * 5, 0), btnInsert->size, "Input", "Go", pink, black, black, black, white, {145,0 }, { 40,40 }, 10, TextAlign::Middle);
 	txtDelete = new TextBox(btnDelete->pos + Vector2f(btnDelete->size.y + OUTLINE_THICKNESS * 5, 0), btnDelete->size, "Input", "Go", pink, black, black, black, white, {145,0 }, { 40,40 }, 10, TextAlign::Middle);
@@ -43,6 +44,7 @@ Tree::Tree()
 	this->attachChild(ThirdLayer);
 	this->attachChild(FourthLayer);
 
+	PushToObject(TextBoxTranslate(txtCreateSize), ButtonTranslate(btnCreate));
 	PushToObject(ButtonTranslate(btnCreateRandom), ButtonTranslate(btnCreate));
 	PushToObject(ButtonTranslate(btnCreateLoad), ButtonTranslate(btnCreate));
 
@@ -71,6 +73,7 @@ Tree::Tree()
 	FunctionGroup->adopt(btnSearch, nullptr);
 
 	CreateGroup->FatherBtn(btnCreate);
+	CreateGroup->adopt(txtCreateSize->btn_cofirm, txtCreateSize);
 	CreateGroup->adopt(btnCreateRandom, nullptr);
 	CreateGroup->adopt(btnCreateLoad, nullptr);
 
