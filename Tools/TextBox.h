@@ -52,6 +52,9 @@ public:
         Button* btn_cofirm;
         bool isToggle = 0;
 
+        RenderTarget* target;
+        RectangleShape shape;
+
    private:
         
 
@@ -69,8 +72,7 @@ public:
         int textLim=0;
 
         //event & clock
-        RenderTarget* target;
-        RectangleShape shape;
+        
 
         Event* event;
 

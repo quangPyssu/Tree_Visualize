@@ -210,7 +210,7 @@ void Hash_Table::updateCurrent(Event& event, Vector2f& MousePos)
 
 						int data = txtSearch->getIntdata();
 
-						//anime->MakeSearchAnime();
+						anime->MakeSearchAnime(data, Nodes, NodeVector, Hash(data), count_node());
 
 						Search(data); 
 						CreateVisual(0);

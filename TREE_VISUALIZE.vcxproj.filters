@@ -72,6 +72,12 @@
     <ClCompile Include="Animation\Hash_Anime.cpp">
       <Filter>Animation</Filter>
     </ClCompile>
+    <ClCompile Include="Heap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation\Heap_Anime.cpp">
+      <Filter>Animation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -117,6 +123,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Animation\Hash_Anime.h">
+      <Filter>Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Heap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation\Heap_Anime.h">
       <Filter>Animation</Filter>
     </ClInclude>
   </ItemGroup>

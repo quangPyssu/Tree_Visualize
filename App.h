@@ -10,6 +10,7 @@
 #include "Tools/StyleEditor.h"
 #include "AVL_Tree.h"
 #include "Hash_Table.h"
+#include "Heap.h"
 
 using namespace sf;
 using namespace std;
@@ -51,12 +52,14 @@ public:
 	SceneNode MasterDisplay;
 	AVL_Tree* mAVL;
 	Hash_Table* mHash;
+	Heap* mHeap;
 
 	RectangleShape BG1;
 
 	Button* btnBST;
 	Button* btnAVL;
 	Button* btnHash;
+	Button* btnHeap;
 
 	Button* btnColorHub;
 

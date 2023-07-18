@@ -55,8 +55,9 @@ Vector2f TreeNode::getPosition()
 void TreeNode::make(const Vector2f& pos, const string& s)
 {
 	Cir.setPosition(pos);
-	this->text.setPosition(Cir.getPosition().x  - this->text.getGlobalBounds().width / 2.f,
-		Cir.getPosition().y  - this->text.getGlobalBounds().height / 2.f);
 
 	this->text.setString(s);
+
+	this->text.setPosition(Cir.getPosition().x  - this->text.getGlobalBounds().width / 2.f,
+		Cir.getPosition().y  - this->text.getGlobalBounds().height / 2.f);
 }
