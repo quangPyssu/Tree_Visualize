@@ -76,8 +76,10 @@ void AnimeBase::drawCurrent(RenderTarget& target, RenderStates states) const
 {
 	if (!isHavingAnime || curFrame >= AnimeFrameNode.size()) return;
 
-	if (!isPlaying) drawFrame(target, curFrame);
+	if (!isPlaying || isBig) drawFrame(target, curFrame);
 	else drawTrans(target);
+
+	if (CurAnime!=none && (isPlaying || (!isPlaying && curFrame>0))) for (auto a : FakeCodes[CurAnime]) target.draw(*a);
 }
 
 void AnimeBase::updateCurrent(Event& event, Vector2f& MousePos)
@@ -94,15 +96,27 @@ void AnimeBase::takeTimeCurrent(Time& dt)
 
 	if (!isHavingAnime) isPlaying = 0;
 
-	if (!isPlaying) return;
+	if (!isPlaying)
+	{
+		timeCnt = sf::seconds(0.f);;
+		return;
+	}
 
-	makeTransition();
+	if (!isBig) makeTransition();
 
 	timeCnt += dt;
 
 	if (timeCnt >= TIME_PER_ANIME_FRAME) curFrame = min((int)AnimeFrameNode.size(), curFrame + 1), timeCnt -= TIME_PER_ANIME_FRAME;
 
 	transProgress = timeCnt / TIME_PER_ANIME_FRAME;
+
+	if (isHavingAnime && CurAnime!=-1)
+	{
+		for (auto a : FakeCodes[CurAnime])
+		if (curFrame == 0)	a->rePos(transProgress); else
+			if (curFrame == (int)AnimeFrameNode.size() - 1)	a->rePos(1-transProgress); else
+				a->rePos(1);
+	}
 }
 
 // the Transition
@@ -140,6 +154,7 @@ TreeNode* AnimeBase::InterpolateNode(TreeNode* a, TreeNode* b, float t)
 
 	res->Cir = a->Cir;
 	res->text = a->text;
+	res->AdditionalText = a->AdditionalText;
 
 	int r_diff = b->Cir.getOutlineColor().r - a->Cir.getOutlineColor().r;
 	int g_diff = b->Cir.getOutlineColor().g - a->Cir.getOutlineColor().g;
@@ -162,6 +177,33 @@ TreeNode* AnimeBase::InterpolateNode(TreeNode* a, TreeNode* b, float t)
 
 	res->Cir.setPosition((1 - t) * a->Cir.getPosition() + t * b->Cir.getPosition());
 	res->text.setPosition(res->Cir.getPosition().x - res->text.getGlobalBounds().width / 2.f, res->Cir.getPosition().y - res->text.getGlobalBounds().height / 2.f);
+	res->AdditionalText.setPosition(res->Cir.getPosition().x - res->AdditionalText.getGlobalBounds().width / 2.f, res->Cir.getPosition().y - res->AdditionalText.getGlobalBounds().height / 2.f+NODE_DISTANCE*0.9f);
+
+	if (b->Cir.getFillColor()!= a->Cir.getFillColor() || b->isDisable || a->isDisable)
+	{
+		r_diff = b->Cir.getFillColor().r - a->Cir.getFillColor().r;
+		g_diff = b->Cir.getFillColor().g - a->Cir.getFillColor().g;
+		b_diff = b->Cir.getFillColor().b - a->Cir.getFillColor().b;
+
+		red = a->Cir.getFillColor().r + t * r_diff;
+		green = a->Cir.getFillColor().g + t * g_diff;
+		blue = a->Cir.getFillColor().b + t * b_diff;
+
+		res->Cir.setFillColor(Color(red, green, blue, alpha));
+	}
+
+	if (b->text.getFillColor() != a->text.getFillColor())
+	{
+		r_diff = b->text.getFillColor().r - a->text.getFillColor().r;
+		g_diff = b->text.getFillColor().g - a->text.getFillColor().g;
+		b_diff = b->text.getFillColor().b - a->text.getFillColor().b;
+
+		red = a->text.getFillColor().r + t * r_diff;
+		green = a->text.getFillColor().g + t * g_diff;
+		blue = a->Cir.getFillColor().b + t * b_diff;
+
+		res->text.setFillColor(Color(red, green, blue, alpha));
+	}
 
 	return res;
 }
@@ -244,6 +286,7 @@ void AnimeBase::CloneLastFrame()
 		TreeNode* tmp = new TreeNode(noType, "", 0);
 		tmp->Cir = a->Cir;
 		tmp->text = a->text;
+		tmp->AdditionalText = a->AdditionalText;
 		tmp->isDisable = a->isDisable;
 		tmp->data = a->data;
 

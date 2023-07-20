@@ -24,6 +24,10 @@ TreeNode::TreeNode(Type type, string text,int data)
 	this->text.setPosition(Cir.getPosition().x  - this->text.getGlobalBounds().width / 2.f,
 		Cir.getPosition().y  - this->text.getGlobalBounds().height / 2.f );
 
+	AdditionalText.setFont(ResourceManager::getFont(ResourceManager::Arial, "asset/fonts/ArialTh.ttf"));
+	AdditionalText.setCharacterSize(font_size);
+	AdditionalText.setFillColor(red);
+
 	mType = type;
 }
 
@@ -31,12 +35,14 @@ void TreeNode::drawCurrent(RenderTarget& target, RenderStates states) const
 {
 	target.draw(Cir);
 	target.draw(text);
+	target.draw(AdditionalText);
 }
 
 void TreeNode::setPosition(const Vector2f& position)
 {
 	Cir.setPosition(position);
 	text.setPosition(position.x  - this->text.getGlobalBounds().width / 2.f,position.y  - this->text.getGlobalBounds().height / 2.f);
+	AdditionalText.setPosition(position.x - AdditionalText.getGlobalBounds().width / 2.f, position.y - AdditionalText.getGlobalBounds().height / 2.f+NODE_DISTANCE*0.9f);
 }
 
 void TreeNode::setSize()
@@ -45,11 +51,26 @@ void TreeNode::setSize()
 	Cir.setOrigin(Vector2f(NODE_RADIUS, NODE_RADIUS));
 
 	text.setCharacterSize(font_size);
+	AdditionalText.setCharacterSize(font_size);
 }
 
 Vector2f TreeNode::getPosition()
 {
 	return Cir.getPosition();
+}
+
+void TreeNode::Highlight(Color color)
+{
+	Cir.setFillColor(color);
+	Cir.setOutlineColor(color);
+	text.setFillColor(Back_Ground_Color);
+}
+
+void TreeNode::unHighlight()
+{
+	Cir.setFillColor(Back_Ground_Color);
+	Cir.setOutlineColor(Default_Color);
+	text.setFillColor(Default_Color);
 }
 
 void TreeNode::make(const Vector2f& pos, const string& s)

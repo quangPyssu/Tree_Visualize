@@ -149,6 +149,7 @@
     <ClCompile Include="Heap.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Tools\Button.cpp" />
+    <ClCompile Include="Tools\CodeBox.cpp" />
     <ClCompile Include="Tools\Core\Global.cpp" />
     <ClCompile Include="Tools\Edge.cpp" />
     <ClCompile Include="Tools\GUIGroup.cpp" />
@@ -168,6 +169,7 @@
     <ClInclude Include="Hash_Table.h" />
     <ClInclude Include="Heap.h" />
     <ClInclude Include="Tools\Button.h" />
+    <ClInclude Include="Tools\CodeBox.h" />
     <ClInclude Include="Tools\Core\Global.h" />
     <ClInclude Include="Tools\Edge.h" />
     <ClInclude Include="Tools\GUIGroup.h" />

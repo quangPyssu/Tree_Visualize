@@ -2,7 +2,34 @@
 
 Hash_Anime::Hash_Anime() : AnimeBase()
 {
+	{	//setup code
+		vector <CodeBox*> a;
+
+		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - 380,WINDOW_HEIGHT - 40 * 2 - 35 * 3.f }, { 380,35 }, "insert key", purple, black, Left));
+		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - a.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 2.f }, a.back()->size, "i = key%HT.length;", purple, black, Left));
+		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - a.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35.f}, a.back()->size, "insert key to the back of this list i", purple, black, Left));
 	
+		FakeCodes.push_back(a);
+
+		vector <CodeBox*> b;
+
+		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - 380,WINDOW_HEIGHT - 40 * 2 - 35 * 4.f }, { 380,35 }, "remove key", purple, black, Left));
+		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - b.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 3.f }, b.back()->size, "i = key%HT.length;", purple, black, Left));
+		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - b.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 2.f }, b.back()->size, "for j = 0 to HT[i].length   ", purple, black, Left));
+		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - b.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35.f}, b.back()->size, "	if (HT[i][j] == key)	remove key from list i", purple, black, Left));
+	
+		FakeCodes.push_back(b);
+
+		vector <CodeBox*> c;
+
+		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - 380,WINDOW_HEIGHT - 40 * 2 - 35 * 5.f }, { 380,35 }, "find key id", purple, black, Left));
+		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - c.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 4.f }, c.back()->size, "i = key%HT.length;", purple, black, Left));
+		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - c.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 3.f }, c.back()->size, "for j = 0 to HT[i].length   ", purple, black, Left));
+		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - c.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 2.f }, c.back()->size, "	if (HT[i][j] == key) return found at index i number j", purple, black, Left));
+		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - c.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35.f }, c.back()->size, "	return not found", purple, black, Left));
+		
+		FakeCodes.push_back(c);
+	}
 }
 
 Hash_Anime::~Hash_Anime()
@@ -79,6 +106,8 @@ void Hash_Anime::copyFirstTree(vector <Hash_node*>& org)
 //create a display_node copy of the tree before change
 void Hash_Anime::CloneFromTree(SceneNode*& Nodes)
 {
+	if (n >= 20) isBig = true; else isBig = false;
+
 	cleanUp();
 
 	MakeNewFrame();
@@ -202,6 +231,7 @@ void Hash_Anime::MakeInsertAnime(int data, SceneNode*& Nodes, vector <Hash_node*
 	AnimeFrameNode.back().insert(AnimeFrameNode.back().end()-modulo, tmp);
 
 	copyFirstTree(org); 
+	CurAnime = aInsert;
 
 	n++;
 
@@ -253,6 +283,7 @@ void Hash_Anime::MakeDeleteAnime(int data, SceneNode*& Nodes, vector <Hash_node*
 
 	CloneFromTree(Nodes);
 	copyFirstTree(org);
+	CurAnime = aDelete;
 
 	if (keyHole[key] != -1)
 	{
@@ -327,6 +358,7 @@ void Hash_Anime::MakeSearchAnime(int data, SceneNode*& Nodes, vector <Hash_node*
 
 	CloneFromTree(Nodes);
 	copyFirstTree(org);
+	CurAnime = aSearch;
 
 	if (keyHole[key] != -1)
 	{
@@ -393,6 +425,8 @@ void Hash_Anime::print_console()
 
 void Hash_Anime::cleanUp()
 {
+	CurAnime = none;
+
 	for (auto a : TransitionNode) delete a;
 	for (auto a : TransitionLink) delete a;
 

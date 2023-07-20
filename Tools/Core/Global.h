@@ -58,6 +58,11 @@ namespace Constants
         BST, AVL, Graph, Link, noType , Left_Left, Right_Left, Right_Right, Left_Right
     };
 
+    enum AnimeType
+    {
+        aInsert = 0, aDelete = 1, aSearch = 2, aUpdate = 3, none = -1
+    };
+
     enum childType
     {
         cFirst,cSecond,cThird,cFour,cNone,sSmall,sMedium,sBig

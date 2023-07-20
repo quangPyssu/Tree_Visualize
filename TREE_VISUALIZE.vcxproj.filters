@@ -78,6 +78,9 @@
     <ClCompile Include="Animation\Heap_Anime.cpp">
       <Filter>Animation</Filter>
     </ClCompile>
+    <ClCompile Include="Tools\CodeBox.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -130,6 +133,9 @@
     </ClInclude>
     <ClInclude Include="Animation\Heap_Anime.h">
       <Filter>Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\CodeBox.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

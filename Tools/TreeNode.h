@@ -16,6 +16,9 @@ public:
 	virtual void setPosition(const Vector2f& position);
 	virtual Vector2f getPosition();
 
+	void Highlight(Color color);
+	void unHighlight();
+
 	void make(const Vector2f& pos, const string& s);
 	void setSize();
 
@@ -23,6 +26,8 @@ public:
 	
 	CircleShape Cir;
 	Text text;
+	
+	Text AdditionalText;
 private:
 	Type mType;
 	Sprite mSprite;

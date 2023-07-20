@@ -2,7 +2,31 @@
 
 Heap_Anime::Heap_Anime() : AnimeBase()
 {
-	
+	{	//setup code
+		vector <CodeBox*> a;
+
+		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - 380,WINDOW_HEIGHT - 40 * 2 - 35 * 4.f }, { 380,35 }, "insert v", purple, black, Left));
+		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - a.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35* 3.f }, a.back()->size, "A[A.length-1] = v, i = A.length++", purple, black, Left));
+		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - a.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35*2.f }, a.back()->size, "while ((i > 1) && (A[i] > A[parent(i)]))", purple, black, Left));
+		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - a.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35.f }, a.back()->size, "  swap(A[i], A[parent(i)]); i = parent(i)", purple, black, Left));
+
+		FakeCodes.push_back(a);
+
+		vector <CodeBox*> b;
+
+		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - 380,WINDOW_HEIGHT - 40 * 2 - 35 * 3.f }, { 380,35 }, "remove i'th node", purple, black, Left));
+		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - b.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35*2.f }, b.back()->size, "	A[i] = A[1]+1; shiftup(i);", purple, black, Left));
+		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - b.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35.f }, b.back()->size, "	Delete 0'th() then shifting;", purple, black, Left));
+
+		FakeCodes.push_back(b);
+
+		vector <CodeBox*> c;
+
+		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - 380,WINDOW_HEIGHT - 40 * 2 - 35 * 2.f }, { 380,35 }, "get 0'th node", purple, black, Left));
+		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - c.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35.f }, c.back()->size, "	return 0'th node", purple, black, Left));
+
+		FakeCodes.push_back(c);
+	}
 }
 
 Heap_Anime::~Heap_Anime()
@@ -51,11 +75,11 @@ void Heap_Anime::copyFirstTree(vector <Heap_node*>& org)
 //create a display_node copy of the tree before change
 void Heap_Anime::CloneFromTree(SceneNode*& Nodes)
 {
+	if (n >= 20) isBig = true; else isBig = false;
+
 	cleanUp(); 
 
-	MakeNewFrame();
-
-	
+	MakeNewFrame();	
 
 	for (auto a : Nodes->Children)
 	{
@@ -65,6 +89,7 @@ void Heap_Anime::CloneFromTree(SceneNode*& Nodes)
 		tmp->Cir = treeNode->Cir;
 		tmp->text = treeNode->text;
 		tmp->data = treeNode->data;
+		tmp->AdditionalText = treeNode->AdditionalText;
 
 		AnimeFrameNode.back().push_back(tmp);
 	}
@@ -77,13 +102,13 @@ void Heap_Anime::makeLinkLevel(int id)
 
 	Heap_node* Cur = NodeVectorFirst[id - 1];
 
-	if (id*2<cnt)
+	if (id*2<cnt && NodeVectorFirst[id*2-1]->data!=nothing)
 	{
 		changeLink(Cur, NodeVectorFirst[id*2 - 1], Default_Color);
 		makeLinkLevel(id * 2);
 	}
 
-	if (id*2+1<cnt)
+	if (id*2+1<cnt && NodeVectorFirst[id * 2]->data != nothing)
 	{
 		changeLink(Cur, NodeVectorFirst[id*2], Default_Color);
 		makeLinkLevel(id * 2 + 1);
@@ -170,6 +195,8 @@ void Heap_Anime::MakeInsertAnime(int data, SceneNode* &Nodes, vector <Heap_node*
 	this->n = n;  
 	
 	TreeNode* tmp = new TreeNode(noType, "", data); 
+	string s = to_string(n);
+	tmp->AdditionalText.setString(s);
 	AnimeFrameNode.back().push_back(tmp);
 	AnimeFrameNode.back().back()->Disable();
 
@@ -183,6 +210,8 @@ void Heap_Anime::MakeInsertAnime(int data, SceneNode* &Nodes, vector <Heap_node*
 	ttt->data = data;
 
 	NodeVectorFirst.push_back(ttt);
+
+	CurAnime = aInsert;
 
 	int id = n;
 	cnt = n + 1;
@@ -252,7 +281,7 @@ void Heap_Anime::MakeDeleteAnime(int data, SceneNode* &Nodes, vector <Heap_node*
 
 	cnt = n+1;
 	copyFirstTree(org);
-
+	CurAnime = aDelete;
 	int id = data;
 
 	CloneLastFrame();
@@ -290,9 +319,12 @@ void Heap_Anime::MakeDeleteAnime(int data, SceneNode* &Nodes, vector <Heap_node*
 
 	CloneLastFrame();
 	NodeVectorFirst[0] = NodeVectorFirst[n - 1];
-	AnimeFrameNode.back()[id - 1]->text.setString(AnimeFrameNode.back()[n-1]->text.getString());
-	AnimeFrameNode.back()[n - 1]->data = -1;
+	AnimeFrameNode.back()[0]->data = AnimeFrameNode.back()[n - 1]->data;
+	AnimeFrameNode.back()[0]->text.setString(AnimeFrameNode.back()[n-1]->text.getString());
+	AnimeFrameNode.back()[n - 1]->data = nothing;
 	AnimeFrameNode.back()[n - 1]->Disable();
+	NodeVectorFirst.back()->data = nothing;
+
 	if (n > 1) changeLink(NodeVectorFirst[n - 1], NodeVectorFirst[n / 2 - 1], trans);
 
 	id = 1; 
@@ -337,21 +369,41 @@ void Heap_Anime::MakeDeleteAnime(int data, SceneNode* &Nodes, vector <Heap_node*
 		CloneLastFrame();
 		AnimeFrameNode.back()[id - 1]->Cir.setOutlineColor(Default_Color);
 		AnimeFrameNode.back()[next]->Cir.setOutlineColor(Default_Color);
-		id *= 2;
+		id = next+1;
 	}
 
-	CloneLastFrame();
+	/*CloneLastFrame();*/
 
-	BeginPosX = WINDOW_WIDTH / 2 - (NODE_DISTANCE * n);
+	BeginPosX = WINDOW_WIDTH / 2 - (NODE_DISTANCE * (n-1));
 
 	int pos = 0;
+	cnt--;
+	/*ReposAfter(1, pos, 1, false);
+	makeLinkLevel(1);*/
 	curFrame = 0;
 }
 
-void Heap_Anime::MakeSearchAnime(int data, SceneNode* &Nodes, vector <Heap_node*> &org, int n)
+void Heap_Anime::MakeSearchAnime( SceneNode* &Nodes, vector <Heap_node*> &org, int n)
 {
 	isPlaying = 1;
 	isHavingAnime = 1;
+	isPlaying = 1;
+	isHavingAnime = 1;
+
+	this->n = n;
+
+	cout << "anime Delete " << endl;
+
+	CloneFromTree(Nodes);
+
+	this->n = n;
+
+	cnt = n + 1;
+	copyFirstTree(org);
+	CurAnime = aSearch;
+
+	CloneLastFrame();
+	AnimeFrameNode.back()[0]->Cir.setOutlineColor(Search_Color);
 }
 
 void Heap_Anime::ReposAfter(int id, int& nt, int level, bool isLeft)
@@ -369,10 +421,14 @@ void Heap_Anime::ReposAfter(int id, int& nt, int level, bool isLeft)
 
 	TreeNode*& tmp = AnimeFrameNode.back()[cur->vectorPos];
 
-	tmp->setPosition({ BeginPosX + NODE_DISTANCE * 2 * nt,NODE_POS_HEAD + ((NODE_DISTANCE)*level) });
-	tmp->Cir.setOutlineColor(Default_Color);
-	cout << tmp->data << endl;
-	nt++;
+	if (tmp->data != nothing)
+	{
+		cout << "cc " << id << endl;
+		tmp->setPosition({ BeginPosX + NODE_DISTANCE * 2 * nt,NODE_POS_HEAD + ((NODE_DISTANCE)*level) });
+		tmp->Cir.setOutlineColor(Default_Color);
+		nt++;
+	}
+		
 
 	// go right
 	ReposAfter(id*2+1, nt, level + 1, false);
@@ -399,6 +455,8 @@ void Heap_Anime::print_console(int id, string prefix, bool isLeft)
 
 void Heap_Anime::cleanUp()
 {
+	CurAnime = none;
+
 	for (auto a : TransitionNode) delete a;
 	for (auto a : TransitionLink) delete a;
 

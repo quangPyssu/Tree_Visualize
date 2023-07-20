@@ -132,18 +132,12 @@ void Heap::Push(int id, int& pos, bool isLeft)
 	if (id*2<=cnt) Push(id*2, pos, true);
 
 	TreeNode* tmp = new TreeNode(Type::AVL, "", Cur->data);
+	string s = to_string(id); 
+	tmp->AdditionalText.setString(s);
 
 	tmp->setPosition({ BeginPosX + NODE_DISTANCE * 2 * pos,NODE_POS_HEAD + ((NODE_DISTANCE)*Cur->level) });
 
 	shared_ptr <TreeNode> here(tmp);
-
-	TreeNode* idNum = new TreeNode(Type::AVL, "", Cur->vectorPos+1);
-	idNum->text.setFillColor(red);
-	idNum->Cir.setOutlineColor(trans);
-	idNum->Cir.setFillColor(trans);
-	idNum->setPosition({ BeginPosX + NODE_DISTANCE * 2 * pos,NODE_POS_HEAD + ((NODE_DISTANCE)*Cur->level) + NODE_DISTANCE*0.9f });
-
-	PushToObject(idNum, Linkes);
 
 	// Vector dataing
 
@@ -238,7 +232,7 @@ void Heap::updateCurrent(Event& event, Vector2f& MousePos)
 
 						int data = txtSearch->getIntdata();
 
-						//anime->MakeSearchAnime(data, Nodes, NodeVector, root->vectorPos, count_node(root));
+						anime->MakeSearchAnime(Nodes, NodeVector, cnt);
 
 						Search(); 
 						CreateVisual(0);

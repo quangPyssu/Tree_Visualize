@@ -34,6 +34,7 @@ public:
 	vector<AVL_node*> NodeVectorFirst;
 
 	int FirstPos = 0;
+	
 
 	//vector <[N][N]>
 

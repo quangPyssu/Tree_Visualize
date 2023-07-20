@@ -2,6 +2,7 @@
 #include "../Tools/TreeNode.h"
 #include "../Tools/Edge.h"
 #include "../Tools/Button.h"
+#include "../Tools/CodeBox.h"
 
 #pragma once
 
@@ -20,6 +21,9 @@ public:
 	Button* btnEnd;
 
 	//vector<vector<int>> AnimeNodePos;
+	
+	vector <vector<CodeBox*>> FakeCodes;
+
 	vector <int> AnimeNodePos;
 
 	vector <vector<TreeNode*>> AnimeFrameNode;
@@ -30,6 +34,7 @@ public:
 
 	int n = 0;
 	int curFrame = 0;
+	AnimeType CurAnime = aInsert;
 
 	float transProgress = 0;
 	bool isPlaying = 0;
@@ -38,6 +43,7 @@ public:
 	float BeginPosX = 0;
 
 	Time timeCnt = sf::seconds(0.f);
+	bool isBig = false;
 
 	//inheritance
 	virtual void drawCurrent(RenderTarget& target, RenderStates states) const;

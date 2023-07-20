@@ -47,7 +47,7 @@ public:
 
 	void MakeInsertAnime(int data, SceneNode*& Nodes, vector <Heap_node*>& org, int n);
 	void MakeDeleteAnime(int data, SceneNode*& Nodes, vector <Heap_node*>& org, int n);
-	void MakeSearchAnime(int data, SceneNode*& Nodes, vector <Heap_node*>& org, int n);
+	void MakeSearchAnime(SceneNode*& Nodes, vector <Heap_node*>& org, int n);
 
 	void print_console(int id, string prefix, bool isLeft);
 

@@ -2,7 +2,56 @@
 
 AVL_Anime::AVL_Anime() : AnimeBase()
 {
-	
+	{	//setup code
+		vector <CodeBox*> a;
+
+		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - 380,WINDOW_HEIGHT - 40 * 2 - 35 * 6.f }, { 380,35 }, "insert v", purple, black, Left));
+		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - a.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 5.f }, a.back()->size, "check balance factor of this and its children", purple, black, Left));
+		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - a.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 4.f }, a.back()->size, "		case1: this.rotateRight", purple, black, Left));
+		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - a.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 3.f }, a.back()->size, "		case2: this.left.rotateLeft, this.rotateRight", purple, black, Left));
+		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - a.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 2.f }, a.back()->size, "		case3: this.rotateLeft", purple, black, Left));
+		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - a.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35.f }, a.back()->size, "		case4: this.right.rotateRight, this.rotateLeft", purple, black, Left));
+		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - a.back()->size.x,WINDOW_HEIGHT - 40 * 2.f }, a.back()->size, "		 this is balanced", purple, black, Left));
+
+		FakeCodes.push_back(a);
+
+		vector <CodeBox*> b;
+
+		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - 380,WINDOW_HEIGHT - 40 * 2 - 35 * 6.f }, { 380,35 }, "remove v", purple, black, Left));
+		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - b.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 5.f }, b.back()->size, "check balance factor of this and its children", purple, black, Left));
+		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - b.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 4.f }, b.back()->size, "		case1: this.rotateRight", purple, black, Left));
+		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - b.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 3.f }, b.back()->size, "		case2: this.left.rotateLeft, this.rotateRight", purple, black, Left));
+		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - b.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 2.f }, b.back()->size, "		case3: this.rotateLeft", purple, black, Left));
+		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - b.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35.f }, b.back()->size, "		case4: this.right.rotateRight, this.rotateLeft", purple, black, Left));
+		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - b.back()->size.x,WINDOW_HEIGHT - 40 * 2.f }, b.back()->size, "		 this is balanced", purple, black, Left));
+
+		FakeCodes.push_back(b);
+
+		vector <CodeBox*> c;
+
+		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - 380,WINDOW_HEIGHT - 40 * 2 - 35 * 6.f }, { 380,35 }, "if this == null", purple, black, Left));
+		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - c.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 5.f }, c.back()->size, "  return null", purple, black, Left));
+		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - c.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 4.f }, c.back()->size, "else if this key == search value", purple, black, Left));
+		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - c.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 3.f }, c.back()->size, " return this", purple, black, Left));
+		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - c.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 2.f }, c.back()->size, "else if this key < search value", purple, black, Left));
+		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - c.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35.f }, c.back()->size, "  search rightt", purple, black, Left));
+		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - c.back()->size.x,WINDOW_HEIGHT - 40 * 2.f }, c.back()->size, "else search left", purple, black, Left));
+
+		FakeCodes.push_back(c);
+
+		vector <CodeBox*> d;
+
+		d.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - 380,WINDOW_HEIGHT - 40 * 2 - 35 * 6.f }, { 380,35 }, "remove v then insert", purple, black, Left));
+		d.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - d.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 5.f }, d.back()->size, "check dalance factor of this and its children", purple, black, Left));
+		d.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - d.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 4.f }, d.back()->size, "		case1: this.rotateRight", purple, black, Left));
+		d.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - d.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 3.f }, d.back()->size, "		case2: this.left.rotateLeft, this.rotateRight", purple, black, Left));
+		d.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - d.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 2.f }, d.back()->size, "		case3: this.rotateLeft", purple, black, Left));
+		d.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - d.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35.f }, d.back()->size, "		case4: this.right.rotateRight, this.rotateLeft", purple, black, Left));
+		d.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - d.back()->size.x,WINDOW_HEIGHT - 40 * 2.f }, d.back()->size, "		 this is dalanced", purple, black, Left));
+
+		FakeCodes.push_back(d);
+	}
+
 }
 
 AVL_Anime::~AVL_Anime()
@@ -67,6 +116,8 @@ void AVL_Anime::copyFirstTree(vector <AVL_node*>& org, int pos)
 //create a display_node copy of the tree before change
 void AVL_Anime::CloneFromTree(SceneNode*& Nodes)
 {
+	if (n >= 20) isBig = true; else isBig = false;
+
 	cleanUp();
 
 	MakeNewFrame();
@@ -172,6 +223,7 @@ void AVL_Anime::MakeInsertAnime(int data, SceneNode*& Nodes, vector <AVL_node*>&
 {
 	isPlaying = 1;
 	isHavingAnime = 1;
+	
 
 	this->n = n + 1;
 	n++;
@@ -186,6 +238,7 @@ void AVL_Anime::MakeInsertAnime(int data, SceneNode*& Nodes, vector <AVL_node*>&
 
 	copyFirstTree(org, pos);
 	this->n++;
+	CurAnime = aInsert;
 
 	AVL_node* ttt = new AVL_node;
 	ttt->vectorPos = this->n - 1;
@@ -226,13 +279,16 @@ void AVL_Anime::MakeInsertAnime(int data, SceneNode*& Nodes, vector <AVL_node*>&
 
 		AnimeFrameNode.back().back()->Able();
 
-		AnimeFrameNode.back().back()->Cir.setOutlineColor(Insert_Color);
+		CloneLastFrame();
+
+		AnimeFrameNode.back().back()->Highlight(Insert_Color);
 
 		CloneLastFrame();
 
 		if (par->data > data) par->left = NodeVectorFirst.back();
 		else par->right = NodeVectorFirst.back();
 
+		AnimeFrameNode.back().back()->unHighlight();
 		AnimeFrameNode.back().back()->Cir.setOutlineColor(Chosen_Color);
 
 		changeLink(par, NodeVectorFirst[n - 1], Chosen_Color);
@@ -274,6 +330,7 @@ void AVL_Anime::MakeDeleteAnime(int data, SceneNode*& Nodes, vector <AVL_node*>&
 
 	CloneFromTree(Nodes);
 	copyFirstTree(org, pos);
+	CurAnime = aDelete;
 
 	AVL_node* cur = NodeVectorFirst[FirstPos];
 	AVL_node* par = NodeVectorFirst[FirstPos];
@@ -316,7 +373,7 @@ void AVL_Anime::MakeDeleteAnime(int data, SceneNode*& Nodes, vector <AVL_node*>&
 		AnimeFrameNode.back()[cur->vectorPos]->Cir.setOutlineColor(Chosen_Color);
 
 		CloneLastFrame();
-		AnimeFrameNode.back()[cur->vectorPos]->Cir.setOutlineColor(Delete_Color);
+		AnimeFrameNode.back()[cur->vectorPos]->Highlight(Delete_Color);
 
 		if (!cur->left && !cur->right) // delete leave node
 		{
@@ -354,7 +411,6 @@ void AVL_Anime::MakeDeleteAnime(int data, SceneNode*& Nodes, vector <AVL_node*>&
 				}
 
 				CloneLastFrame(); // link to the rightest left
-				//swap(AnimeFrameNode.back()[cur->vectorPos]->data, AnimeFrameNode.back()[tmp->vectorPos]->data);
 
 				changeLink(par, cur, trans);
 				changeLink(cur, cur->right, trans);
@@ -373,14 +429,16 @@ void AVL_Anime::MakeDeleteAnime(int data, SceneNode*& Nodes, vector <AVL_node*>&
 					changeLink(cur->left, tmp, Chosen_Color);
 				}
 
-				CloneLastFrame(); // move it
+				CloneLastFrame(); // xoa cai node				
 
-				if (parTmp == cur) changeLink(tmp, tmp->left, trans); 
+				AnimeFrameNode.back()[cur->vectorPos]->Disable(); 
+
+				CloneLastFrame();// move it
+
+				if (parTmp == cur) changeLink(tmp, tmp->left, trans);
 
 				changeLink(cur->right, tmp, trans);
 				changeLink(cur->left, tmp, trans);
-
-				AnimeFrameNode.back()[cur->vectorPos]->Disable(); // xoa cai node
 				AnimeFrameNode.back()[tmp->vectorPos]->setPosition(AnimeFrameNode.back()[cur->vectorPos]->getPosition()); //flip node duoi len
 
 				changeLink(par, tmp, Chosen_Color);
@@ -462,6 +520,8 @@ void AVL_Anime::MakeUpdateAnime(int dataDel,int dataAdd,SceneNode*& Nodes, vecto
 	AVL_node* cur = NodeVectorFirst[FirstPos];
 	AVL_node* par = NodeVectorFirst[FirstPos];
 
+	CurAnime = aUpdate;
+
 	curFrame = 0;
 	{   //Delete part
 		while (1) // find node
@@ -501,7 +561,7 @@ void AVL_Anime::MakeUpdateAnime(int dataDel,int dataAdd,SceneNode*& Nodes, vecto
 			AnimeFrameNode.back()[cur->vectorPos]->Cir.setOutlineColor(Chosen_Color);
 
 			CloneLastFrame();
-			AnimeFrameNode.back()[cur->vectorPos]->Cir.setOutlineColor(Delete_Color);
+			AnimeFrameNode.back()[cur->vectorPos]->Highlight(Delete_Color);
 
 			if (!cur->left && !cur->right) // delete leave node
 			{
@@ -558,14 +618,16 @@ void AVL_Anime::MakeUpdateAnime(int dataDel,int dataAdd,SceneNode*& Nodes, vecto
 						changeLink(cur->left, tmp, Chosen_Color);
 					}
 
+					CloneLastFrame();
+					AnimeFrameNode.back()[cur->vectorPos]->Disable(); // xoa cai node
+
 					CloneLastFrame(); // move it
 
 					if (parTmp == cur) changeLink(tmp, tmp->left, trans);
 
 					changeLink(cur->right, tmp, trans);
 					changeLink(cur->left, tmp, trans);
-
-					AnimeFrameNode.back()[cur->vectorPos]->Disable(); // xoa cai node
+										
 					AnimeFrameNode.back()[tmp->vectorPos]->setPosition(AnimeFrameNode.back()[cur->vectorPos]->getPosition()); //flip node duoi len
 
 					changeLink(par, tmp, Chosen_Color);
@@ -656,13 +718,16 @@ void AVL_Anime::MakeUpdateAddin(int dataAdd)
 
 			AnimeFrameNode.back().back()->Able();
 
-			AnimeFrameNode.back().back()->Cir.setOutlineColor(Insert_Color);
+			CloneLastFrame();
+
+			AnimeFrameNode.back().back()->Highlight(Insert_Color);
 
 			CloneLastFrame();
 
 			if (par->data > dataAdd) par->left = NodeVectorFirst.back();
 			else par->right = NodeVectorFirst.back();
 
+			AnimeFrameNode.back().back()->unHighlight();
 			AnimeFrameNode.back().back()->Cir.setOutlineColor(Chosen_Color);
 
 			changeLink(par, NodeVectorFirst[n - 1], Chosen_Color);
@@ -706,6 +771,8 @@ void AVL_Anime::MakeSearchAnime(int data, SceneNode*& Nodes, vector <AVL_node*>&
 	CloneFromTree(Nodes);
 	copyFirstTree(org, pos);
 
+	CurAnime = aSearch;
+
 	AVL_node* cur = NodeVectorFirst[FirstPos];
 	AVL_node* par = NodeVectorFirst[FirstPos];
 
@@ -747,7 +814,7 @@ void AVL_Anime::MakeSearchAnime(int data, SceneNode*& Nodes, vector <AVL_node*>&
 		AnimeFrameNode.back()[cur->vectorPos]->Cir.setOutlineColor(Chosen_Color);
 
 		CloneLastFrame();
-		AnimeFrameNode.back()[cur->vectorPos]->Cir.setOutlineColor(Search_Color);
+		AnimeFrameNode.back()[cur->vectorPos]->Highlight(Search_Color);
 	}
 }
 
@@ -843,6 +910,7 @@ void AVL_Anime::print_console(AVL_node* cur, string prefix, bool isLeft)
 
 void AVL_Anime::cleanUp()
 {
+	CurAnime = none;
 	for (auto a : TransitionNode) delete a;
 	for (auto a : TransitionLink) delete a;
 
