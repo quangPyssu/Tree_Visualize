@@ -14,11 +14,12 @@ App::App()
 	mAVL = new AVL_Tree();
 	mHash = new Hash_Table();
 	mHeap = new Heap();
+	mB = new B_Tree();
 
 	MasterDisplay.PushToObject(mAVL, &MasterDisplay);
 	MasterDisplay.PushToObject(mHash, &MasterDisplay);
 	MasterDisplay.PushToObject(mHeap, &MasterDisplay);
-
+	MasterDisplay.PushToObject(mB, &MasterDisplay);
 
 	btnBST = new Button(Vector2f(30, 1), Vector2f(38.f, 110), "BST tree", pink, grey, pink, black, TextAlign::Middle);
 	btnBST->SecondText = "[>"+btnBST->FirstText+"<]";
@@ -37,9 +38,14 @@ App::App()
 	btnHeap->SecondText = "[>" + btnHeap->FirstText + "<]";
 	MasterDisplay.PushToObject(btnHeap, &MasterDisplay);
 
+	btn234= new Button(btnHeap->pos + Vector2f(btnAVL->size.y + 1, 0), btnAVL->size, "2-3-4 tree", pink, grey, pink, black, TextAlign::Middle);
+	btn234->SecondText = "[>" + btn234->FirstText + "<]";
+	MasterDisplay.PushToObject(btn234, &MasterDisplay);
+
 	dataStucture.push_back(mAVL);
 	dataStucture.push_back(mHash);
 	dataStucture.push_back(mHeap);
+	dataStucture.push_back(mB);
 
 	MenuGroup = new GUIGroup;
 	StyleGroup = new GUIGroup;
@@ -48,6 +54,7 @@ App::App()
 	MenuGroup->adopt(btnAVL, NULL);
 	MenuGroup->adopt(btnHash, NULL);
 	MenuGroup->adopt(btnHeap, NULL);
+	MenuGroup->adopt(btn234, NULL);
 
 	MasterDisplay.PushToObject(MenuGroup, &MasterDisplay);
 
@@ -155,6 +162,12 @@ void App::update()
 		for (int i = 0; i < dataStucture.size(); i++) if (i != 2) dataStucture[i]->Disable();
 
 		mHeap->Able();
+	}
+	else if (btn234->isOn)
+	{
+		for (int i = 0; i < dataStucture.size(); i++) if (i != 3) dataStucture[i]->Disable();
+
+		mB->Able();
 	}
 }
 

@@ -17,6 +17,10 @@ AnimeBase::AnimeBase() {
 
 AnimeBase::~AnimeBase()
 {
+	for (auto a : FakeCodes)
+		for (auto b : a)
+			delete b;
+
 	cleanUp();
 }
 

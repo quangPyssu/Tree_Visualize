@@ -3,6 +3,8 @@
 namespace Constants {
     int modulo = 10;
 
+    const int T = 3;
+
     const double pi = 3.14159265;
     const double BASE_X = (double)(sf::VideoMode::getDesktopMode().width) ;
     const double BASE_Y = (double)(sf::VideoMode::getDesktopMode().height) ;

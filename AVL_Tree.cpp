@@ -142,8 +142,6 @@ void AVL_Tree::Push(AVL_node*& Cur, int& cnt, AVL_node*& parent, bool isLeft)
 
 	TreeNode* tmp = new TreeNode(Type::AVL, "", Cur->data);
 
-	//tmp->setPosition({ !Cur->par ? 500 : Cur->par->tVisual->getPosition().x + (NODE_DISTANCE*4 / Cur->level) * (Cur->isLeft ? -1 : 1),NODE_POS_HEAD + ((NODE_DISTANCE) * Cur->level)});
-
 	tmp->setPosition({ BeginPosX + NODE_DISTANCE * 2 * cnt,NODE_POS_HEAD + ((NODE_DISTANCE)*Cur->level) });
 
 	shared_ptr <TreeNode> here(tmp);

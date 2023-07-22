@@ -11,6 +11,7 @@
 #include "AVL_Tree.h"
 #include "Hash_Table.h"
 #include "Heap.h"
+#include "B_tree.h"
 
 using namespace sf;
 using namespace std;
@@ -53,6 +54,7 @@ public:
 	AVL_Tree* mAVL;
 	Hash_Table* mHash;
 	Heap* mHeap;
+	B_Tree* mB;
 
 	RectangleShape BG1;
 
@@ -60,6 +62,7 @@ public:
 	Button* btnAVL;
 	Button* btnHash;
 	Button* btnHeap;
+	Button* btn234;
 
 	Button* btnColorHub;
 

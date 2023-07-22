@@ -81,6 +81,12 @@
     <ClCompile Include="Tools\CodeBox.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
+    <ClCompile Include="Animation\B_Anime.cpp">
+      <Filter>Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="B_tree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -135,6 +141,12 @@
       <Filter>Animation</Filter>
     </ClInclude>
     <ClInclude Include="Tools\CodeBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation\B_Anime.h">
+      <Filter>Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="B_tree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

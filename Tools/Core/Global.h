@@ -6,9 +6,12 @@
 #define ff first
 #define ss second
 
+#define null NULL
+
 namespace Constants
 {
     extern int modulo;
+    extern const int T;
 
     extern const double pi;
     extern const double BASE_X;

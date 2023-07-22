@@ -141,10 +141,12 @@
   <ItemGroup>
     <ClCompile Include="Animation\AnimeBase.cpp" />
     <ClCompile Include="Animation\AVL_Anime.cpp" />
+    <ClCompile Include="Animation\B_Anime.cpp" />
     <ClCompile Include="Animation\Hash_Anime.cpp" />
     <ClCompile Include="Animation\Heap_Anime.cpp" />
     <ClCompile Include="App.cpp" />
     <ClCompile Include="AVL_Tree.cpp" />
+    <ClCompile Include="B_tree.cpp" />
     <ClCompile Include="Hash_Table.cpp" />
     <ClCompile Include="Heap.cpp" />
     <ClCompile Include="main.cpp" />
@@ -162,10 +164,12 @@
   <ItemGroup>
     <ClInclude Include="Animation\AnimeBase.h" />
     <ClInclude Include="Animation\AVL_Anime.h" />
+    <ClInclude Include="Animation\B_Anime.h" />
     <ClInclude Include="Animation\Hash_Anime.h" />
     <ClInclude Include="Animation\Heap_Anime.h" />
     <ClInclude Include="App.h" />
     <ClInclude Include="AVL_Tree.h" />
+    <ClInclude Include="B_tree.h" />
     <ClInclude Include="Hash_Table.h" />
     <ClInclude Include="Heap.h" />
     <ClInclude Include="Tools\Button.h" />
