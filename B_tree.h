@@ -39,22 +39,4 @@ struct B_Tree : public Tree
 
 	void Obliterate();
 	void Forge(int n);
-
-	//actual tree
-
-	int cnt = 0;
-
-	vector <vector <B_node*>> NodeVector;
-
-	B_node* root = NULL;
-
-	int count_node(B_node* cur);
-	
-	void insertT(int data);
-
-	B_node* Del(B_node*& cur, int data);
-
-	B_node* Search(B_node*& cur, int data);
-
-	void DelAll(B_node* cur);
 };

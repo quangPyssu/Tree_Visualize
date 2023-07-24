@@ -41,7 +41,6 @@ public:
 	//Functions
 
 	void copyFirstTree(vector <AVL_node*>& org, int pos);
-	void MakeNewFrame();
 
 	void CloneFromTree(SceneNode*& Nodes);
 

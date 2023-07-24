@@ -26,6 +26,12 @@ AnimeBase::~AnimeBase()
 
 void AnimeBase::ChooseFrame(int i)
 {
+	if (isHavingAnime)
+	{
+		if ((curFrame == 0 && i == 1) || (AnimeFrameNode.size() && curFrame == AnimeFrameNode.size() && i == -1)) OpenCode(1); else
+			if ((curFrame == 1 && i == -1) || (curFrame == AnimeFrameNode.size()-1 && i == 1)) OpenCode(-1);
+	}
+
 	curFrame += i;
 	curFrame = min((int)AnimeFrameNode.size(), max(0, curFrame));
 	isPlaying = 0;
@@ -56,9 +62,10 @@ void AnimeBase::drawTrans(RenderTarget& target) const
 }
 
 //create a an empty frame
+
 void AnimeBase::MakeNewFrame()
 {
-	vector<TreeNode*> tmp{};
+	vector<shared_ptr<TreeNode>> tmp{};
 	AnimeFrameNode.push_back(tmp);
 
 	vector<vector<Edge*>> pmt{};
@@ -100,26 +107,22 @@ void AnimeBase::takeTimeCurrent(Time& dt)
 
 	if (!isHavingAnime) isPlaying = 0;
 
-	if (!isPlaying)
+	if (!isPlaying)	timeCnt = sf::seconds(0.f);
+	else
 	{
-		timeCnt = sf::seconds(0.f);;
-		return;
+		if (!isBig) makeTransition();
+
+		timeCnt += dt;
+
+		if (timeCnt >= TIME_PER_ANIME_FRAME) curFrame = min((int)AnimeFrameNode.size(), curFrame + 1), timeCnt -= TIME_PER_ANIME_FRAME;
 	}
-
-	if (!isBig) makeTransition();
-
-	timeCnt += dt;
-
-	if (timeCnt >= TIME_PER_ANIME_FRAME) curFrame = min((int)AnimeFrameNode.size(), curFrame + 1), timeCnt -= TIME_PER_ANIME_FRAME;
 
 	transProgress = timeCnt / TIME_PER_ANIME_FRAME;
 
-	if (isHavingAnime && CurAnime!=-1)
+	if (isHavingAnime && CurAnime != -1) for (auto a : FakeCodes[CurAnime])
 	{
-		for (auto a : FakeCodes[CurAnime])
-		if (curFrame == 0)	a->rePos(transProgress); else
-			if (curFrame == (int)AnimeFrameNode.size() - 1)	a->rePos(1-transProgress); else
-				a->rePos(1);
+		a->timeCnt = timeCnt;
+		a->rePos(1);
 	}
 }
 
@@ -138,7 +141,7 @@ void AnimeBase::makeTransition()
 	int u = curFrame;
 	int v = min(curFrame + 1, (int)AnimeFrameNode.size() - 1);
 
-	for (int i = 0; i < n; i++)	TransitionNode.push_back(InterpolateNode(AnimeFrameNode[u][i], AnimeFrameNode[v][i], transProgress));
+	for (int i = 0; i < n; i++)	TransitionNode.push_back(InterpolateNode(AnimeFrameNode[u][i].get(), AnimeFrameNode[v][i].get(), transProgress));
 
 	for (int i = 0; i < n; i++)
 	{
@@ -281,6 +284,15 @@ Edge* AnimeBase::InterpolateEdge(Edge* a, Edge* b, float t)
 
 // misc
 
+void AnimeBase::OpenCode(int i)
+{
+	if (CurAnime != -1) for (auto a : FakeCodes[CurAnime])
+	{
+		a->isChangin = 1; 
+		if (i == 1) a->AnimeOP = 1; else a->AnimeOP = -1;
+	}
+}
+
 void AnimeBase::CloneLastFrame()
 {
 	MakeNewFrame();
@@ -294,7 +306,8 @@ void AnimeBase::CloneLastFrame()
 		tmp->isDisable = a->isDisable;
 		tmp->data = a->data;
 
-		AnimeFrameNode.back().push_back(tmp);
+		shared_ptr<TreeNode> ttt(tmp);
+		AnimeFrameNode.back().push_back(ttt);
 	}
 
 	for (int i = 0; i < n; i++)

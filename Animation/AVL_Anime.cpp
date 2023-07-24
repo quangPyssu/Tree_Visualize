@@ -59,25 +59,6 @@ AVL_Anime::~AVL_Anime()
 	cleanUp();
 }
 
-//create a an empty frame
-void AVL_Anime::MakeNewFrame()
-{
-	vector<TreeNode*> tmp{};
-	AnimeFrameNode.push_back(tmp);
-
-	vector<vector<Edge*>> pmt{};
-	AnimeLinkMatrix.push_back(pmt);
-
-	for (int i = 0; i < n; i++)
-	{
-		vector<Edge*> vvv;
-		AnimeLinkMatrix.back().push_back(vvv);
-
-		for (int j = 0; j < n; j++)
-			AnimeLinkMatrix.back().back().push_back(NULL);
-	}
-}
-
 //make a vector copy of the tree before the change
 void AVL_Anime::copyFirstTree(vector <AVL_node*>& org, int pos)
 {
@@ -131,7 +112,8 @@ void AVL_Anime::CloneFromTree(SceneNode*& Nodes)
 		tmp->text = treeNode->text;
 		tmp->data = treeNode->data;
 
-		AnimeFrameNode.back().push_back(tmp);
+		shared_ptr<TreeNode> ttt(tmp);
+		AnimeFrameNode.back().push_back(ttt);
 	}
 }
 
@@ -234,7 +216,8 @@ void AVL_Anime::MakeInsertAnime(int data, SceneNode*& Nodes, vector <AVL_node*>&
 
 	TreeNode* tmp = new TreeNode(noType, "", data);
 	tmp->Disable();
-	AnimeFrameNode.back().push_back(tmp);
+	shared_ptr<TreeNode> tt(tmp);
+	AnimeFrameNode.back().push_back(tt);
 
 	copyFirstTree(org, pos);
 	this->n++;
@@ -506,7 +489,8 @@ void AVL_Anime::MakeUpdateAnime(int dataDel,int dataAdd,SceneNode*& Nodes, vecto
 
 	TreeNode* tmp = new TreeNode(noType, "", dataAdd);
 	tmp->Disable();
-	AnimeFrameNode.back().push_back(tmp);
+	shared_ptr<TreeNode> tt(tmp);
+	AnimeFrameNode.back().push_back(tt);
 
 	copyFirstTree(org, pos);
 	this->n++;
@@ -829,7 +813,7 @@ void AVL_Anime::ReposAfter(AVL_node* cur, int& cnt, int level, bool isLeft)
 
 	//reposing
 
-	TreeNode*& tmp = AnimeFrameNode.back()[cur->vectorPos];
+	TreeNode* tmp = AnimeFrameNode.back()[cur->vectorPos].get();
 
 	tmp->setPosition({ BeginPosX + NODE_DISTANCE * 2 * cnt,NODE_POS_HEAD + ((NODE_DISTANCE)*level) });
 	tmp->Cir.setOutlineColor(Default_Color);
@@ -921,7 +905,7 @@ void AVL_Anime::cleanUp()
 
 	NodeVectorFirst.clear();
 
-	for (auto a : AnimeFrameNode) for (auto b : a)	delete b;
+	for (auto a : AnimeFrameNode) a.clear();
 	for (auto a : AnimeLinkMatrix) for (auto b : a) for (auto c : b) delete c;
 
 	AnimeFrameNode.clear();

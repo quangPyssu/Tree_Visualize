@@ -32,7 +32,6 @@ public:
 	//Functions
 
 	void copyFirstTree(vector <Hash_node*>& org);
-	void MakeNewFrame();
 
 	void CloneFromTree(SceneNode*& Nodes);
 
@@ -46,11 +45,6 @@ public:
 	void MakeInsertAnime(int data, SceneNode*& Nodes, vector <Hash_node*>& org, int key,int cnt);
 	void MakeDeleteAnime(int data, SceneNode*& Nodes, vector <Hash_node*>& org, int key,int cnt);
 	void MakeSearchAnime(int data, SceneNode*& Nodes, vector <Hash_node*>& org, int key,int cnt);
-
-	void makeTransition();
-
-	TreeNode* InterpolateNode(TreeNode* a, TreeNode* b, float t);
-	Edge* InterpolateEdge(Edge* a, Edge* b, float t);
 
 	void print_console();
 

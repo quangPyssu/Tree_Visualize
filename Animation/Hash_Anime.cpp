@@ -37,25 +37,6 @@ Hash_Anime::~Hash_Anime()
 	cleanUp();
 }
 
-//create a an empty frame
-void Hash_Anime::MakeNewFrame()
-{
-	vector<TreeNode*> tmp{};
-	AnimeFrameNode.push_back(tmp);
-
-	vector<vector<Edge*>> pmt{};
-	AnimeLinkMatrix.push_back(pmt);
-
-	for (int i = 0; i < n; i++)
-	{
-		vector<Edge*> vvv;
-		AnimeLinkMatrix.back().push_back(vvv);
-
-		for (int j = 0; j < n; j++)
-			AnimeLinkMatrix.back().back().push_back(NULL);
-	}
-}
-
 //make a vector copy of the tree before the change
 void Hash_Anime::copyFirstTree(vector <Hash_node*>& org)
 {
@@ -121,7 +102,9 @@ void Hash_Anime::CloneFromTree(SceneNode*& Nodes)
 		tmp->text = treeNode->text;
 		tmp->data = treeNode->data;
 
-		AnimeFrameNode.back().push_back(tmp);
+		shared_ptr<TreeNode> ttt(tmp);
+
+		AnimeFrameNode.back().push_back(ttt);
 	}
 }
 
@@ -228,7 +211,8 @@ void Hash_Anime::MakeInsertAnime(int data, SceneNode*& Nodes, vector <Hash_node*
 
 	TreeNode* tmp = new TreeNode(noType, "", data);
 	tmp->Disable();
-	AnimeFrameNode.back().insert(AnimeFrameNode.back().end()-modulo, tmp);
+	shared_ptr<TreeNode> tt(tmp);
+	AnimeFrameNode.back().insert(AnimeFrameNode.back().end()-modulo, tt);
 
 	copyFirstTree(org); 
 	CurAnime = aInsert;
@@ -437,7 +421,7 @@ void Hash_Anime::cleanUp()
 
 	NodeVectorFirst.clear();
 
-	for (auto a : AnimeFrameNode) for (auto b : a)	delete b;
+	for (auto a : AnimeFrameNode) a.clear();
 	for (auto a : AnimeLinkMatrix) for (auto b : a) for (auto c : b) delete c;
 
 	AnimeFrameNode.clear();

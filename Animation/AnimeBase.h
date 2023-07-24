@@ -26,7 +26,7 @@ public:
 
 	vector <int> AnimeNodePos;
 
-	vector <vector<TreeNode*>> AnimeFrameNode;
+	vector <vector<shared_ptr <TreeNode>>> AnimeFrameNode;
 	vector <vector<vector<Edge*>>> AnimeLinkMatrix;
 
 	vector <TreeNode*> TransitionNode;
@@ -39,6 +39,8 @@ public:
 	float transProgress = 0;
 	bool isPlaying = 0;
 	bool isHavingAnime = 0;
+
+	bool isAnime=0;
 
 	float BeginPosX = 0;
 
@@ -54,7 +56,7 @@ public:
 
 	//Functions
 
-	void drawFrame(RenderTarget& target, int id) const;
+	virtual void drawFrame(RenderTarget& target, int id) const;
 	void drawTrans(RenderTarget& target) const;
 
 	void MakeNewFrame();
@@ -68,5 +70,7 @@ public:
 	Edge* InterpolateEdge(Edge* a, Edge* b, float t);
 
 	virtual void cleanUp() {};
+
+	void OpenCode(int i);
 };
 

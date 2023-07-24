@@ -28,6 +28,9 @@ public:
 
     RectangleShape shape;
 
+    Time timeCnt = sf::seconds(0.f);
+    float transProgress=0;
+
     // CodeBox text
 
     Text text;
@@ -49,5 +52,10 @@ public:
     // position &size
     Vector2f pos;
     Vector2f size;
+
+    bool isChangin = 0;
+    bool AnimeOP = 0;
+
+    void takeTimeCurrent(Time& dt);
 };
 

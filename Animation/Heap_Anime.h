@@ -34,7 +34,6 @@ public:
 	//Functions
 
 	void copyFirstTree(vector <Heap_node*>& org);
-	void MakeNewFrame();
 
 	void CloneFromTree(SceneNode*& Nodes);
 

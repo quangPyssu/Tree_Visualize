@@ -59,3 +59,24 @@ void CodeBox::drawCurrent(RenderTarget& target, RenderStates states) const
 	target.draw(this->shape);
 	target.draw(this->text);
 }
+
+void CodeBox::takeTimeCurrent(Time& dt)
+{
+	if (!isChangin)
+	{
+		timeCnt = sf::seconds(0.f);;
+		return;
+	}
+
+	timeCnt += dt;
+
+	if (timeCnt >= TIME_PER_ANIME_FRAME) isChangin=0,timeCnt -= TIME_PER_ANIME_FRAME;
+
+	transProgress = timeCnt / TIME_PER_ANIME_FRAME;
+
+	if (AnimeOP)// open
+		rePos(transProgress);
+
+	else//close
+		rePos(1 - transProgress);
+}

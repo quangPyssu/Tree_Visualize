@@ -5,9 +5,11 @@
 
 #pragma once
 
+class B_Anime;
+
 struct B_node
 {
-	B_node(bool isLeaf);
+	B_node(bool isLeaf,B_Anime* anime);
 
 	int level = 0;
 	int nKey = 0;
@@ -28,6 +30,33 @@ struct B_node
 	void printConsole(B_node* cur);
 
 	Vector2f middlePos();
+
+	//for Delete
+
+	int findKey(int data);
+
+	void remove(int data);
+
+	void removeFromLeaf(int id);
+
+	void removeFromInternal(int idx);
+
+	int getPred(int idx);
+
+	int getSucc(int idx);
+
+	void fill(int idx);
+
+	void borrowFromPrev(int idx);
+
+	void borrowFromNext(int idx);
+
+	void merge(int idx);
+
+	B_Anime* anime;
+
+	// custom
+	void paintNode(Color color, int l, int r,bool HasPred);
 };
 
 class B_Anime : public AnimeBase
@@ -37,32 +66,50 @@ public:
 	B_Anime();
 	virtual ~B_Anime();
 
-	vector<B_node*> NodeVectorFirst;
+	// shits
+	int cnt = 0;
 
-	int FirstPos = 0;
-	
+	vector <vector <B_node*>> NodeVector;
+
+	B_node* root = NULL;
+
+	int count_node(B_node* cur);
+
+	void insertT(int data,bool isAnime);
+
+	void Del(int data,bool isAnime);
+
+	B_node* Search(B_node*& cur, int data);
+
+	void DelAll(B_node* cur);		
 
 	//vector <[N][N]>
 
-	//Functions
+	void drawFrame(RenderTarget& target, int id) const override;
 
-	void copyFirstTree(vector <B_node*>& org, int pos);
+	// TOOL for making anime
+
+	void MakeCurState();
+
 	void MakeNewFrame();
 
 	void CloneFromTree(SceneNode*& Nodes);
+	void CloneLastFrame();
 
-	void makeLinkLevel(B_node*& Cur);
-	void breakLinkLevel();
+	void PushCurNode(B_node*& Cur, B_node*& parent);
+	void PushCurLink(Vector2f pos1, Vector2f pos2);
+
 	Edge* makeLink(B_node*& node1, B_node*& node2, Color color);
 	void changeLink(B_node*& node1, B_node*& node2, Color color);
 
 	// Anime maker
 
-	void MakeInsertAnime(int data, SceneNode*& Nodes, vector <B_node*>& org, int pos, int n);
-	void MakeDeleteAnime(int data, SceneNode*& Nodes, vector <B_node*>& org, int pos, int n);
-	void MakeUpdateAnime(int dataDel,int dataAdd, SceneNode*& Nodes, vector <B_node*>& org, int pos, int n);
-	void MakeUpdateAddin(int data);
-	void MakeSearchAnime(int data, SceneNode*& Nodes, vector <B_node*>& org, int pos, int n);
+	vector <vector<Edge*>> AnimeFrameLink;
+
+	void MakeInsertAnime(int data,SceneNode*& Nodes);
+	void MakeDeleteAnime(int data, SceneNode*& Nodes);
+	void MakeUpdateAnime(int dataDel,int dataAdd, SceneNode*& Nodes);
+	void MakeSearchAnime(int data, SceneNode*& Nodes);
 
 	void ReposAfter(B_node* cur,int& cnt,int level,bool isLeft);
 

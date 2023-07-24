@@ -34,25 +34,6 @@ Heap_Anime::~Heap_Anime()
 	cleanUp();
 }
 
-//create a an empty frame
-void Heap_Anime::MakeNewFrame()
-{
-	vector<TreeNode*> tmp{};
-	AnimeFrameNode.push_back(tmp);
-
-	vector<vector<Edge*>> pmt{};
-	AnimeLinkMatrix.push_back(pmt);
-
-	for (int i = 0; i < n; i++)
-	{
-		vector<Edge*> vvv;
-		AnimeLinkMatrix.back().push_back(vvv);
-
-		for (int j = 0; j < n; j++)
-			AnimeLinkMatrix.back().back().push_back(NULL);
-	}
-}
-
 //make a vector copy of the tree before the change
 void Heap_Anime::copyFirstTree(vector <Heap_node*>& org)
 {
@@ -91,7 +72,9 @@ void Heap_Anime::CloneFromTree(SceneNode*& Nodes)
 		tmp->data = treeNode->data;
 		tmp->AdditionalText = treeNode->AdditionalText;
 
-		AnimeFrameNode.back().push_back(tmp);
+		shared_ptr<TreeNode> ttt(tmp);
+
+		AnimeFrameNode.back().push_back(ttt);
 	}
 }
 
@@ -197,7 +180,9 @@ void Heap_Anime::MakeInsertAnime(int data, SceneNode* &Nodes, vector <Heap_node*
 	TreeNode* tmp = new TreeNode(noType, "", data); 
 	string s = to_string(n);
 	tmp->AdditionalText.setString(s);
-	AnimeFrameNode.back().push_back(tmp);
+	shared_ptr<TreeNode> tt(tmp);
+
+	AnimeFrameNode.back().push_back(tt);
 	AnimeFrameNode.back().back()->Disable();
 
 	if (n > 1) AnimeFrameNode.back().back()->setPosition(AnimeFrameNode.back()[n / 2 - 1]->getPosition() + Vector2f(NODE_DISTANCE * 2 * ((n & 1) ? 1 : -1), NODE_DISTANCE));
@@ -419,7 +404,7 @@ void Heap_Anime::ReposAfter(int id, int& nt, int level, bool isLeft)
 
 	//reposing
 
-	TreeNode*& tmp = AnimeFrameNode.back()[cur->vectorPos];
+	TreeNode* tmp = AnimeFrameNode.back()[cur->vectorPos].get();
 
 	if (tmp->data != nothing)
 	{
@@ -467,7 +452,7 @@ void Heap_Anime::cleanUp()
 
 	NodeVectorFirst.clear(); 
 
-	for (auto a : AnimeFrameNode) for (auto b : a)	delete b;
+	for (auto a : AnimeFrameNode) a.clear();
 	for (auto a : AnimeLinkMatrix) for (auto b : a) for (auto c : b) delete c;
 
 	AnimeFrameNode.clear();

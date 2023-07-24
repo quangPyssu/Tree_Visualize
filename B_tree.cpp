@@ -17,7 +17,7 @@ B_Tree::B_Tree() : Tree()
 B_Tree::~B_Tree()
 {
 
-	DelAll(root);
+	anime->DelAll(anime->root);
 }
 
 void B_Tree::Disable()
@@ -43,12 +43,12 @@ void B_Tree::Forge(int n)
 {
 	cout << "Randomizing " << n << endl;
 
-	DelAll(root);
+	anime->DelAll(anime->root);
 
 	for (int i = 0; i < n; i++)
 	{
 		int a = rand() % 70 + 10;
-		insertT(a);
+		anime->insertT(a,0);
 	}
 	
 	CreateVisual(0);
@@ -60,54 +60,49 @@ void B_Tree::Forge(int n)
 void B_Tree::Obliterate()
 {
 	DestroyVisual(); 
-	DelAll(root); 
+	anime->DelAll(anime->root); 
 }
 
 void B_Tree::CreateVisual(int Forced)
 {
 	DestroyVisual();
 
-	NodeVector.clear();
-
-	//root->printConsole(root);
+	anime->NodeVector.clear();
 	
 	cnt = 0;
-	Push(root, root);
+	Push(anime->root, anime->root);
 	if (!cnt) return;
 
 	int BottomX = 0;
 
 	for (int i = 0; i < cnt; i++)
 	{
-		cout << "level " << i << endl;
-		for (int j = 0; j < NodeVector[i].size(); j++)
+		for (int j = 0; j < anime->NodeVector[i].size(); j++)
 		{
-			for (int k = 0; k < NodeVector[i][j]->nKey; k++)
+			for (int k = 0; k < anime->NodeVector[i][j]->nKey; k++)
 			{
-				if (i==cnt-1) BottomX++;
-				cout << NodeVector[i][j]->data[k] << " ";
-			}
-			cout << endl;
-		}
-		cout << endl;
+				if (i == cnt - 1) BottomX++;
+				cout << anime->NodeVector[i][j]->data[k] << " ";
+			}cout << endl;
+		}cout << endl;
 	}
 
 	redoSize(BottomX+2);
 
-	BeginPosX = WINDOW_WIDTH/2.f - (NODE_RADIUS * BottomX * 2 + (NodeVector[cnt-1].size()-1)*NODE_DISTANCE*2)/2.f;
+	BeginPosX = WINDOW_WIDTH/2.f - (NODE_RADIUS * BottomX * 2 + (anime->NodeVector[cnt-1].size()-1)*NODE_DISTANCE*2)/2.f;
 
 	int id = cnt - 1;
 
-	for (int j = 0; j < NodeVector[id].size(); j++)
+	for (int j = 0; j < anime->NodeVector[id].size(); j++)
 	{
-		for (int k = 0; k < NodeVector[id][j]->nKey; k++)
+		for (int k = 0; k < anime->NodeVector[id][j]->nKey; k++)
 		{
-			TreeNode* tmp = new TreeNode(AVL, "", NodeVector[id][j]->data[k]);
+			TreeNode* tmp = new TreeNode(AVL, "", anime->NodeVector[id][j]->data[k]);
 			tmp->setPosition({ BeginPosX,NODE_POS_HEAD + ((NODE_DISTANCE*2)*id) });
 
 			shared_ptr <TreeNode> ttt(tmp);
 			Nodes->attachChild(ttt);
-			NodeVector[id][j]->tVisual[k] = ttt;
+			anime->NodeVector[id][j]->tVisual[k] = ttt;
 
 			BeginPosX += NODE_RADIUS*2.f;
 		}
@@ -116,9 +111,9 @@ void B_Tree::CreateVisual(int Forced)
 
 	while (id--)
 	{
-		for (int j = 0; j < NodeVector[id].size(); j++)
+		for (int j = 0; j < anime->NodeVector[id].size(); j++)
 		{
-			auto &Cur = NodeVector[id][j];
+			auto &Cur = anime->NodeVector[id][j];
 			BeginPosX = (Cur->childs[0]->tVisual[0]->Cir.getPosition().x + Cur->childs[Cur->nKey]->tVisual[Cur->childs[Cur->nKey]->nKey-1]->Cir.getPosition().x)/2.f
 				-Cur->nKey*NODE_RADIUS/2.f ;
 
@@ -138,12 +133,12 @@ void B_Tree::CreateVisual(int Forced)
 
 	for (int i = 0; i < cnt-1; i++)
 	{
-		for (int j = 0; j < NodeVector[i].size(); j++)
+		for (int j = 0; j < anime->NodeVector[i].size(); j++)
 		{
 			int k = 0;
-			for (; k < NodeVector[i][j]->nKey; k++) PushLink(NodeVector[i][j]->tVisual[k]->Cir.getPosition() - Vector2f(NODE_RADIUS / 2.f + OUTLINE_THICKNESS, -NODE_RADIUS / 2.f), NodeVector[i][j]->childs[k]->middlePos());
+			for (; k < anime->NodeVector[i][j]->nKey; k++) PushLink(anime->NodeVector[i][j]->tVisual[k]->Cir.getPosition() - Vector2f(NODE_RADIUS / 2.f + OUTLINE_THICKNESS, -NODE_RADIUS / 2.f), anime->NodeVector[i][j]->childs[k]->middlePos());
 
-			PushLink(NodeVector[i][j]->tVisual[k-1]->Cir.getPosition() + Vector2f(NODE_RADIUS / 2.f, NODE_RADIUS / 2.f), NodeVector[i][j]->childs[k]->middlePos());
+			PushLink(anime->NodeVector[i][j]->tVisual[k-1]->Cir.getPosition() + Vector2f(NODE_RADIUS / 2.f, NODE_RADIUS / 2.f), anime->NodeVector[i][j]->childs[k]->middlePos());
 		}
 	}
 }
@@ -152,17 +147,6 @@ void B_Tree::DestroyVisual()
 {
 	Nodes->Children.clear();
 	Linkes->Children.clear();
-}
-
-int B_Tree::count_node(B_node* cur)
-{
-	if (!cur) return 0;
-
-	int res = 1;
-
-	for (auto a : cur->childs) res += count_node(a);
-
-	return res;
 }
 
 void B_Tree::Push(B_node*& Cur, B_node*& parent)
@@ -174,12 +158,12 @@ void B_Tree::Push(B_node*& Cur, B_node*& parent)
 	if (cnt <= Cur->level)
 	{
 		vector <B_node*> tmp;
-		NodeVector.push_back(tmp);
+		anime->NodeVector.push_back(tmp);
 	}
 
 	cnt = max(cnt, Cur->level+1);
 
-	NodeVector[Cur->level].push_back(Cur);
+	anime->NodeVector[Cur->level].push_back(Cur);
 
 	if (!Cur->isLeaf) for (int i = 0; i <= Cur->nKey; i++)
 		Push(Cur->childs[i], Cur);
@@ -216,15 +200,15 @@ void B_Tree::updateCurrent(Event& event, Vector2f& MousePos)
 		int a;
 		cout << "Loading..." << endl;
 
-		DelAll(root);
+		anime->DelAll(anime->root);
 
-		while (fin >> a) insertT(a);
+		while (fin >> a) anime->insertT(a,0);
 
 		CreateVisual(0);
 
 		btnFunctionHub->ForceOff();
 	} else
-				if (root)
+				if (anime->root)
 		{
 			if (txtDelete->data != nothing) // delete
 			{
@@ -235,16 +219,7 @@ void B_Tree::updateCurrent(Event& event, Vector2f& MousePos)
 					int dataDel = txtDelete->getIntdata();
 					int dataAdd = txtUpdate->getIntdata();
 
-					/*anime->MakeUpdateAnime(dataDel,dataAdd, Nodes, NodeVector, root->vectorPos, count_node(root));
-
-					int cnt = count_node(root);
-					root = Del(root, dataDel);
-
-					if (cnt != count_node(root))
-					{
-						anime->MakeUpdateAddin(dataAdd);
-						root = insertT(root, dataAdd, root);
-					}*/
+					anime->MakeUpdateAnime(dataDel,dataAdd, Nodes);
 				}
 				else
 				{
@@ -252,12 +227,9 @@ void B_Tree::updateCurrent(Event& event, Vector2f& MousePos)
 
 					int data = txtDelete->getIntdata();
 
-					/*anime->MakeDeleteAnime(data, Nodes, NodeVector, root->vectorPos, count_node(root));
-
-					root = Del(root, data);*/
+					anime->MakeDeleteAnime(data, Nodes);
 				}
 				CreateVisual(0);
-				//print_console();
 
 				btnFunctionHub->ForceOff();
 			}
@@ -268,11 +240,9 @@ void B_Tree::updateCurrent(Event& event, Vector2f& MousePos)
 
 					int data = txtInsert->getIntdata();
 
-					//anime->MakeInsertAnime(data, Nodes, NodeVector, root->vectorPos, count_node(root));
+					anime->MakeInsertAnime(data,Nodes);
 
-					insertT(data);
 					CreateVisual(0);
-					//print_console();
 
 					btnFunctionHub->ForceOff();
 				}
@@ -283,10 +253,7 @@ void B_Tree::updateCurrent(Event& event, Vector2f& MousePos)
 
 						int data = txtSearch->getIntdata();
 
-						/*anime->MakeSearchAnime(data, Nodes, NodeVector, root->vectorPos, count_node(root));
-
-						Search(root, data); cout << endl;
-						CreateVisual(0);*/
+						anime->MakeSearchAnime(data, Nodes);
 						//print_console();
 
 						btnFunctionHub->ForceOff();
@@ -306,62 +273,4 @@ void B_Tree::takeTimeCurrent(Time& dt)
 		Nodes->Able();
 		Linkes->Able();
 	}
-}
-
-void B_Tree::insertT(int data)
-{
-	if (root == NULL)
-	{
-		root = new B_node(true);
-		root->data[0] = data;  // Insert key
-		root->nKey = 1;		   // Update number of keys in root
-	}
-	else // If tree is not empty
-	{
-		if (root->nKey == T)// If root is full, then tree grows up
-		{
-			B_node* tmp = new B_node(false);
-
-			tmp->childs[0] = root;// Make old root as child of new root
-
-			
-			tmp->splitChild(0, root);
-
-			int i = 0;
-			if (tmp->data[0] < data) i++;
-			tmp->childs[i]->insertNonFull(data);
-
-			// Change root
-			root = tmp;
-		}
-		else  root->insertNonFull(data);
-	}
-
-}
-
-
-B_node* B_Tree::Del(B_node*& cur, int data)
-{
-	if (!cur) return NULL;
-
-	return cur;
-}
-
-B_node* B_Tree::Search(B_node*& cur, int data)
-{
-	if (!cur) return NULL;
-
-	return cur;
-}
-
-void B_Tree::DelAll(B_node* cur)
-{
-	if (!cur) return;
-
-	B_node* tmp = cur;
-
-	for (int i = 0; i < cur->nKey;i++) DelAll(cur->childs[i]);
-
-	delete tmp;
-	root = NULL;
 }
