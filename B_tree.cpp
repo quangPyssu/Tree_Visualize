@@ -190,7 +190,7 @@ void B_Tree::updateCurrent(Event& event, Vector2f& MousePos)
 	if (txtCreateSize->data != nothing)
 	{
 		int data = txtCreateSize->getIntdata();
-		if (!data || data > 50) return;
+		if (data<0 || data > 50) return;
 		Forge(data);
 	}else
 		if (btnCreateRandom->isPressed()) Forge(rand() % 5 + 10); else 
@@ -208,7 +208,7 @@ void B_Tree::updateCurrent(Event& event, Vector2f& MousePos)
 
 		btnFunctionHub->ForceOff();
 	} else
-				if (anime->root)
+				//if (anime->root)
 		{
 			if (txtDelete->data != nothing) // delete
 			{

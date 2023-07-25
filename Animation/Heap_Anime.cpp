@@ -3,29 +3,26 @@
 Heap_Anime::Heap_Anime() : AnimeBase()
 {
 	{	//setup code
-		vector <CodeBox*> a;
+		
+		PushFakeCode("	swap(A[i], A[parent(i)]); i = parent(i)", 380);
+		PushFakeCode("while ((i > 1) && (A[i] > A[parent(i)]))", 380);
+		PushFakeCode("A[A.length-1] = v, i = A.length++", 380);
+		PushFakeCode("insert v", 380);
 
-		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - 380,WINDOW_HEIGHT - 40 * 2 - 35 * 4.f }, { 380,35 }, "insert v", purple, black, Left));
-		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - a.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35* 3.f }, a.back()->size, "A[A.length-1] = v, i = A.length++", purple, black, Left));
-		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - a.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35*2.f }, a.back()->size, "while ((i > 1) && (A[i] > A[parent(i)]))", purple, black, Left));
-		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - a.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35.f }, a.back()->size, "  swap(A[i], A[parent(i)]); i = parent(i)", purple, black, Left));
-
-		FakeCodes.push_back(a);
 
 		vector <CodeBox*> b;
-
-		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - 380,WINDOW_HEIGHT - 40 * 2 - 35 * 3.f }, { 380,35 }, "remove i'th node", purple, black, Left));
-		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - b.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35*2.f }, b.back()->size, "	A[i] = A[1]+1; shiftup(i);", purple, black, Left));
-		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - b.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35.f }, b.back()->size, "	Delete 0'th() then shifting;", purple, black, Left));
-
 		FakeCodes.push_back(b);
 
+		PushFakeCode("	Delete 0'th() then shifting;", 380);
+		PushFakeCode("  A[i] = A[1]+1; shiftup(i); ", 380);
+		PushFakeCode("	remove i'th node", 380);
+
+
 		vector <CodeBox*> c;
-
-		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - 380,WINDOW_HEIGHT - 40 * 2 - 35 * 2.f }, { 380,35 }, "get 0'th node", purple, black, Left));
-		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - c.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35.f }, c.back()->size, "	return 0'th node", purple, black, Left));
-
 		FakeCodes.push_back(c);
+
+		PushFakeCode("	return 0'th node", 380);
+		PushFakeCode("	get 0'th node", 380);
 	}
 }
 

@@ -3,53 +3,51 @@
 AVL_Anime::AVL_Anime() : AnimeBase()
 {
 	{	//setup code
-		vector <CodeBox*> a;
-
-		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - 380,WINDOW_HEIGHT - 40 * 2 - 35 * 6.f }, { 380,35 }, "insert v", purple, black, Left));
-		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - a.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 5.f }, a.back()->size, "check balance factor of this and its children", purple, black, Left));
-		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - a.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 4.f }, a.back()->size, "		case1: this.rotateRight", purple, black, Left));
-		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - a.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 3.f }, a.back()->size, "		case2: this.left.rotateLeft, this.rotateRight", purple, black, Left));
-		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - a.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 2.f }, a.back()->size, "		case3: this.rotateLeft", purple, black, Left));
-		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - a.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35.f }, a.back()->size, "		case4: this.right.rotateRight, this.rotateLeft", purple, black, Left));
-		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - a.back()->size.x,WINDOW_HEIGHT - 40 * 2.f }, a.back()->size, "		 this is balanced", purple, black, Left));
-
-		FakeCodes.push_back(a);
+		
+		PushFakeCode("this is balanced", 380);
+		PushFakeCode("		case4: this.right.rotateRight, this.rotateLeft", 380);
+		PushFakeCode("		case3: this.rotateLeft", 380);
+		PushFakeCode("		case2: this.left.rotateLeft, this.rotateRight", 380);
+		PushFakeCode("		case2: this.left.rotateLeft, this.rotateRight", 380);
+		PushFakeCode("		case1: this.rotateRight", 380);
+		PushFakeCode("check balance factor of this and its children", 380);
+		PushFakeCode("insert v", 380);		
 
 		vector <CodeBox*> b;
-
-		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - 380,WINDOW_HEIGHT - 40 * 2 - 35 * 6.f }, { 380,35 }, "remove v", purple, black, Left));
-		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - b.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 5.f }, b.back()->size, "check balance factor of this and its children", purple, black, Left));
-		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - b.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 4.f }, b.back()->size, "		case1: this.rotateRight", purple, black, Left));
-		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - b.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 3.f }, b.back()->size, "		case2: this.left.rotateLeft, this.rotateRight", purple, black, Left));
-		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - b.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 2.f }, b.back()->size, "		case3: this.rotateLeft", purple, black, Left));
-		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - b.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35.f }, b.back()->size, "		case4: this.right.rotateRight, this.rotateLeft", purple, black, Left));
-		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - b.back()->size.x,WINDOW_HEIGHT - 40 * 2.f }, b.back()->size, "		 this is balanced", purple, black, Left));
-
 		FakeCodes.push_back(b);
 
+		PushFakeCode("this is balanced", 380);
+		PushFakeCode("		case4: this.right.rotateRight, this.rotateLeft", 380);
+		PushFakeCode("		case3: this.rotateLeft", 380);
+		PushFakeCode("		case2: this.left.rotateLeft, this.rotateRight", 380);
+		PushFakeCode("		case2: this.left.rotateLeft, this.rotateRight", 380);
+		PushFakeCode("		case1: this.rotateRight", 380);
+		PushFakeCode("check balance factor of this and its children", 380);
+		PushFakeCode("remove v", 380);
+		
+
 		vector <CodeBox*> c;
-
-		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - 380,WINDOW_HEIGHT - 40 * 2 - 35 * 6.f }, { 380,35 }, "if this == null", purple, black, Left));
-		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - c.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 5.f }, c.back()->size, "  return null", purple, black, Left));
-		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - c.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 4.f }, c.back()->size, "else if this key == search value", purple, black, Left));
-		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - c.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 3.f }, c.back()->size, " return this", purple, black, Left));
-		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - c.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 2.f }, c.back()->size, "else if this key < search value", purple, black, Left));
-		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - c.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35.f }, c.back()->size, "  search rightt", purple, black, Left));
-		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - c.back()->size.x,WINDOW_HEIGHT - 40 * 2.f }, c.back()->size, "else search left", purple, black, Left));
-
 		FakeCodes.push_back(c);
+		
+		PushFakeCode("else search left", 380);	
+		PushFakeCode("  search rightt", 380);
+		PushFakeCode("else if this key < search value", 380);
+		PushFakeCode("  return this", 380);
+		PushFakeCode("else if this key == search value", 380);
+		PushFakeCode("  return null", 380);
+		PushFakeCode("if this == null", 380);	
 
 		vector <CodeBox*> d;
-
-		d.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - 380,WINDOW_HEIGHT - 40 * 2 - 35 * 6.f }, { 380,35 }, "remove v then insert", purple, black, Left));
-		d.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - d.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 5.f }, d.back()->size, "check dalance factor of this and its children", purple, black, Left));
-		d.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - d.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 4.f }, d.back()->size, "		case1: this.rotateRight", purple, black, Left));
-		d.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - d.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 3.f }, d.back()->size, "		case2: this.left.rotateLeft, this.rotateRight", purple, black, Left));
-		d.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - d.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 2.f }, d.back()->size, "		case3: this.rotateLeft", purple, black, Left));
-		d.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - d.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35.f }, d.back()->size, "		case4: this.right.rotateRight, this.rotateLeft", purple, black, Left));
-		d.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - d.back()->size.x,WINDOW_HEIGHT - 40 * 2.f }, d.back()->size, "		 this is dalanced", purple, black, Left));
-
 		FakeCodes.push_back(d);
+
+		PushFakeCode("this is balanced", 380);
+		PushFakeCode("		case4: this.right.rotateRight, this.rotateLeft", 380);
+		PushFakeCode("		case3: this.rotateLeft", 380);
+		PushFakeCode("		case2: this.left.rotateLeft, this.rotateRight", 380);
+		PushFakeCode("		case2: this.left.rotateLeft, this.rotateRight", 380);
+		PushFakeCode("		case1: this.rotateRight", 380);
+		PushFakeCode("check balance factor of this and its children", 380);
+		PushFakeCode("remove v then insert v'", 380);		
 	}
 
 }
@@ -75,14 +73,9 @@ void AVL_Anime::copyFirstTree(vector <AVL_node*>& org, int pos)
 
 	for (int i = 0; i < org.size(); i++)
 	{
-		//cout << " healp 1 ";
-		//cout << NodeVectorFirst[i]->data << " " << NodeVectorFirst.size() << endl;
-		//cout << " " << i;
-
-		if (org[i]->left) NodeVectorFirst[i]->left = NodeVectorFirst[org[i]->left->vectorPos];// , cout << " l " << NodeVectorFirst[i]->left->vectorPos << "; ";
-		if (org[i]->right) NodeVectorFirst[i]->right = NodeVectorFirst[org[i]->right->vectorPos];// , cout << " r " << NodeVectorFirst[i]->right->vectorPos << "; ";
-		if (org[i]->par) NodeVectorFirst[i]->par = NodeVectorFirst[org[i]->par->vectorPos];// , cout << " p " << NodeVectorFirst[i]->par->vectorPos << "; ";
-		//cout << endl;
+		if (org[i]->left) NodeVectorFirst[i]->left = NodeVectorFirst[org[i]->left->vectorPos];
+		if (org[i]->right) NodeVectorFirst[i]->right = NodeVectorFirst[org[i]->right->vectorPos];
+		if (org[i]->par) NodeVectorFirst[i]->par = NodeVectorFirst[org[i]->par->vectorPos];
 	}
 
 	n = org.size();

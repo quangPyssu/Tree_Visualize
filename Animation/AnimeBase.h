@@ -66,11 +66,14 @@ public:
 
 	void makeTransition();
 
+	void PushFakeCode(string s,float width);
+
 	TreeNode* InterpolateNode(TreeNode* a, TreeNode* b, float t);
 	Edge* InterpolateEdge(Edge* a, Edge* b, float t);
 
 	virtual void cleanUp() {};
 
 	void OpenCode(int i);
+	void StableCode();
 };
 

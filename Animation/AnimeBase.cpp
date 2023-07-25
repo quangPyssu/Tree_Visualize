@@ -1,18 +1,22 @@
 #include "AnimeBase.h"
 
 AnimeBase::AnimeBase() {
-	btnBack = new Button(Vector2f(WINDOW_WIDTH / 2 - 100, WINDOW_HEIGHT - 40), { 40,40 }, "<<", black, black + Color(50, 50, 50), black, Color::Transparent, Middle);
-	btnPlay = new Button(btnBack->pos + Vector2f(btnBack->size.x + 10, 0), btnBack->size, "=", black, black + Color(50, 50, 50), black, Color::Transparent, Middle);
-	btnPlay->SecondText = ">";
-	btnForw = new Button(btnPlay->pos + Vector2f(btnBack->size.x + 10, 0), btnBack->size, ">>", black, black + Color(50, 50, 50), black, Color::Transparent, Middle);
-	btnStart = new Button(btnBack->pos - Vector2f(btnBack->size.x + 10, 0), btnBack->size, "[<<", black, black + Color(50, 50, 50), black, Color::Transparent, Middle);
-	btnEnd = new Button(btnForw->pos + Vector2f(btnBack->size.x + 10, 0), btnBack->size, ">>]", black, black + Color(50, 50, 50), black, Color::Transparent, Middle);
+	btnBack = new Button(Vector2f(WINDOW_WIDTH / 2 - 150, WINDOW_HEIGHT - 39), { 38,100 }, "Back", pink, grey, pink, Color::Transparent, Middle);
+	btnPlay = new Button(btnBack->pos + Vector2f(btnBack->size.y + 1,0), btnBack->size, "Play", pink, grey, pink, Color::Transparent, Middle);
+	btnPlay->SecondText = "Stop";
+	btnForw = new Button(btnPlay->pos + Vector2f(btnBack->size.y + 1, 0), btnBack->size, "Forward", pink, grey, pink, Color::Transparent, Middle);
+	btnStart = new Button(btnBack->pos - Vector2f(btnBack->size.y + 1, 0), btnBack->size, "Start", pink, grey, pink, Color::Transparent, Middle);
+	btnEnd = new Button(btnForw->pos + Vector2f(btnBack->size.y + 1, 0), btnBack->size, "End", pink, grey, pink, Color::Transparent, Middle);
 
 	PushToObject(btnBack, this);
 	PushToObject(btnForw, this);
 	PushToObject(btnPlay, this);
 	PushToObject(btnStart, this);
 	PushToObject(btnEnd, this);
+
+	CurAnime = none;
+	vector <CodeBox*> a;
+	FakeCodes.push_back(a);
 }
 
 AnimeBase::~AnimeBase()
@@ -28,8 +32,8 @@ void AnimeBase::ChooseFrame(int i)
 {
 	if (isHavingAnime)
 	{
-		if ((curFrame == 0 && i == 1) || (AnimeFrameNode.size() && curFrame == AnimeFrameNode.size() && i == -1)) OpenCode(1); else
-			if ((curFrame == 1 && i == -1) || (curFrame == AnimeFrameNode.size()-1 && i == 1)) OpenCode(-1);
+		if ((curFrame == 0 && i == 1) ) OpenCode(1); else
+			if ((curFrame == 1 && i == -1)) OpenCode(-1);
 	}
 
 	curFrame += i;
@@ -85,12 +89,19 @@ void AnimeBase::MakeNewFrame()
 
 void AnimeBase::drawCurrent(RenderTarget& target, RenderStates states) const
 {
-	if (!isHavingAnime || curFrame >= AnimeFrameNode.size()) return;
+	if (!isHavingAnime || curFrame >= AnimeFrameNode.size()) ;
+	else
+	{
+		if (!isPlaying || isBig) drawFrame(target, curFrame);
+		else drawTrans(target);
+	}
 
-	if (!isPlaying || isBig) drawFrame(target, curFrame);
-	else drawTrans(target);
-
-	if (CurAnime!=none && (isPlaying || (!isPlaying && curFrame>0))) for (auto a : FakeCodes[CurAnime]) target.draw(*a);
+	if (CurAnime != none)
+	{
+		for (auto a : FakeCodes[CurAnime])			
+			if (isPlaying || (!isPlaying && (a->isChangin || (curFrame>0 && curFrame<AnimeFrameNode.size()))))
+				target.draw(*a);
+	}
 }
 
 void AnimeBase::updateCurrent(Event& event, Vector2f& MousePos)
@@ -110,19 +121,30 @@ void AnimeBase::takeTimeCurrent(Time& dt)
 	if (!isPlaying)	timeCnt = sf::seconds(0.f);
 	else
 	{
+		transProgress = timeCnt / TIME_PER_ANIME_FRAME;
+
 		if (!isBig) makeTransition();
 
 		timeCnt += dt;
 
 		if (timeCnt >= TIME_PER_ANIME_FRAME) curFrame = min((int)AnimeFrameNode.size(), curFrame + 1), timeCnt -= TIME_PER_ANIME_FRAME;
 	}
-
-	transProgress = timeCnt / TIME_PER_ANIME_FRAME;
-
-	if (isHavingAnime && CurAnime != -1) for (auto a : FakeCodes[CurAnime])
+	
+	if (isHavingAnime && CurAnime != none)
 	{
-		a->timeCnt = timeCnt;
-		a->rePos(1);
+		if (isPlaying)
+		{
+			if (curFrame == 0) OpenCode(1); else
+				if (curFrame == AnimeFrameNode.size() - 1) OpenCode(-1); else
+					StableCode();
+		}
+		//else if (curFrame >= AnimeFrameNode.size()) StableCode();
+
+		for (auto a : FakeCodes[CurAnime])
+		{
+			a->rePos(1);
+			a->takeTime(dt);
+		}
 	}
 }
 
@@ -289,8 +311,13 @@ void AnimeBase::OpenCode(int i)
 	if (CurAnime != -1) for (auto a : FakeCodes[CurAnime])
 	{
 		a->isChangin = 1; 
-		if (i == 1) a->AnimeOP = 1; else a->AnimeOP = -1;
+		a->AnimeOP = i;
 	}
+}
+
+void AnimeBase::StableCode()
+{
+	if (CurAnime != -1) for (auto a : FakeCodes[CurAnime]) a->isChangin = 0;
 }
 
 void AnimeBase::CloneLastFrame()
@@ -329,4 +356,18 @@ void AnimeBase::CloneLastFrame()
 
 			AnimeLinkMatrix.back()[i][j] = tmp;
 		}
+}
+
+void AnimeBase::PushFakeCode(string s,float width)
+{
+	if (FakeCodes.back().empty())
+	{
+		CodeBox* a = new CodeBox({ WINDOW_WIDTH - 30.f - 380,WINDOW_HEIGHT - 40 * 2.f}, { width,35 }, s, purple, black, Left);
+		FakeCodes.back().push_back(a);
+	}
+	else
+	{
+		CodeBox* a = new CodeBox({ WINDOW_WIDTH - 30.f - 380,FakeCodes.back().back()->pos.y - FakeCodes.back().back()->size.y }, {width,35}, s, purple, black, Left);
+		FakeCodes.back().push_back(a);
+	}
 }

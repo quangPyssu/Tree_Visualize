@@ -3,32 +3,29 @@
 Hash_Anime::Hash_Anime() : AnimeBase()
 {
 	{	//setup code
-		vector <CodeBox*> a;
 
-		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - 380,WINDOW_HEIGHT - 40 * 2 - 35 * 3.f }, { 380,35 }, "insert key", purple, black, Left));
-		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - a.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 2.f }, a.back()->size, "i = key%HT.length;", purple, black, Left));
-		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - a.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35.f}, a.back()->size, "insert key to the back of this list i", purple, black, Left));
-	
-		FakeCodes.push_back(a);
+		PushFakeCode("  insert key to the back of this list i", 380);
+		PushFakeCode("  i = key%HT.length;", 380);
+		PushFakeCode("insert key", 380);
+
 
 		vector <CodeBox*> b;
-
-		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - 380,WINDOW_HEIGHT - 40 * 2 - 35 * 4.f }, { 380,35 }, "remove key", purple, black, Left));
-		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - b.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 3.f }, b.back()->size, "i = key%HT.length;", purple, black, Left));
-		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - b.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 2.f }, b.back()->size, "for j = 0 to HT[i].length   ", purple, black, Left));
-		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - b.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35.f}, b.back()->size, "	if (HT[i][j] == key)	remove key from list i", purple, black, Left));
-	
 		FakeCodes.push_back(b);
 
-		vector <CodeBox*> c;
-
-		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - 380,WINDOW_HEIGHT - 40 * 2 - 35 * 5.f }, { 380,35 }, "find key id", purple, black, Left));
-		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - c.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 4.f }, c.back()->size, "i = key%HT.length;", purple, black, Left));
-		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - c.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 3.f }, c.back()->size, "for j = 0 to HT[i].length   ", purple, black, Left));
-		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - c.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 2.f }, c.back()->size, "	if (HT[i][j] == key) return found at index i number j", purple, black, Left));
-		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - c.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35.f }, c.back()->size, "	return not found", purple, black, Left));
+		PushFakeCode("		if (HT[i][j] == key) remove key from list i", 380);
+		PushFakeCode("  for j = 0 to HT[i].length  ", 380);
+		PushFakeCode("	i = key%HT.length;", 380);
+		PushFakeCode("remove key", 380);
 		
+
+		vector <CodeBox*> c;
 		FakeCodes.push_back(c);
+
+		PushFakeCode("	return not found", 380);
+		PushFakeCode("		if (HT[i][j] == key) return found at index i number j", 380);
+		PushFakeCode("	for j = 0 to HT[i].length ", 380);
+		PushFakeCode("	i = key%HT.length;", 380);
+		PushFakeCode("find key id", 380);
 	}
 }
 

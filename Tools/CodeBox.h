@@ -54,7 +54,7 @@ public:
     Vector2f size;
 
     bool isChangin = 0;
-    bool AnimeOP = 0;
+    int AnimeOP = 0;
 
     void takeTimeCurrent(Time& dt);
 };

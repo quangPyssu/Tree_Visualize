@@ -174,7 +174,7 @@ void Heap::updateCurrent(Event& event, Vector2f& MousePos)
 	if (txtCreateSize->data != nothing)
 	{
 		int data = txtCreateSize->getIntdata();
-		if (!data || data > 50) return;
+		if (data<0 || data > 50) return;
 		Forge(data);
 	}else
 		if (btnCreateRandom->isPressed()) Forge(rand() % 5 + 10); else 
@@ -193,7 +193,6 @@ void Heap::updateCurrent(Event& event, Vector2f& MousePos)
 
 		btnFunctionHub->ForceOff();
 	} else
-		if (1)
 		{
 			if (txtDelete->data != nothing) // delete
 			{				
@@ -202,7 +201,7 @@ void Heap::updateCurrent(Event& event, Vector2f& MousePos)
 				int data = txtDelete->getIntdata();
 				if (data<1 || data>cnt) return;
 
-				anime->MakeDeleteAnime(data, Nodes, NodeVector, cnt);
+				if (NodeVector.size()) anime->MakeDeleteAnime(data, Nodes, NodeVector, cnt);
 
 				Del(data);
 			
@@ -217,7 +216,7 @@ void Heap::updateCurrent(Event& event, Vector2f& MousePos)
 
 					int data = txtInsert->getIntdata();
 
-					anime->MakeInsertAnime(data, Nodes, NodeVector, cnt);
+					if (NodeVector.size()) anime->MakeInsertAnime(data, Nodes, NodeVector, cnt);
 		
 					insertT(data); 
 
@@ -232,7 +231,7 @@ void Heap::updateCurrent(Event& event, Vector2f& MousePos)
 
 						int data = txtSearch->getIntdata();
 
-						anime->MakeSearchAnime(Nodes, NodeVector, cnt);
+						if (NodeVector.size()) anime->MakeSearchAnime(Nodes, NodeVector, cnt);
 
 						Search(); 
 						CreateVisual(0);

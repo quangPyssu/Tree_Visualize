@@ -596,7 +596,7 @@ void B_Anime::MakeCurState()
 
 	for (int i = 0; i < cnt - 1; i++)
 	{
-		for (int j = 0; j < NodeVector[i].size(); j++)
+		for (int j = 0; j < NodeVector[i].size(); j++) if (NodeVector[i][j]->nKey)
 		{
 			int k = 0;
 			for (; k < NodeVector[i][j]->nKey; k++) PushCurLink(NodeVector[i][j]->tVisual[k]->Cir.getPosition() - Vector2f(NODE_RADIUS / 2.f + OUTLINE_THICKNESS, -NODE_RADIUS / 2.f), NodeVector[i][j]->childs[k]->middlePos());

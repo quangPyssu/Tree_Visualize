@@ -171,7 +171,6 @@ void Hash_Table::updateCurrent(Event& event, Vector2f& MousePos)
 
 		btnFunctionHub->ForceOff();
 	} else
-		if (1)
 		{
 			if (txtDelete->data != nothing) // delete
 			{

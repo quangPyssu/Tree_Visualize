@@ -64,7 +64,7 @@ void CodeBox::takeTimeCurrent(Time& dt)
 {
 	if (!isChangin)
 	{
-		timeCnt = sf::seconds(0.f);;
+		timeCnt = sf::seconds(0.f);
 		return;
 	}
 
@@ -74,9 +74,6 @@ void CodeBox::takeTimeCurrent(Time& dt)
 
 	transProgress = timeCnt / TIME_PER_ANIME_FRAME;
 
-	if (AnimeOP)// open
-		rePos(transProgress);
-
-	else//close
-		rePos(1 - transProgress);
+	if (AnimeOP == 1) rePos(transProgress); else
+		if (AnimeOP == -1) rePos(1 - transProgress);
 }
