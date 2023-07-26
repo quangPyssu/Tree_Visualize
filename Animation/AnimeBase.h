@@ -57,14 +57,14 @@ public:
 	//Functions
 
 	virtual void drawFrame(RenderTarget& target, int id) const;
-	void drawTrans(RenderTarget& target) const;
+	virtual void drawTrans(RenderTarget& target) const;
 
 	void MakeNewFrame();
 	void CloneLastFrame();
 
 	void ChooseFrame(int i);
 
-	void makeTransition();
+	virtual void makeTransition();
 
 	void PushFakeCode(string s,float width);
 

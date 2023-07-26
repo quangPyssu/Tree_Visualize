@@ -181,6 +181,19 @@ TreeNode* AnimeBase::InterpolateNode(TreeNode* a, TreeNode* b, float t)
 {
 	TreeNode* res = new TreeNode(noType, "", 0);
 
+	bool noA = 0,noB = 0;
+	if (!a)
+	{
+		a = new TreeNode(noType, "", 0);
+		a->Disable(); noA = 1;
+	}
+
+	if (!b)
+	{
+		b = new TreeNode(noType, "", 0);
+		b->Disable(); noB = 1;
+	}
+
 	res->Cir = a->Cir;
 	res->text = a->text;
 	res->AdditionalText = a->AdditionalText;
@@ -233,6 +246,9 @@ TreeNode* AnimeBase::InterpolateNode(TreeNode* a, TreeNode* b, float t)
 
 		res->text.setFillColor(Color(red, green, blue, alpha));
 	}
+
+	if (noA) a = NULL, delete a;
+	if (noB) b = NULL, delete b;
 
 	return res;
 }

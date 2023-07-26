@@ -92,7 +92,8 @@ void B_Tree::CreateVisual(int Forced)
 	BeginPosX = WINDOW_WIDTH/2.f - (NODE_RADIUS * BottomX * 2 + (anime->NodeVector[cnt-1].size()-1)*NODE_DISTANCE*2)/2.f;
 
 	int id = cnt - 1;
-
+	anime->maxNodeCnt = 0;
+	//bottom floor
 	for (int j = 0; j < anime->NodeVector[id].size(); j++)
 	{
 		for (int k = 0; k < anime->NodeVector[id][j]->nKey; k++)
@@ -103,12 +104,13 @@ void B_Tree::CreateVisual(int Forced)
 			shared_ptr <TreeNode> ttt(tmp);
 			Nodes->attachChild(ttt);
 			anime->NodeVector[id][j]->tVisual[k] = ttt;
+			anime->NodeVector[id][j]->Nodeid[k] = anime->maxNodeCnt++;
 
 			BeginPosX += NODE_RADIUS*2.f;
 		}
 		BeginPosX += NODE_DISTANCE*2;
 	}
-
+	//rest of the tree
 	while (id--)
 	{
 		for (int j = 0; j < anime->NodeVector[id].size(); j++)
@@ -125,20 +127,28 @@ void B_Tree::CreateVisual(int Forced)
 				shared_ptr <TreeNode> ttt(tmp);
 				Nodes->attachChild(ttt);
 				Cur->tVisual[k] = ttt;
+				Cur->Nodeid[k] = anime->maxNodeCnt++;
 
 				BeginPosX += NODE_RADIUS * 2.f;
 			}
 		}
 	}
 
+	anime->maxLinkCnt = 0;
+	//make linkes
 	for (int i = 0; i < cnt-1; i++)
 	{
-		for (int j = 0; j < anime->NodeVector[i].size(); j++)
+		for (int j = 0; j < anime->NodeVector[i].size(); j++) if (anime->NodeVector[i][j]->nKey)
 		{
 			int k = 0;
-			for (; k < anime->NodeVector[i][j]->nKey; k++) PushLink(anime->NodeVector[i][j]->tVisual[k]->Cir.getPosition() - Vector2f(NODE_RADIUS / 2.f + OUTLINE_THICKNESS, -NODE_RADIUS / 2.f), anime->NodeVector[i][j]->childs[k]->middlePos());
+			for (; k < anime->NodeVector[i][j]->nKey; k++)
+			{
+				PushLink(anime->NodeVector[i][j]->tVisual[k]->Cir.getPosition() - Vector2f(NODE_RADIUS / 2.f + OUTLINE_THICKNESS, -NODE_RADIUS / 2.f), anime->NodeVector[i][j]->childs[k]->middlePos());
+				anime->NodeVector[i][j]->Edgeid[k] = anime->maxLinkCnt++;
+			}
 
 			PushLink(anime->NodeVector[i][j]->tVisual[k-1]->Cir.getPosition() + Vector2f(NODE_RADIUS / 2.f, NODE_RADIUS / 2.f), anime->NodeVector[i][j]->childs[k]->middlePos());
+			anime->NodeVector[i][j]->Edgeid[k] = anime->maxLinkCnt++;
 		}
 	}
 }

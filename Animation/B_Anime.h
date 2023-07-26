@@ -16,6 +16,9 @@ struct B_node
 
 	vector <int> data;
 	vector <B_node*> childs;
+
+	vector <int> Nodeid;
+	vector <int> Edgeid;
 	
 	bool isLeaf = 0;
 
@@ -67,7 +70,10 @@ public:
 	virtual ~B_Anime();
 
 	// shits
+	int m=0;
 	int cnt = 0;
+	int maxNodeCnt = 0;
+	int maxLinkCnt = 0;
 
 	vector <vector <B_node*>> NodeVector;
 
@@ -87,20 +93,23 @@ public:
 
 	void drawFrame(RenderTarget& target, int id) const override;
 
+	void makeTransition() override;
+
 	// TOOL for making anime
 
 	void MakeCurState();
-
 	void MakeNewFrame();
+
+	void fillAllFrame();
 
 	void CloneFromTree(SceneNode*& Nodes);
 	void CloneLastFrame();
 
 	void PushCurNode(B_node*& Cur, B_node*& parent);
-	void PushCurLink(Vector2f pos1, Vector2f pos2);
+	void PushCurLink(Vector2f pos1, Vector2f pos2,int& id);
 
-	Edge* makeLink(B_node*& node1, B_node*& node2, Color color);
-	void changeLink(B_node*& node1, B_node*& node2, Color color);
+	void PushTreeNode(shared_ptr <TreeNode>& tmp,int& id);
+	void PushEdge(Edge* tmp,int& id);
 
 	// Anime maker
 
