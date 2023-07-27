@@ -2,55 +2,6 @@
 
 B_Anime::B_Anime() : AnimeBase()
 {
-	{	//setup code
-		/*vector <CodeBox*> a;
-
-		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - 380,WINDOW_HEIGHT - 40 * 2 - 35 * 6.f }, { 380,35 }, "insert v", purple, black, Left));
-		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - a.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 5.f }, a.back()->size, "check balance factor of this and its children", purple, black, Left));
-		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - a.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 4.f }, a.back()->size, "		case1: this.rotateRight", purple, black, Left));
-		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - a.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 3.f }, a.back()->size, "		case2: this.left.rotateLeft, this.rotateRight", purple, black, Left));
-		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - a.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 2.f }, a.back()->size, "		case3: this.rotateLeft", purple, black, Left));
-		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - a.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35.f }, a.back()->size, "		case4: this.right.rotateRight, this.rotateLeft", purple, black, Left));
-		a.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - a.back()->size.x,WINDOW_HEIGHT - 40 * 2.f }, a.back()->size, "		 this is balanced", purple, black, Left));
-
-		FakeCodes.push_back(a);
-
-		vector <CodeBox*> b;
-
-		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - 380,WINDOW_HEIGHT - 40 * 2 - 35 * 6.f }, { 380,35 }, "remove v", purple, black, Left));
-		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - b.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 5.f }, b.back()->size, "check balance factor of this and its children", purple, black, Left));
-		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - b.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 4.f }, b.back()->size, "		case1: this.rotateRight", purple, black, Left));
-		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - b.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 3.f }, b.back()->size, "		case2: this.left.rotateLeft, this.rotateRight", purple, black, Left));
-		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - b.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 2.f }, b.back()->size, "		case3: this.rotateLeft", purple, black, Left));
-		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - b.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35.f }, b.back()->size, "		case4: this.right.rotateRight, this.rotateLeft", purple, black, Left));
-		b.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - b.back()->size.x,WINDOW_HEIGHT - 40 * 2.f }, b.back()->size, "		 this is balanced", purple, black, Left));
-
-		FakeCodes.push_back(b);
-
-		vector <CodeBox*> c;
-
-		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - 380,WINDOW_HEIGHT - 40 * 2 - 35 * 6.f }, { 380,35 }, "if this == null", purple, black, Left));
-		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - c.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 5.f }, c.back()->size, "  return null", purple, black, Left));
-		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - c.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 4.f }, c.back()->size, "else if this key == search value", purple, black, Left));
-		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - c.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 3.f }, c.back()->size, " return this", purple, black, Left));
-		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - c.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 2.f }, c.back()->size, "else if this key < search value", purple, black, Left));
-		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - c.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35.f }, c.back()->size, "  search rightt", purple, black, Left));
-		c.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - c.back()->size.x,WINDOW_HEIGHT - 40 * 2.f }, c.back()->size, "else search left", purple, black, Left));
-
-		FakeCodes.push_back(c);
-
-		vector <CodeBox*> d;
-
-		d.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - 380,WINDOW_HEIGHT - 40 * 2 - 35 * 6.f }, { 380,35 }, "remove v then insert", purple, black, Left));
-		d.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - d.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 5.f }, d.back()->size, "check dalance factor of this and its children", purple, black, Left));
-		d.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - d.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 4.f }, d.back()->size, "		case1: this.rotateRight", purple, black, Left));
-		d.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - d.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 3.f }, d.back()->size, "		case2: this.left.rotateLeft, this.rotateRight", purple, black, Left));
-		d.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - d.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35 * 2.f }, d.back()->size, "		case3: this.rotateLeft", purple, black, Left));
-		d.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - d.back()->size.x,WINDOW_HEIGHT - 40 * 2 - 35.f }, d.back()->size, "		case4: this.right.rotateRight, this.rotateLeft", purple, black, Left));
-		d.push_back(new CodeBox({ WINDOW_WIDTH - 30.f - d.back()->size.x,WINDOW_HEIGHT - 40 * 2.f }, d.back()->size, "		 this is dalanced", purple, black, Left));
-
-		FakeCodes.push_back(d);*/
-	}
 
 }
 
@@ -101,7 +52,7 @@ void B_node::splitChild(int i, B_node* y)
 	for (int j = nKey; j >= i + 1; j--)	childs[j+1] = childs[j],Edgeid[j+1]=Edgeid[j];
 
 	// Link the new child to this node
-	childs[i + 1] = z;
+	childs[i + 1] = z; Edgeid[i + 1] = -1;
 
 	// new data and move all greater keys one slot ahead
 	for (int j = nKey-1; j >= i; j--) data[j+1] = data[j],Nodeid[j+1]=Nodeid[j];
@@ -151,6 +102,7 @@ void B_node::insertNonFull(int data)
 			if (this->data[i + 1] < data) i++;
 		}
 
+		paintLink(Chosen_Color, i + 1, i + 1, 0);
 		childs[i + 1]->insertNonFull(data);
 	}
 }
@@ -184,6 +136,17 @@ void B_node::paintNode(Color color, int l, int r,bool HasPred)
 
 		for (int i = l; i <= r; i++) if (i<nKey && tVisual[i])
 			tVisual[i]->Cir.setOutlineColor(color);
+	}
+}
+
+void B_node::paintLink(Color color, int l, int r, bool HasPred)
+{
+	if (anime->isAnime)
+	{
+		if (HasPred) anime->CloneLastFrame(); else anime->MakeCurState();
+
+		for (int i = l; i <= r; i++) if (i <= nKey && Edgeid[i]>-1 && Edgeid[i]<anime->AnimeFrameLink.back().size() && anime->AnimeFrameLink.back()[Edgeid[i]])
+			anime->AnimeFrameLink.back()[Edgeid[i]]->line.setFillColor(color);
 	}
 }
 
@@ -221,8 +184,16 @@ void B_node::remove(int data)
 
 		if (childs[id]->nKey == 1) fill(id);
 
-		if (flag && id > nKey) childs[id - 1]->remove(data);
-		else childs[id]->remove(data);
+		if (flag && id > nKey)
+		{
+			paintLink(Chosen_Color, id - 1, id - 1, 0);
+			childs[id - 1]->remove(data);
+		}
+		else
+		{
+			paintLink(Chosen_Color, id, id, 0);
+			childs[id]->remove(data);
+		}
 	}
 }
 
@@ -480,6 +451,8 @@ B_node* B_Anime::Search(B_node*& cur, int data)
 	}
 	if (cur->isLeaf) return nullptr;
 
+	cur->paintLink(Chosen_Color, i, i, 1);
+
 	return Search(cur->childs[i], data);
 }
 
@@ -607,7 +580,7 @@ void B_Anime::fillAllFrame()
 void B_Anime::MakeCurState()
 {
 	NodeVector.clear();
-	MakeNewFrame(); cout << "help but anime" << endl;
+	MakeNewFrame(); //cout << "help but anime" << endl;
 
 	cnt = 0;
 	PushCurNode(root, root);
@@ -633,8 +606,6 @@ void B_Anime::MakeCurState()
 			TreeNode* tmp = new TreeNode(AVL, "", NodeVector[id][j]->data[k]);
 			tmp->setPosition({ BeginPosX,NODE_POS_HEAD + ((NODE_DISTANCE * 2) * id) });
 
-			cout << NodeVector[id][j]->Nodeid[k] << endl;
-
 			shared_ptr <TreeNode> ttt(tmp);
 
 			PushTreeNode(ttt, NodeVector[id][j]->Nodeid[k]);
@@ -658,8 +629,6 @@ void B_Anime::MakeCurState()
 				TreeNode* tmp = new TreeNode(AVL, "", Cur->data[k]);
 				tmp->setPosition({ BeginPosX,NODE_POS_HEAD + ((NODE_DISTANCE * 2) * id) });
 
-				cout << NodeVector[id][j]->Nodeid[k] << endl;
-
 				shared_ptr <TreeNode> ttt(tmp);
 				PushTreeNode(ttt, Cur->Nodeid[k]);
 				Cur->tVisual[k] = ttt;
@@ -679,7 +648,6 @@ void B_Anime::MakeCurState()
 			PushCurLink(NodeVector[i][j]->tVisual[k - 1]->Cir.getPosition() + Vector2f(NODE_RADIUS / 2.f, NODE_RADIUS / 2.f), NodeVector[i][j]->childs[k]->middlePos(), NodeVector[i][j]->Edgeid[k]);
 		}
 	}
-	cout << "Confirm " << endl;
 }
 
 //create a display_node copy of the tree and setup
@@ -813,7 +781,7 @@ void B_Anime::PushEdge(Edge* tmp, int& id)
 {
 	if (id == -1) id = maxLinkCnt++;
 
-	while (AnimeFrameLink.back().size() <= id) AnimeFrameLink.back().push_back(NULL);
+	while (AnimeFrameLink.back().size() <= id) AnimeFrameLink.back().push_back(NULL);	
 
 	AnimeFrameLink.back()[id] = tmp;
 }

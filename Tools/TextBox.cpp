@@ -105,12 +105,9 @@ void TextBox::updateCurrent(Event& event, Vector2f& MousePos)
 	}
 
 	if (btn_cofirm->isPressed() || (event.type == Event::KeyPressed && event.key.code == Keyboard::Enter))
-		confirm(input_text),cout << "data  " << data << endl; else data = nothing;
+		confirm(input_text); else data = nothing,dataText=nothingText;
 
 	outputRecal();
-
-	//
-	//cout << s << " " << isDisable << endl;
 }
 
 void TextBox::takeTimeCurrent(Time& dt)
@@ -185,18 +182,48 @@ int TextBox::getIntdata()
 	else return nothing;
 }
 
+string TextBox::getTextdata()
+{
+	if (dataText != nothingText)
+	{
+		string s = dataText;
+		dataText = nothingText;
+		return s;
+	}
+	else return nothingText;
+}
+
 bool TextBox::is_number(string& s)
 {
 	isNeg = 0;
-	if (s[0] == '-') { isNeg = 1; s.erase(s.begin(), s.begin()+1); cout << "ad u " << s << endl;	}
+	if (s[0] == '-') { isNeg = 1; s.erase(s.begin(), s.begin()+1);	}
 
 	return !s.empty() && s.size()<9 && find_if(s.begin(),	s.end(), [](unsigned char c) { return !isdigit(c); }) == s.end();
 }
 
+bool TextBox::is_text(string& s)
+{
+	if (s.empty() || s.size() > 12) return 0;
+
+	for (int i = 0; i < s.size(); i++) if (s[i] < 'a' || s[i]>'z') return 0;
+
+	return 1;
+}
+
 void TextBox::confirm(string& s)
 {
-	data = nothing;
-	if (is_number(s)) data = stoi(s) * (isNeg ? -1: 1);
+	if (!canText)
+	{
+		data = nothing;
+		if (is_number(s)) data = stoi(s) * (isNeg ? -1 : 1);
+		cout << "data  " << data << endl;
+	}
+	else
+	{
+		dataText = nothingText;
+		if (is_text(s)) dataText = s;
+		cout << "dataTexxt  " << dataText << endl;
+	}
 
 	input_text = "";
 }

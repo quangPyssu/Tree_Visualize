@@ -15,13 +15,15 @@ App::App()
 	mHash = new Hash_Table();
 	mHeap = new Heap();
 	mB = new B_Tree();
+	mTrie = new Trie_Tree();
 
 	MasterDisplay.PushToObject(mAVL, &MasterDisplay);
 	MasterDisplay.PushToObject(mHash, &MasterDisplay);
 	MasterDisplay.PushToObject(mHeap, &MasterDisplay);
 	MasterDisplay.PushToObject(mB, &MasterDisplay);
+	MasterDisplay.PushToObject(mTrie, &MasterDisplay);
 
-	btnBST = new Button(Vector2f(30, 1), Vector2f(38.f, 110), "BST tree", pink, grey, pink, black, TextAlign::Middle);
+	btnBST = new Button(Vector2f(30, 1), Vector2f(38.f, 110), "Relax Menu", pink, grey, pink, black, TextAlign::Middle);
 	btnBST->SecondText = "[>"+btnBST->FirstText+"<]";
 	btnBST->isOn = true;
 	MasterDisplay.PushToObject(btnBST, &MasterDisplay);
@@ -38,14 +40,19 @@ App::App()
 	btnHeap->SecondText = "[>" + btnHeap->FirstText + "<]";
 	MasterDisplay.PushToObject(btnHeap, &MasterDisplay);
 
-	btn234= new Button(btnHeap->pos + Vector2f(btnAVL->size.y + 1, 0), btnAVL->size, "2-3-4 tree", pink, grey, pink, black, TextAlign::Middle);
+	btn234 = new Button(btnHeap->pos + Vector2f(btnAVL->size.y + 1, 0), btnAVL->size, "2-3-4 tree", pink, grey, pink, black, TextAlign::Middle);
 	btn234->SecondText = "[>" + btn234->FirstText + "<]";
 	MasterDisplay.PushToObject(btn234, &MasterDisplay);
+
+	btnTrie = new Button(btn234->pos + Vector2f(btnAVL->size.y + 1, 0), btnAVL->size, "Trie tree", pink, grey, pink, black, TextAlign::Middle);
+	btnTrie->SecondText = "[>" + btnTrie->FirstText + "<]";
+	MasterDisplay.PushToObject(btnTrie, &MasterDisplay);
 
 	dataStucture.push_back(mAVL);
 	dataStucture.push_back(mHash);
 	dataStucture.push_back(mHeap);
 	dataStucture.push_back(mB);
+	dataStucture.push_back(mTrie);
 
 	MenuGroup = new GUIGroup;
 	StyleGroup = new GUIGroup;
@@ -55,6 +62,7 @@ App::App()
 	MenuGroup->adopt(btnHash, NULL);
 	MenuGroup->adopt(btnHeap, NULL);
 	MenuGroup->adopt(btn234, NULL);
+	MenuGroup->adopt(btnTrie, NULL);
 
 	MasterDisplay.PushToObject(MenuGroup, &MasterDisplay);
 
@@ -168,6 +176,12 @@ void App::update()
 		for (int i = 0; i < dataStucture.size(); i++) if (i != 3) dataStucture[i]->Disable();
 
 		mB->Able();
+	}
+	else if (btnTrie->isOn)
+	{
+		for (int i = 0; i < dataStucture.size(); i++) if (i != 4) dataStucture[i]->Disable();
+
+		mTrie->Able();
 	}
 }
 

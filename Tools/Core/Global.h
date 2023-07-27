@@ -52,6 +52,7 @@ namespace Constants
     extern const float NODE_DISTANCE_MEDIUM;
     extern const float NODE_DISTANCE_SMALL;
     extern const int nothing;
+    extern const std::string nothingText;
 
     extern const sf::Time TIME_PER_ANIME_FRAME;
     extern const float FRAME_PER_FRAME;

@@ -18,9 +18,12 @@ class TextBox : public SceneNode
         Text text;
 
         int data=nothing;
+        string dataText = nothingText;
         
         states box_Stat;
         short unsigned isHover = 0;
+
+        bool canText=0;
 
         //constructor
 
@@ -32,6 +35,7 @@ class TextBox : public SceneNode
         //Function
 
         int getIntdata();
+        string getTextdata();
 
 public:
     // Override the drawCurrent function from SceneNode
@@ -84,7 +88,10 @@ public:
         // input accept?
 
         bool isNeg = 0;
+        bool TextGet = 0;
         bool is_number(string& s);
+
+        bool is_text(string& s);
 
         string output_text;
 };

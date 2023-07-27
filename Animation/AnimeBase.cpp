@@ -207,13 +207,22 @@ TreeNode* AnimeBase::InterpolateNode(TreeNode* a, TreeNode* b, float t)
 	int blue = a->Cir.getOutlineColor().b + t * b_diff;
 	int alpha = 255;
 
-
 	if (b->isDisable)
 	{
 		if (a->isDisable) res->Disable();
 		else alpha = 255 - (255 * t);
 	}
-	else if (a->isDisable) alpha = 0 + 255 * t;
+	else if (a->isDisable) alpha = 0 + 255 * t; else
+	{
+		float size_diff = b->Cir.getRadius() - a->Cir.getRadius();
+
+		res->Cir.setRadius(a->Cir.getRadius()+ size_diff*t);
+
+		int char_diff = b->text.getCharacterSize() - a->text.getCharacterSize();
+
+		res->text.setCharacterSize((int) (a->text.getCharacterSize() + char_diff * t));
+	}
+
 
 	res->Cir.setOutlineColor(Color(red, green, blue, alpha));
 

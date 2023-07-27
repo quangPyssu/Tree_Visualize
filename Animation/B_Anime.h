@@ -60,6 +60,7 @@ struct B_node
 
 	// custom
 	void paintNode(Color color, int l, int r,bool HasPred);
+	void paintLink(Color color, int l, int r, bool HasPred);
 };
 
 class B_Anime : public AnimeBase

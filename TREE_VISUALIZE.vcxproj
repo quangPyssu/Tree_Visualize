@@ -144,6 +144,7 @@
     <ClCompile Include="Animation\B_Anime.cpp" />
     <ClCompile Include="Animation\Hash_Anime.cpp" />
     <ClCompile Include="Animation\Heap_Anime.cpp" />
+    <ClCompile Include="Animation\Trie_Anime.cpp" />
     <ClCompile Include="App.cpp" />
     <ClCompile Include="AVL_Tree.cpp" />
     <ClCompile Include="B_tree.cpp" />
@@ -160,6 +161,7 @@
     <ClCompile Include="Tools\TextBox.cpp" />
     <ClCompile Include="Tools\Tree.cpp" />
     <ClCompile Include="Tools\TreeNode.cpp" />
+    <ClCompile Include="Trie_Tree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation\AnimeBase.h" />
@@ -167,6 +169,7 @@
     <ClInclude Include="Animation\B_Anime.h" />
     <ClInclude Include="Animation\Hash_Anime.h" />
     <ClInclude Include="Animation\Heap_Anime.h" />
+    <ClInclude Include="Animation\Trie_Anime.h" />
     <ClInclude Include="App.h" />
     <ClInclude Include="AVL_Tree.h" />
     <ClInclude Include="B_tree.h" />
@@ -182,6 +185,7 @@
     <ClInclude Include="Tools\TextBox.h" />
     <ClInclude Include="Tools\Tree.h" />
     <ClInclude Include="Tools\TreeNode.h" />
+    <ClInclude Include="Trie_Tree.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

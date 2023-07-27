@@ -42,6 +42,7 @@ namespace Constants {
 
 
     const int nothing=-999999999;
+    const std::string nothingText="-nothing";
 
     const sf::Time TIME_PER_ANIME_FRAME = sf::seconds(0.6f);
     const float FRAME_PER_FRAME=10;
