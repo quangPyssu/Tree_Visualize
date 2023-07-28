@@ -15,11 +15,10 @@ struct Heap : public Tree
 
 	Heap_Anime* anime;
 
-	bool is;
 	float BeginPosX = 0;
 
 	// update btn cmmmdume
-	TextBox* txtUpdate;
+	Button* btnChangeHeap;
 
 	// Inheritance
 

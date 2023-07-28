@@ -33,6 +33,10 @@ public:
 
 	//Functions
 
+	bool compare(Heap_node* a, Heap_node* b);
+
+	bool isMaxHeap = 1;
+
 	void copyFirstTree(vector <Heap_node*>& org);
 
 	void CloneFromTree(SceneNode*& Nodes);

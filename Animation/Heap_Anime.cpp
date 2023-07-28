@@ -13,22 +13,28 @@ Heap_Anime::Heap_Anime() : AnimeBase()
 		vector <CodeBox*> b;
 		FakeCodes.push_back(b);
 
-		PushFakeCode("	Delete 0'th() then shifting;", 380);
-		PushFakeCode("  A[i] = A[1]+1; shiftup(i); ", 380);
-		PushFakeCode("	remove i'th node", 380);
+		PushFakeCode("Delete 0'th() then shifting;", 380);
+		PushFakeCode("A[i] = A[1]+1; shiftup(i); ", 380);
+		PushFakeCode("remove i'th node", 380);
 
 
 		vector <CodeBox*> c;
 		FakeCodes.push_back(c);
 
-		PushFakeCode("	return 0'th node", 380);
-		PushFakeCode("	get 0'th node", 380);
+		PushFakeCode("return 0'th node", 380);
+		PushFakeCode("get 0'th node", 380);
 	}
 }
 
 Heap_Anime::~Heap_Anime()
 {
 	cleanUp();
+}
+
+bool Heap_Anime::compare(Heap_node* a, Heap_node* b)
+{
+	if (isMaxHeap) return a->data > b->data; else
+		return a->data < b->data;
 }
 
 //make a vector copy of the tree before the change
@@ -214,7 +220,8 @@ void Heap_Anime::MakeInsertAnime(int data, SceneNode* &Nodes, vector <Heap_node*
 		AnimeFrameNode.back()[id-1]->Cir.setOutlineColor(Chosen_Color);
 		AnimeFrameNode.back()[par]->Cir.setOutlineColor(Chosen_Color);
 
-		if (NodeVectorFirst[par]->data < NodeVectorFirst[id - 1]->data)
+		//if (NodeVectorFirst[par]->data < NodeVectorFirst[id - 1]->data)
+		if (compare(NodeVectorFirst[id - 1],NodeVectorFirst[par]))
 		{
 			CloneLastFrame();
 
@@ -267,14 +274,19 @@ void Heap_Anime::MakeDeleteAnime(int data, SceneNode* &Nodes, vector <Heap_node*
 	int id = data;
 
 	CloneLastFrame();
-	NodeVectorFirst[id - 1]->data = NodeVectorFirst[0]->data + 1;
-	AnimeFrameNode.back()[id - 1]->text.setString("Big");
+
+	if (isMaxHeap) NodeVectorFirst[id - 1]->data = NodeVectorFirst[0]->data + 1;
+	else NodeVectorFirst[id - 1]->data = NodeVectorFirst[0]->data - 1;
+
+	if (isMaxHeap) AnimeFrameNode.back()[id - 1]->text.setString("Big");
+	else AnimeFrameNode.back()[id - 1]->text.setString("Smol");
 
 	while (id > 1)
 	{
 		int par = id / 2 - 1;
 
-		if (NodeVectorFirst[par]->data < NodeVectorFirst[id - 1]->data)
+		//if (NodeVectorFirst[par]->data < NodeVectorFirst[id - 1]->data)
+		if (compare(NodeVectorFirst[id - 1],NodeVectorFirst[par]))
 		{
 			CloneLastFrame();
 
@@ -300,7 +312,8 @@ void Heap_Anime::MakeDeleteAnime(int data, SceneNode* &Nodes, vector <Heap_node*
 	}
 
 	CloneLastFrame();
-	NodeVectorFirst[0] = NodeVectorFirst[n - 1];
+	NodeVectorFirst[0]->data = NodeVectorFirst[n - 1]->data;
+
 	AnimeFrameNode.back()[0]->data = AnimeFrameNode.back()[n - 1]->data;
 	AnimeFrameNode.back()[0]->text.setString(AnimeFrameNode.back()[n-1]->text.getString());
 	AnimeFrameNode.back()[n - 1]->data = nothing;
@@ -322,7 +335,8 @@ void Heap_Anime::MakeDeleteAnime(int data, SceneNode* &Nodes, vector <Heap_node*
 			AnimeFrameNode.back()[id*2-1]->Cir.setOutlineColor(Chosen_Color);
 			CloneLastFrame();
 
-			if (NodeVectorFirst[id * 2]->data > NodeVectorFirst[next]->data)
+			//if (NodeVectorFirst[id * 2]->data > NodeVectorFirst[next]->data)
+			if (compare(NodeVectorFirst[id * 2],NodeVectorFirst[next]))
 			{
 				next = id * 2;
 				AnimeFrameNode.back()[id * 2 - 1]->Cir.setOutlineColor(Default_Color);
@@ -337,7 +351,9 @@ void Heap_Anime::MakeDeleteAnime(int data, SceneNode* &Nodes, vector <Heap_node*
 		AnimeFrameNode.back()[id-1]->Cir.setOutlineColor(Chosen_Color);
 		AnimeFrameNode.back()[next]->Cir.setOutlineColor(Chosen_Color);
 
-		if (NodeVectorFirst[next]->data > NodeVectorFirst[id - 1]->data)
+		//if (NodeVectorFirst[next]->data > NodeVectorFirst[id - 1]->data)
+
+		if (compare(NodeVectorFirst[next],NodeVectorFirst[id - 1]))
 		{
 			CloneLastFrame();
 			swap(NodeVectorFirst[next]->data, NodeVectorFirst[id - 1]->data);

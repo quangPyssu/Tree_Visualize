@@ -22,6 +22,11 @@ Heap::Heap() : Tree()
 	txtSearch->btn_cofirm->text.setPosition(txtSearch->btn_cofirm->shape.getPosition().x + txtSearch->btn_cofirm->shape.getSize().x / 2.f - txtSearch->btn_cofirm->text.getGlobalBounds().width / 2.f
 		, txtSearch->btn_cofirm->shape.getPosition().y + txtSearch->btn_cofirm->shape.getSize().y / 2.f - txtSearch->btn_cofirm->text.getGlobalBounds().height / 2.f);
 
+	btnChangeHeap = new Button({WINDOW_WIDTH-40-100.f,40.f+1}, {40.f,100.f}, "Max Heap", pink,grey, red, black, TextAlign::Middle);
+	btnChangeHeap->SecondText = "Min Heap";
+
+	btnChangeHeap->PushToObject(btnChangeHeap, Buttones);
+
 	anime = new Heap_Anime();
 
 	PushAnime(anime);
@@ -239,6 +244,13 @@ void Heap::updateCurrent(Event& event, Vector2f& MousePos)
 						btnFunctionHub->ForceOff();
 					}
 		}
+
+	if (btnChangeHeap->isPressed())
+	{
+		anime->isMaxHeap = btnChangeHeap->isOn ? 0 : 1;
+
+		Forge(rand() % 5 + 10);
+	}
 }
 
 void Heap::takeTimeCurrent(Time& dt)
@@ -269,7 +281,8 @@ Heap_node* Heap::insertT(int data)
 	{
 		int par = id / 2 - 1;
 
-		if (NodeVector[par]->data < NodeVector[id-1]->data) swap(NodeVector[par]->data, NodeVector[id-1]->data); else break;
+		//if (NodeVector[par]->data < NodeVector[id-1]->data) swap(NodeVector[par]->data, NodeVector[id-1]->data); else break;
+		if (anime->compare(NodeVector[id - 1],NodeVector[par])) swap(NodeVector[par]->data, NodeVector[id - 1]->data); else break;
 
 		id = id / 2;
 	}	
@@ -308,14 +321,12 @@ Heap_node* Heap::Del(int id)
 
 	while (id > 1)
 	{
-		int par = id / 2 - 1; cout << id - 1 << " " << par << endl;
+		int par = id / 2 - 1; 
 
 		swap(NodeVector[par]->data, NodeVector[id - 1]->data); 
 
 		id = id / 2;
 	}
-
-	cout << id << endl;
 
 	NodeVector[0]->data = NodeVector.back()->data; 
 
@@ -329,11 +340,14 @@ Heap_node* Heap::Del(int id)
 	{
 		int next = id * 2 - 1;
 
-		if (id * 2 < cnt && NodeVector[id * 2]->data > NodeVector[next]->data) next=id*2;
+		//if (id * 2 < cnt && NodeVector[id * 2]->data > NodeVector[next]->data) next=id*2;
+		if (id * 2 < cnt && anime->compare(NodeVector[id * 2],NodeVector[next])) next = id * 2;
 
-		if (NodeVector[next]->data > NodeVector[id - 1]->data) swap(NodeVector[next]->data, NodeVector[id - 1]->data);
+		//if (NodeVector[next]->data > NodeVector[id - 1]->data) swap(NodeVector[next]->data, NodeVector[id - 1]->data);
+		if (anime->compare(NodeVector[next],NodeVector[id - 1])) swap(NodeVector[next]->data, NodeVector[id - 1]->data);
 		else break;
-		id *= 2;
+		
+		id = next+1;
 	}
 
 	return NULL;
