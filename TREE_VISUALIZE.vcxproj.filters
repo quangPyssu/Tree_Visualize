@@ -93,6 +93,12 @@
     <ClCompile Include="Trie_Tree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Animation\Graph_Anime.cpp">
+      <Filter>Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Graph.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -159,6 +165,12 @@
       <Filter>Animation</Filter>
     </ClInclude>
     <ClInclude Include="Trie_Tree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation\Graph_Anime.h">
+      <Filter>Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Graph.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -13,6 +13,7 @@
 #include "Heap.h"
 #include "B_tree.h"
 #include "Trie_Tree.h"
+#include "Graph.h"
 
 using namespace sf;
 using namespace std;
@@ -57,6 +58,7 @@ public:
 	Heap* mHeap;
 	B_Tree* mB;
 	Trie_Tree* mTrie;
+	Graphs* mGraph;
 
 	RectangleShape BG1;
 
@@ -66,6 +68,7 @@ public:
 	Button* btnHeap;
 	Button* btn234;
 	Button* btnTrie;
+	Button* btnGraph;
 
 	Button* btnColorHub;
 
@@ -82,6 +85,5 @@ public:
 	Time timeSinceLastUpdate = Time::Zero;
 
 	//
-
 };
 

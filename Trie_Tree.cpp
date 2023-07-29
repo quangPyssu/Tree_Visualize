@@ -150,7 +150,7 @@ void Trie_Tree::updateCurrent(Event& event, Vector2f& MousePos)
 		if (data<0 || data > 15) return;
 		Forge(data);
 	}else
-		if (btnCreateRandom->isPressed()) Forge(rand() % 5 + 2); else 
+		if (btnCreateRandom->isPressed()) Forge(rand() % 3 + 2); else 
 			if (btnCreateLoad->isPressed())
 	{
 		ifstream fin("dataForLoad/Trie_Tree.in");

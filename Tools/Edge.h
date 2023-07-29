@@ -12,13 +12,13 @@ public:
 	virtual void drawCurrent(RenderTarget& target, RenderStates states) const ;
 	virtual void updateCurrent(Event& event, Vector2f& MousePos);
 
-	Vector2f pos1;
-	Vector2f pos2;
+	Vector2f pos1 = { 0,0 };
+	Vector2f pos2 = { 0,0 };
 	float angle = 0;
 
 	void make(const Vector2f& pos,const Vector2f& size,const double& angle);
 
-	void setPositionByNode(const Vector2f& pos1, const Vector2f& pos2);
+	void setPositionByNode(const Vector2f pos1, const Vector2f pos2);
 
 	int data = 0;
 

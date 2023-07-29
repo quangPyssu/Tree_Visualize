@@ -155,11 +155,7 @@ void AVL_Tree::Push(AVL_node*& Cur, int& cnt, AVL_node*& parent, bool isLeft)
 	cnt++;
 
 	// go right
-	if (Cur->right)
-	{
-		Push(Cur->right, cnt, Cur, false);
-
-	}
+	if (Cur->right)	Push(Cur->right, cnt, Cur, false);
 
 	if (Cur->left) PushLink(Cur, Cur->left);
 	if (Cur->right) PushLink(Cur, Cur->right);

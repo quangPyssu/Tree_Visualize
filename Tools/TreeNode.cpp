@@ -38,6 +38,34 @@ void TreeNode::drawCurrent(RenderTarget& target, RenderStates states) const
 	target.draw(AdditionalText);
 }
 
+void TreeNode::updateCurrent(Event& event, Vector2f& MousePos)
+{
+	if (!CanBeDrag) return;
+
+	if (event.type == sf::Event::MouseButtonPressed)
+	{
+		if (event.mouseButton.button == sf::Mouse::Left)
+		{
+			if (Cir.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y))
+			{
+				isDraggin = true;
+				offset = sf::Vector2f(event.mouseButton.x, event.mouseButton.y) - Cir.getPosition();
+			}
+		}
+	}
+	else if (event.type == sf::Event::MouseButtonReleased)
+	{
+		if (event.mouseButton.button == sf::Mouse::Left)
+		{
+			isDraggin = false;
+		}
+	}
+
+
+	if (isDraggin)	make(Vector2f(MousePos) - offset,text.getString());
+
+}
+
 void TreeNode::setPosition(const Vector2f& position)
 {
 	Cir.setPosition(position);
