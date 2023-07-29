@@ -2,6 +2,7 @@
 #include "../Tools/SceneNode.h"
 #include "../Tools/TreeNode.h"
 #include "../Tools/Edge.h"
+#include <queue>
 
 #pragma once
 
@@ -62,12 +63,11 @@ public:
 
 	void setVis();
 
-	void MakeCurState();
 	void MakeNewFrame();
 
 	void fillAllFrame();
 
-	void CloneFromTree();
+	void CloneFromTree(SceneNode*& Nodes, SceneNode*& Linkes);
 	void CloneLastFrame();
 
 	void PushCurNode(Graph_node*& Cur, Graph_node*& parent);
@@ -80,8 +80,9 @@ public:
 
 	vector <vector<Edge*>> AnimeFrameLink; 
 
-	void MakeDijsktraAnime(int StartId,int EndId);
-	void MakeMinSpanAnime();
+	void MakeDijsktraAnime(SceneNode* Nodes, SceneNode* Linkes,int StartId,int EndId);
+	void MakeMinSpanAnime(SceneNode* Nodes, SceneNode* Linkes,int id);
+	void MakeConnectedComponent(SceneNode* Nodes, SceneNode* Linkes,int id);
 
 	void cleanUp();
 };

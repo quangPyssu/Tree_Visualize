@@ -2,8 +2,16 @@
 
 Graphs::Graphs() : Tree()
 {
-	txtUpdate = new TextBox(txtDelete->pos + Vector2f(txtDelete->size.y + txtDelete->btn_cofirm->size.y + OUTLINE_THICKNESS * 10, 0), btnDelete->size, "Replace with", "Go", pink, black, black, black, white, { -50,0 }, { 40,40 }, 10, TextAlign::Middle);
+	txtUpdate = new TextBox(txtDelete->pos + Vector2f(txtDelete->size.y + txtDelete->btn_cofirm->size.y + OUTLINE_THICKNESS * 10, 0), btnDelete->size, "End Pos", "Go", pink, black, black, black, white, { -50,0 }, { 40,40 }, 10, TextAlign::Middle);
 	PushToObject(txtUpdate, btnDelete);
+
+	btnDelete->text.setString("Dijkstra");
+	btnInsert->text.setString("Connected Comp");
+	btnSearch->text.setString("Min Span Tree");
+
+	txtInsert->default_S="Start Pos";
+	txtDelete->default_S="Start Pos";
+	txtSearch->default_S="Start Pos";
 
 	DeleteGroup->adopt(txtUpdate->btn_cofirm, txtUpdate);
 
@@ -98,6 +106,7 @@ void Graphs::Push(int id)
 	shared_ptr <TreeNode> here(tmp);
 
 	a->tVisual = here;
+	a->Nodeid = cnt;
 	Nodes->attachChild(here);
 	cnt++;
 
@@ -156,30 +165,40 @@ void Graphs::updateCurrent(Event& event, Vector2f& MousePos)
 		{
 			if (txtDelete->data != nothing && txtUpdate->data!=nothing) // delete
 			{
+				if (txtDelete->data <1 || txtDelete->data > anime->n || txtUpdate->data <1 || txtUpdate->data > anime->n) return;
 				cout << "Diskjcha " << endl;
 
 				int data1 = txtDelete->getIntdata();
 				int data2 = txtUpdate->getIntdata();
 
-				anime->MakeDijsktraAnime(data1,data2);
-
-				CreateVisual(0);
+				anime->MakeDijsktraAnime(Nodes,Linkes,data1,data2);
 
 				btnFunctionHub->ForceOff();
 			}
 			else
-				if (txtInsert->data != nothing) // delete
+				if (txtInsert->data != nothing && txtInsert->data>0) // delete
 				{
-					cout << "Insert " << endl;
+					if (txtInsert->data <1 || txtInsert->data > anime->n) return;
+					cout << "Connected Component " << endl;
 
 					int data = txtInsert->getIntdata();
 
-					//anime->MakeInsertAnime(data,Nodes);
-
-					CreateVisual(0);
+					anime->MakeConnectedComponent(Nodes,Linkes,data);
 
 					btnFunctionHub->ForceOff();
 				}
+				else
+					if (txtSearch->data != nothing) // delete
+					{
+						if (txtSearch->data <1 || txtSearch->data > anime->n) return;
+						cout << "Minimum spanning tree " << endl;
+
+						int data = txtSearch->getIntdata();
+
+						anime->MakeMinSpanAnime(Nodes,Linkes,data);
+
+						btnFunctionHub->ForceOff();
+					}
 		}
 
 	for (int i = 0; i < anime->n; i++) if (anime->NodeVector[i]->tVisual->isDraggin)
