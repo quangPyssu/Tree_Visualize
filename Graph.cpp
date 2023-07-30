@@ -143,7 +143,7 @@ void Graphs::updateCurrent(Event& event, Vector2f& MousePos)
 	if (txtCreateSize->data != nothing)
 	{
 		int data = txtCreateSize->getIntdata();
-		if (data<0 || data > 50) return;
+		if (data<1 || data > 50) return;
 		Forge(data);
 	}else
 		if (btnCreateRandom->isPressed()) Forge(rand() % 5 + 10); else 
@@ -155,9 +155,33 @@ void Graphs::updateCurrent(Event& event, Vector2f& MousePos)
 
 		anime->DelAll();
 
-		//
+		if (fin >> anime->n)
+		{
+			anime->maxNodeCnt = anime->maxLinkCnt = 0;
 
-		CreateVisual(0);
+			for (int i = 0; i < anime->n; i++)
+			{
+				anime->NodeVector.push_back(new Graph_node(anime));
+				anime->Visited.push_back(0);
+
+				anime->NodeVector[i]->data = i + 1;
+				anime->NodeVector[i]->Nodeid = i;
+			}
+			
+			for (int u=0;u<anime->n;u++) for (int v=0;v<anime->n;v++) 
+			{
+				int w = 0; fin >> w; if (!w || u==v) continue; 
+				if (anime->NodeVector[u]->childs[v] != 0)
+				{
+					anime->NodeVector[u]->childs[v] = min(w, anime->NodeVector[u]->childs[v]);
+					anime->NodeVector[v]->childs[u] = anime->NodeVector[u]->childs[v];
+				}
+				else anime->NodeVector[u]->childs[v] = anime->NodeVector[v]->childs[u] = w;
+			}
+		
+			CreateVisual(0);
+		}
+		else cout << "Invalid file" << endl;
 
 		btnFunctionHub->ForceOff();
 	} else
