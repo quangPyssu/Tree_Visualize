@@ -76,7 +76,7 @@ void Trie_node::paintLink(Color color, int i, bool HasPred)
 
 void Trie_Anime::InsTrie(Trie_node*& root,string data)
 {
-	if (!root) root = new Trie_node(this);
+	if (!root || isEmpty(root)) root = new Trie_node(this);
 	insertTrie(root, data);
 }
 
@@ -126,7 +126,7 @@ bool Trie_Anime::isEmpty(Trie_node* root)
     return true;
 }
  
-Trie_node* Trie_Anime::DelTrie(Trie_node* root, string data, int depth=0)
+Trie_node* Trie_Anime::DelTrie(Trie_node*& root, string data, int depth=0)
 {
     if (!root) return NULL;
 
@@ -180,6 +180,17 @@ int Trie_Anime::count_node(Trie_node* cur)
 	int res = 1;
 
 	for (auto &a : cur->childs) res += count_node(a);
+
+	return res;
+}
+
+int Trie_Anime::count_word(Trie_node* cur)
+{
+	if (!cur) return 0;
+
+	int res = cur->isWord ? 1:0;
+
+	for (auto& a : cur->childs) res += count_word(a);
 
 	return res;
 }
@@ -384,11 +395,22 @@ void Trie_Anime::MakeDeleteAnime(string data, SceneNode*& Nodes)
 	isHavingAnime = 1;
 	curFrame = 0;
 	bool k = 0;
+	int wordCnt = count_word(root);
+	
+	if (wordCnt == 1 && Search(root, data)) k = 1;
 
 	CloneFromTree(Nodes); 
 
-	DelTrie(root, data);  
-	MakeCurState(); 
+	if (!isEmpty(root)) DelTrie(root, data); 
+
+	if (k) {
+		auto tmp = root;
+		root = new Trie_node(this);
+		root->Nodeid = 0;
+		delete tmp;
+	}
+
+	MakeCurState();
 
 	fillAllFrame();
 }

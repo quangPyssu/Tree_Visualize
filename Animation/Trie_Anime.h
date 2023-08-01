@@ -54,9 +54,11 @@ public:
 
 	int count_node(Trie_node* cur);
 
+	int count_word(Trie_node* cur);
+
 	void insertTrie(Trie_node* root, string data);
 
-	Trie_node* DelTrie(Trie_node* root, string data, int depth);
+	Trie_node* DelTrie(Trie_node*& root, string data, int depth);
 
 	void InsTrie(Trie_node*& root,string data);
 
