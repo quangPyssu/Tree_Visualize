@@ -2,7 +2,43 @@
 
 B_Anime::B_Anime() : AnimeBase()
 {
+	PushFakeCode("	split this", 250);
+	PushFakeCode("if this if full", 250);
+	PushFakeCode("	insert V", 250);
+	PushFakeCode("if this is leaf", 250);
 
+	vector <CodeBox*> b;
+	FakeCodes.push_back(b);
+
+	PushFakeCode("Fix size of this", 300);
+	PushFakeCode("merge children", 300);
+	PushFakeCode("	replace v by its successo", 300);
+	PushFakeCode("	replace v by its predecessor", 300);
+	PushFakeCode("If v is in this and this is an internal node", 300);
+	PushFakeCode("	remove v", 300);
+	PushFakeCode("If v is in this and this is a leaf", 300);
+	PushFakeCode("Find v", 300);
+
+	vector <CodeBox*> c;
+	FakeCodes.push_back(c);
+
+	PushFakeCode("else search child", 250);
+	PushFakeCode("	return null", 250);
+	PushFakeCode("else if this is leaf", 250);
+	PushFakeCode("	return v", 250);
+	PushFakeCode("If v is in this", 250);
+
+	vector <CodeBox*> d;
+	FakeCodes.push_back(d);
+
+	PushFakeCode("Fix size of this", 300);
+	PushFakeCode("merge children", 300);
+	PushFakeCode("	replace v by its successo", 300);
+	PushFakeCode("	replace v by its predecessor", 300);
+	PushFakeCode("If v is in this and this is an internal node", 300);
+	PushFakeCode("	Update v", 300);
+	PushFakeCode("If v is in this and this is a leaf", 300);
+	PushFakeCode("Find v", 300);
 }
 
 B_Anime::~B_Anime()
@@ -715,6 +751,7 @@ void B_Anime::MakeInsertAnime(int data, SceneNode*& Nodes)
 	MakeCurState();
 
 	fillAllFrame();
+	CurAnime = aInsert;
 }
 
 void B_Anime::MakeDeleteAnime(int data, SceneNode*& Nodes)
@@ -730,6 +767,7 @@ void B_Anime::MakeDeleteAnime(int data, SceneNode*& Nodes)
 	MakeCurState();
 
 	fillAllFrame();
+	CurAnime = aDelete;
 }
 
 void B_Anime::MakeUpdateAnime(int dataDel,int dataAdd,SceneNode*& Nodes)
@@ -746,6 +784,7 @@ void B_Anime::MakeUpdateAnime(int dataDel,int dataAdd,SceneNode*& Nodes)
 	MakeCurState();
 
 	fillAllFrame();
+	CurAnime = aDelete;
 }
 
 void B_Anime::MakeSearchAnime(int data, SceneNode*& Nodes)
@@ -761,6 +800,7 @@ void B_Anime::MakeSearchAnime(int data, SceneNode*& Nodes)
 	MakeCurState();
 
 	fillAllFrame();
+	CurAnime = aSearch;
 }
 
 void B_Anime::ReposAfter(B_node* cur, int& cnt, int level, bool isLeft)

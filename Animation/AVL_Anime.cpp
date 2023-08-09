@@ -199,7 +199,6 @@ void AVL_Anime::MakeInsertAnime(int data, SceneNode*& Nodes, vector <AVL_node*>&
 	isPlaying = 1;
 	isHavingAnime = 1;
 	
-
 	this->n = n + 1;
 	n++;
 

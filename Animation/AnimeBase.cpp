@@ -387,12 +387,12 @@ void AnimeBase::PushFakeCode(string s,float width)
 {
 	if (FakeCodes.back().empty())
 	{
-		CodeBox* a = new CodeBox({ WINDOW_WIDTH - 30.f - 380,WINDOW_HEIGHT - 40 * 2.f}, { width,35 }, s, purple, black, Left);
+		CodeBox* a = new CodeBox({ WINDOW_WIDTH - 30.f - width,WINDOW_HEIGHT - 40 * 2.f}, { width,35 }, s, purple, black, Left);
 		FakeCodes.back().push_back(a);
 	}
 	else
 	{
-		CodeBox* a = new CodeBox({ WINDOW_WIDTH - 30.f - 380,FakeCodes.back().back()->pos.y - FakeCodes.back().back()->size.y }, {width,35}, s, purple, black, Left);
+		CodeBox* a = new CodeBox({ WINDOW_WIDTH - 30.f - width,FakeCodes.back().back()->pos.y - FakeCodes.back().back()->size.y }, {width,35}, s, purple, black, Left);
 		FakeCodes.back().push_back(a);
 	}
 }
